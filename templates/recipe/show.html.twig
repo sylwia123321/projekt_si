@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ 'title.recipe_details'|trans({'%id%': recipe.id|default('')}) }}
+{% endblock %}
+
+{% block body %}
+    <h1>{{ 'title.recipe_details'|trans({'%id%': recipe.id|default('')}) }}</h1>
+    {% if recipe is defined and recipe|length %}
+        <dl class="dl-horizontal">
+            <dt>{{ 'label.id'|trans }}</dt>
+            <dd>{{ recipe.id }}</dd>
+            <dt>{{ 'label.created_at'|trans }}</dt>
+            <dd>{{ recipe.createdAt|format_date('long') }}</dd>
+            <dt>{{ 'label.updated_at'|trans }}</dt>
+            <dd>{{ recipe.updatedAt|format_date('long') }}</dd>
+            <dt>{{ 'label.title'|trans }}</dt>
+            <dd>{{ recipe.title }}</dd>
+            <dt>{{ 'label.description'|trans }}</dt>
+            <dd>{{ recipe.description }}</dd>
+            <dt>{{ 'label.ingredients'|trans }}</dt>
+            <dd>{{ recipe.ingredients }}</dd>
+            <dt>{{ 'label.instructions'|trans }}</dt>
+            <dd>{{ recipe.instructions }}</dd>
+            <dt>{{ 'label.actions'|trans }}</dt>
+            <dd>
+                <a href="{{ url('recipe_index') }}" title="{{ 'action.back_to_list'|trans }}">
+                    {{ 'action.back_to_list'|trans }}
+                </a>
+            </dd>
+        </dl>
+    {% else %}
+        <p>
+            {{ 'message.record_not_found'|trans }}
+        </p>
+    {% endif %}
+{% endblock %}

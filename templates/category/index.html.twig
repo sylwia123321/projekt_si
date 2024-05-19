@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    Category List
+{% endblock %}
+
+{% block body %}
+    <h1>Category List</h1>
+
+    {% if pagination is defined and pagination.items|length %}
+        <table class="table">
+            <thead>
+            <tr>
+                <th>Title</th>
+                <th>Created At</th>
+                <th>Updated At</th>
+                <th>Actions</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for category in pagination.items %}
+                <tr>
+                    <td>{{ category.title }}</td>
+                    <td>{{ category.createdAt|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ category.updatedAt|date('Y-m-d H:i:s') }}</td>
+                    <td>
+                        <a href="{{ path('category_show', {'id': category.id}) }}">Show</a>
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+
+        <div class="navigation text-center">
+            {{ knp_pagination_render(pagination) }}
+        </div>
+    {% else %}
+        <p>No categories found.</p>
+    {% endif %}
+{% endblock %}
