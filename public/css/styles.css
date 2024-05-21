@@ -1,3 +1,16 @@
-p {
+/* Pogrubienie etykiet pól formularza */
+label {
+    font-weight: bold;
+}
+
+/* Dodanie czerwonej gwiazdki dla pól wymaganych */
+.required:after {
+    content: '*';
     color: red;
+    margin-left: 5px;
+}
+
+.navigation text-center, .create_category {
+    margin-top: 20px;
+    margin-bottom: 20px;
 }

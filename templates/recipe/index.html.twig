@@ -6,6 +6,11 @@
 
 {% block body %}
     <h1>{{ 'title.recipe_list'|trans }}</h1>
+
+    <div class="mb-3">
+        <a href="{{ path('recipe_create') }}" class="btn btn-primary">{{ 'title.recipe_create'|trans }}</a>
+    </div>
+
     {% if pagination is defined and pagination.items|length %}
 
         <div class="navigation text-center">
@@ -19,9 +24,9 @@
                 <th>{{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 'recipe.createdAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'recipe.updatedAt') }}</th>
                 <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'recipe.title') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.description'|trans, 'recipe.description') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.ingredients'|trans, 'recipe.ingredients') }}</th>
-                <th>{{ knp_pagination_sortable(pagination, 'label.instructions'|trans, 'recipe.instructions') }}</th>
+                <th>{{ 'label.description'|trans }}</th>
+                <th>{{ 'label.ingredients'|trans }}</th>
+                <th>{{ 'label.instructions'|trans }}</th>
                 <th>{{ 'label.category'|trans }}</th>
                 <th>{{ 'label.actions'|trans }}</th>
             </tr>
@@ -38,8 +43,14 @@
                     <td>{{ recipe.instructions }}</td>
                     <td>{{ recipe.category.title }}</td>
                     <td>
-                        <a href="{{ url('recipe_show', {id: recipe.id}) }}" title="{{ 'action.show'|trans }}">
+                        <a href="{{ path('recipe_show', {id: recipe.id}) }}" title="{{ 'action.show'|trans }}">
                             {{ 'action.show'|trans }}
+                        </a>
+                        <a href="{{ path('recipe_edit', {id: recipe.id}) }}" title="{{ 'action.edit'|trans }}">
+                            {{ 'action.edit'|trans }}
+                        </a>
+                        <a href="{{ path('recipe_delete', {id: recipe.id}) }}" title="{{ 'action.delete'|trans }}">
+                            {{ 'action.delete'|trans }}
                         </a>
                     </td>
                 </tr>

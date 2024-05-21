@@ -1,17 +1,17 @@
 <?php
 /**
- * Recipe service interface.
+ * Tag service interface.
  */
 
 namespace App\Service;
 
-use App\Entity\Recipe;
+use App\Entity\Tag;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
- * Interface RecipeServiceInterface.
+ * Interface TagServiceInterface.
  */
-interface RecipeServiceInterface
+interface TagServiceInterface
 {
     /**
      * Get paginated list.
@@ -25,14 +25,14 @@ interface RecipeServiceInterface
     /**
      * Save entity.
      *
-     * @param Recipe $recipe Recipe entity
+     * @param Tag $tag Tag entity
      */
-    public function save(Recipe $recipe): void;
+    public function save(Tag $tag): void;
 
     /**
      * Delete entity.
      *
-     * @param Recipe $recipe Recipe entity
+     * @param Tag $tag Tag entity
      */
-    public function delete(Recipe $recipe): void;
+    public function delete(Tag $tag): void;
 }

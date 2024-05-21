@@ -6,17 +6,17 @@
 namespace App\Entity;
 
 use App\Repository\CategoryRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Class Category.
- *
- * @psalm-suppress MissingConstructor
  */
 #[ORM\Entity(repositoryClass: CategoryRepository::class)]
 #[ORM\Table(name: 'categories')]
-#[ORM\UniqueConstraint(name: 'uq_categories_title', columns: ['title'])]
 #[UniqueEntity(fields: ['title'])]
 class Category
 {
@@ -33,18 +33,22 @@ class Category
     /**
      * Created at.
      *
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?\DateTimeImmutable $createdAt = null;
+    #[Assert\Type(DateTimeImmutable::class)]
+    #[Gedmo\Timestampable(on: 'create')]
+    private ?\DateTimeImmutable $createdAt;
 
     /**
      * Updated at.
      *
-     * @var \DateTimeImmutable|null
+     * @var DateTimeImmutable|null
      */
     #[ORM\Column(type: 'datetime_immutable')]
-    private ?\DateTimeImmutable $updatedAt = null;
+    #[Assert\Type(DateTimeImmutable::class)]
+    #[Gedmo\Timestampable(on: 'update')]
+    private ?\DateTimeImmutable $updatedAt;
 
     /**
      * Title.
@@ -52,7 +56,20 @@ class Category
      * @var string|null
      */
     #[ORM\Column(type: 'string', length: 255)]
-    private ?string $title = null;
+    #[Assert\Type('string')]
+    #[Assert\NotBlank]
+    #[Assert\Length(min: 3, max: 64)]
+    private ?string $title;
+
+    /**
+     * Slug.
+     * @var string|null
+     */
+    #[ORM\Column(type: 'string', length: 64)]
+    #[Assert\Type('string')]
+    #[Assert\Length(min: 3, max: 64)]
+    #[Gedmo\Slug(fields: ['title'])]
+    private ?string $slug;
 
     /**
      * Getter for Id.
@@ -122,5 +139,17 @@ class Category
     public function setTitle(?string $title): void
     {
         $this->title = $title;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
     }
 }

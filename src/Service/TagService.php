@@ -1,19 +1,19 @@
 <?php
 /**
- * Recipe service.
+ * Tag service.
  */
 
 namespace App\Service;
 
-use App\Entity\Recipe;
-use App\Repository\RecipeRepository;
+use App\Entity\Tag;
+use App\Repository\TagRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
 /**
- * Class RecipeService.
+ * Class TagService.
  */
-class RecipeService implements RecipeServiceInterface
+class TagService implements TagServiceInterface
 {
     /**
      * Items per page.
@@ -29,10 +29,10 @@ class RecipeService implements RecipeServiceInterface
     /**
      * Constructor.
      *
-     * @param RecipeRepository   $recipeRepository Recipe repository
-     * @param PaginatorInterface $paginator        Paginator
+     * @param TagRepository      $tagRepository Tag repository
+     * @param PaginatorInterface $paginator     Paginator
      */
-    public function __construct(private readonly RecipeRepository $recipeRepository, private readonly PaginatorInterface $paginator)
+    public function __construct(private readonly TagRepository $tagRepository, private readonly PaginatorInterface $paginator)
     {
     }
 
@@ -46,7 +46,7 @@ class RecipeService implements RecipeServiceInterface
     public function getPaginatedList(int $page): PaginationInterface
     {
         return $this->paginator->paginate(
-            $this->recipeRepository->queryAll(),
+            $this->tagRepository->queryAll(),
             $page,
             self::PAGINATOR_ITEMS_PER_PAGE
         );
@@ -55,20 +55,20 @@ class RecipeService implements RecipeServiceInterface
     /**
      * Save entity.
      *
-     * @param Recipe $recipe Recipe entity
+     * @param Tag $tag Tag entity
      */
-    public function save(Recipe $recipe): void
+    public function save(Tag $tag): void
     {
-        $this->recipeRepository->save($recipe);
+        $this->tagRepository->save($tag);
     }
 
     /**
      * Delete entity.
      *
-     * @param Recipe $recipe Recipe entity
+     * @param Tag $tag Tag entity
      */
-    public function delete(Recipe $recipe): void
+    public function delete(Tag $tag): void
     {
-        $this->recipeRepository->delete($recipe);
+        $this->tagRepository->delete($tag);
     }
 }

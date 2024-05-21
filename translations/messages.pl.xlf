@@ -78,6 +78,66 @@
         <source>action.show</source>
         <target>Pokaż</target>
       </trans-unit>
+      <trans-unit id="message.created_successfully">
+          <source>message.created_successfully</source>
+          <target>Utworzono pomyślnie.</target>
+      </trans-unit>
+      <trans-unit id="message.category_contains_tasks">
+          <source>message.category_contains_tasks</source>
+          <target>Ta kategoria zawiera zadania i nie może być usunięta.</target>
+      </trans-unit>
+      <trans-unit id="message.deleted_successfully">
+          <source>message.deleted_successfully</source>
+          <target>Usunięto pomyślnie.</target>
+      </trans-unit>
+      <trans-unit id="message.edited_successfully">
+          <source>message.edited_successfully</source>
+          <target>Edytowano pomyślnie.</target>
+      </trans-unit>
+      <trans-unit id="title.category_create">
+          <source>title.category_create</source>
+          <target>Utwórz kategorię</target>
+      </trans-unit>
+      <trans-unit id="action.save">
+          <source>action.save</source>
+          <target>Zapisz</target>
+      </trans-unit>
+      <trans-unit id="title.category_delete">
+          <source>title.category_delete</source>
+          <target>Usuń kategorię #%id%</target>
+      </trans-unit>
+      <trans-unit id="action.delete">
+          <source>action.delete</source>
+          <target>Usuń</target>
+      </trans-unit>
+      <trans-unit id="title.category_edit">
+          <source>title.category_edit</source>
+          <target>Edytuj kategorię #%id%</target>
+      </trans-unit>
+      <trans-unit id="action.edit">
+          <source>action.edit</source>
+          <target>Edytuj</target>
+      </trans-unit>
+      <trans-unit id="message.form_error">
+          <source>message.form_error</source>
+          <target>Wystąpił błąd podczas przesyłania formularza. Sprawdź formularz i spróbuj ponownie.</target>
+      </trans-unit>
+      <trans-unit id="title.recipe_create">
+          <source>title.recipe_create</source>
+          <target>Utwórz przepis</target>
+      </trans-unit>
+      <trans-unit id="title.recipe_delete">
+          <source>title.recipe_delete</source>
+          <target>Usuń przepis #%id%</target>
+      </trans-unit>
+      <trans-unit id="title.recipe_edit">
+          <source>title.recipe_edit</source>
+          <target>Edytuj przepis #%id%</target>
+      </trans-unit>
+      <trans-unit id="label.none">
+          <source>label.none</source>
+          <target>Brak etykiety</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

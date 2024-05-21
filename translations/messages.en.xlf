@@ -78,6 +78,66 @@
         <source>action.show</source>
         <target>Show</target>
       </trans-unit>
+      <trans-unit id="message.created_successfully">
+          <source>message.created_successfully</source>
+          <target>Created successfully.</target>
+      </trans-unit>
+      <trans-unit id="message.category_contains_tasks">
+          <source>message.category_contains_tasks</source>
+          <target>This category contains tasks and cannot be deleted.</target>
+      </trans-unit>
+      <trans-unit id="message.deleted_successfully">
+          <source>message.deleted_successfully</source>
+          <target>Deleted successfully.</target>
+      </trans-unit>
+      <trans-unit id="message.edited_successfully">
+          <source>message.edited_successfully</source>
+          <target>Edited successfully.</target>
+      </trans-unit>
+      <trans-unit id="title.category_create">
+          <source>title.category_create</source>
+          <target>Create Category</target>
+      </trans-unit>
+      <trans-unit id="action.save">
+          <source>action.save</source>
+          <target>Save</target>
+      </trans-unit>
+      <trans-unit id="title.category_delete">
+          <source>title.category_delete</source>
+          <target>Delete Category #%id%</target>
+      </trans-unit>
+      <trans-unit id="action.delete">
+          <source>action.delete</source>
+          <target>Delete</target>
+      </trans-unit>
+      <trans-unit id="title.category_edit">
+          <source>title.category_edit</source>
+          <target>Edit Category #%id%</target>
+      </trans-unit>
+      <trans-unit id="action.edit">
+          <source>action.edit</source>
+          <target>Edit</target>
+      </trans-unit>
+      <trans-unit id="message.form_error">
+          <source>message.form_error</source>
+          <target>There was an error with the form submission. Please check the form and try again.</target>
+      </trans-unit>
+      <trans-unit id="title.recipe_create">
+          <source>title.recipe_create</source>
+          <target>Create Recipe</target>
+      </trans-unit>
+      <trans-unit id="title.recipe_delete">
+          <source>title.recipe_delete</source>
+          <target>Delete Recipe #%id%</target>
+      </trans-unit>
+      <trans-unit id="title.recipe_edit">
+          <source>title.recipe_edit</source>
+          <target>Edit Recipe #%id%</target>
+      </trans-unit>
+      <trans-unit id="label.none">
+          <source>label.none</source>
+          <target>No label</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

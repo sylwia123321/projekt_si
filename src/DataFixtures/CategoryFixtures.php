@@ -6,7 +6,7 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use DateTimeImmutable; // Import the global DateTimeImmutable class
+use DateTimeImmutable;
 
 /**
  * Class CategoryFixtures.

@@ -1,30 +1,40 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Category List
+    {{ 'title.category_list'|trans }}
 {% endblock %}
 
 {% block body %}
-    <h1>Category List</h1>
+    <h1>{{ 'title.category_list'|trans }}</h1>
+
+    <div class="create_category">
+        <a href="{{ path('category_create') }}" class="btn btn-primary">{{ 'title.category_create'|trans }}</a>
+    </div>
+
+    <div class="navigation text-center">
+        {{ knp_pagination_render(pagination) }}
+    </div>
 
     {% if pagination is defined and pagination.items|length %}
         <table class="table">
             <thead>
             <tr>
-                <th>Title</th>
-                <th>Created At</th>
-                <th>Updated At</th>
-                <th>Actions</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'category.title') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 'category.createdAt') }}</th>
+                <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'category.updatedAt') }}</th>
+                <th>{{ 'label.actions'|trans }}</th>
             </tr>
             </thead>
             <tbody>
             {% for category in pagination.items %}
                 <tr>
                     <td>{{ category.title }}</td>
-                    <td>{{ category.createdAt|date('Y-m-d H:i:s') }}</td>
-                    <td>{{ category.updatedAt|date('Y-m-d H:i:s') }}</td>
+                    <td>{{ category.createdAt|format_date('long') }}</td>
+                    <td>{{ category.updatedAt|format_date('long') }}</td>
                     <td>
-                        <a href="{{ path('category_show', {'id': category.id}) }}">Show</a>
+                        <a href="{{ path('category_show', {'id': category.id}) }}">{{ 'action.show'|trans }}</a>
+                        <a href="{{ path('category_edit', {'id': category.id}) }}">{{ 'action.edit'|trans }}</a>
+                        <a href="{{ path('category_delete', {'id': category.id}) }}">{{ 'action.delete'|trans }}</a>
                     </td>
                 </tr>
             {% endfor %}
@@ -35,6 +45,8 @@
             {{ knp_pagination_render(pagination) }}
         </div>
     {% else %}
-        <p>No categories found.</p>
+        <div class="alert alert-info" role="alert">
+            'message.empty_list'|trans
+        </div>
     {% endif %}
 {% endblock %}
