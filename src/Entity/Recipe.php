@@ -6,10 +6,10 @@
 namespace App\Entity;
 
 use App\Repository\RecipeRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
@@ -20,75 +20,31 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\HasLifecycleCallbacks]
 class Recipe
 {
-    /**
-     * Primary key.
-     *
-     * @var int|null
-     */
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column(type: 'integer')]
     private ?int $id = null;
 
-    /**
-     * Created at.
-     *
-     * @var \DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    #[Assert\Type(DateTimeImmutable::class)]
-    #[Gedmo\Timestampable(on: 'create')]
-    private ?\DateTimeImmutable $createdAt;
-
-    /**
-     * Updated at.
-     *
-     * @var \DateTimeImmutable|null
-     */
-    #[ORM\Column(type: 'datetime_immutable')]
-    #[Assert\Type(DateTimeImmutable::class)]
-    #[Gedmo\Timestampable(on: 'update')]
-    private ?\DateTimeImmutable $updatedAt;
-
-    /**
-     * Title.
-     *
-     * @var string|null
-     */
     #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\Type('string')]
-    #[Assert\NotBlank]
-    #[Assert\Length(min: 3, max: 255)]
     private ?string $title = null;
 
-    /**
-     * Description.
-     *
-     * @var string|null
-     */
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $description = null;
 
-    /**
-     * Ingredients.
-     *
-     * @var string|null
-     */
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $ingredients = null;
 
-    /**
-     * Instructions.
-     *
-     * @var string|null
-     */
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $instructions = null;
 
-    /**
-     * Slug.
-     * @var string|null
-     */
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'create')]
+    private ?\DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column(type: 'datetime_immutable')]
+    #[Gedmo\Timestampable(on: 'update')]
+    private ?\DateTimeImmutable $updatedAt = null;
+
     #[ORM\Column(type: 'string', length: 64)]
     #[Gedmo\Slug(fields: ['title'])]
     private ?string $slug = null;
@@ -96,23 +52,21 @@ class Recipe
     /**
      * Category.
      *
-     * @var Category|null
+     * @var Category
      */
     #[ORM\ManyToOne(targetEntity: Category::class, fetch: 'EXTRA_LAZY')]
-    #[Assert\Type(Category::class)]
-    #[Assert\NotBlank]
     #[ORM\JoinColumn(nullable: false)]
     private ?Category $category = null;
 
     /**
      * Tags.
      *
-     * @var Collection<int, Tag>
+     * @var ArrayCollection<int, Tag>
      */
     #[Assert\Valid]
     #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    #[ORM\JoinTable(name: 'recipes_tags')]
-    private Collection $tags;
+    #[ORM\JoinTable(name: 'tasks_tags')]
+    private $tags;
 
     /**
      * Constructor.
@@ -124,8 +78,6 @@ class Recipe
 
     /**
      * Getter for Id.
-     *
-     * @return int|null Id
      */
     public function getId(): ?int
     {
@@ -133,49 +85,7 @@ class Recipe
     }
 
     /**
-     * Getter for created at.
-     *
-     * @return \DateTimeImmutable|null Created at
-     */
-    public function getCreatedAt(): ?\DateTimeImmutable
-    {
-        return $this->createdAt;
-    }
-
-    /**
-     * Setter for created at.
-     *
-     * @param \DateTimeImmutable $createdAt Created at
-     */
-    public function setCreatedAt(\DateTimeImmutable $createdAt): void
-    {
-        $this->createdAt = $createdAt;
-    }
-
-    /**
-     * Getter for updated at.
-     *
-     * @return \DateTimeImmutable|null Updated at
-     */
-    public function getUpdatedAt(): ?\DateTimeImmutable
-    {
-        return $this->updatedAt;
-    }
-
-    /**
-     * Setter for updated at.
-     *
-     * @param \DateTimeImmutable $updatedAt Updated at
-     */
-    public function setUpdatedAt(\DateTimeImmutable $updatedAt): void
-    {
-        $this->updatedAt = $updatedAt;
-    }
-
-    /**
      * Getter for title.
-     *
-     * @return string|null Title
      */
     public function getTitle(): ?string
     {
@@ -184,18 +94,14 @@ class Recipe
 
     /**
      * Setter for title.
-     *
-     * @param string $title Title
      */
-    public function setTitle(string $title): void
+    public function setTitle(?string $title): void
     {
         $this->title = $title;
     }
 
     /**
      * Getter for description.
-     *
-     * @return string|null Description
      */
     public function getDescription(): ?string
     {
@@ -204,8 +110,6 @@ class Recipe
 
     /**
      * Setter for description.
-     *
-     * @param string|null $description Description
      */
     public function setDescription(?string $description): void
     {
@@ -214,8 +118,6 @@ class Recipe
 
     /**
      * Getter for ingredients.
-     *
-     * @return string|null Ingredients
      */
     public function getIngredients(): ?string
     {
@@ -224,8 +126,6 @@ class Recipe
 
     /**
      * Setter for ingredients.
-     *
-     * @param string|null $ingredients Ingredients
      */
     public function setIngredients(?string $ingredients): void
     {
@@ -234,8 +134,6 @@ class Recipe
 
     /**
      * Getter for instructions.
-     *
-     * @return string|null Instructions
      */
     public function getInstructions(): ?string
     {
@@ -244,8 +142,6 @@ class Recipe
 
     /**
      * Setter for instructions.
-     *
-     * @param string|null $instructions Instructions
      */
     public function setInstructions(?string $instructions): void
     {
@@ -253,9 +149,39 @@ class Recipe
     }
 
     /**
+     * Getter for created at.
+     */
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    /**
+     * Setter for created at.
+     */
+    public function setCreatedAt(\DateTimeImmutable $createdAt): void
+    {
+        $this->createdAt = $createdAt;
+    }
+
+    /**
+     * Getter for updated at.
+     */
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    /**
+     * Setter for updated at.
+     */
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
+    }
+
+    /**
      * Getter for slug.
-     *
-     * @return string|null Slug
      */
     public function getSlug(): ?string
     {
@@ -264,8 +190,6 @@ class Recipe
 
     /**
      * Getter for category.
-     *
-     * @return Category|null Category
      */
     public function getCategory(): ?Category
     {
@@ -274,12 +198,12 @@ class Recipe
 
     /**
      * Setter for category.
-     *
-     * @param Category|null $category Category
      */
-    public function setCategory(?Category $category): void
+    public function setCategory(?Category $category): static
     {
         $this->category = $category;
+
+        return $this;
     }
 
     /**
@@ -300,7 +224,7 @@ class Recipe
     public function addTag(Tag $tag): void
     {
         if (!$this->tags->contains($tag)) {
-            $this->tags->add($tag);
+            $this->tags[] = $tag;
         }
     }
 

@@ -7,10 +7,13 @@ namespace App\DataFixtures;
 
 use App\Entity\Category;
 use App\Entity\Recipe;
+use App\Entity\Tag;
+use App\Repository\TagRepository;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
 use Faker\Factory;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
  * Class RecipeFixtures.
@@ -18,10 +21,12 @@ use Faker\Factory;
 class RecipeFixtures extends Fixture implements DependentFixtureInterface
 {
     private $faker;
+    private $tagRepository;
 
-    public function __construct()
+    public function __construct(TagRepository $tagRepository)
     {
         $this->faker = Factory::create();
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -33,6 +38,9 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager): void
     {
+        // Pobierz wszystkie tagi z bazy danych
+        $tags = $this->tagRepository->findAll();
+
         for ($i = 0; $i < 100; $i++) {
             $recipe = new Recipe();
             $recipe->setTitle($this->faker->sentence);
@@ -54,6 +62,12 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
             $category = $this->getReference('categories_' . $this->faker->numberBetween(0, 19));
             $recipe->setCategory($category);
 
+            // Dodaj kilka losowych tagów do przepisu
+            $randomTags = $this->faker->randomElements($tags, $this->faker->numberBetween(1, 5));
+            foreach ($randomTags as $tag) {
+                $recipe->addTag($tag);
+            }
+
             $manager->persist($recipe);
         }
 
@@ -66,10 +80,10 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
      *
      * @return string[] of dependencies
      *
-     * @psalm-return array{0: CategoryFixtures::class}
+     * @psalm-return array{0: CategoryFixtures::class, 1: TagFixtures::class}
      */
     public function getDependencies(): array
     {
-        return [CategoryFixtures::class];
+        return [CategoryFixtures::class, TagFixtures::class];
     }
 }

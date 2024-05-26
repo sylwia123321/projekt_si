@@ -7,18 +7,28 @@ namespace App\Form\Type;
 
 use App\Entity\Category;
 use App\Entity\Recipe;
+use App\Form\DataTransformer\TagsDataTransformer;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use App\Entity\Tag;
 
 /**
  * Class RecipeType.
  */
 class RecipeType extends AbstractType
 {
+    /**
+     * Constructor.
+     *
+     * @param TagsDataTransformer $tagsDataTransformer Tags data transformer
+     */
+    public function __construct(private readonly TagsDataTransformer $tagsDataTransformer)
+    {
+    }
+
     /**
      * Builds the form.
      *
@@ -43,29 +53,29 @@ class RecipeType extends AbstractType
         );
         $builder->add(
             'description',
-            TextType::class,
+            TextareaType::class,
             [
                 'label' => 'label.description',
                 'required' => true,
-                'attr' => ['max_length' => 255],
+                'attr' => ['rows' => 5],
             ]
         );
         $builder->add(
             'ingredients',
-            TextType::class,
+            TextareaType::class,
             [
                 'label' => 'label.ingredients',
                 'required' => true,
-                'attr' => ['max_length' => 255],
+                'attr' => ['rows' => 5],
             ]
         );
         $builder->add(
             'instructions',
-            TextType::class,
+            TextareaType::class,
             [
                 'label' => 'label.instructions',
                 'required' => true,
-                'attr' => ['max_length' => 255],
+                'attr' => ['rows' => 5],
             ]
         );
         $builder->add(
@@ -83,18 +93,16 @@ class RecipeType extends AbstractType
         );
         $builder->add(
             'tags',
-            EntityType::class,
+            TextType::class,
             [
-                'class' => Tag::class,
-                'choice_label' => function ($tag): string {
-                    return $tag->getTitle();
-                },
                 'label' => 'label.tags',
-                'placeholder' => 'label.none',
                 'required' => false,
-                'expanded' => true,
-                'multiple' => true,
+                'attr' => ['max_length' => 128],
             ]
+        );
+
+        $builder->get('tags')->addModelTransformer(
+            $this->tagsDataTransformer
         );
     }
 
