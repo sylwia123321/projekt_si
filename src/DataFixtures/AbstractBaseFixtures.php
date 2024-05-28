@@ -12,8 +12,6 @@ use Faker\Generator;
 
 /**
  * Class AbstractBaseFixtures.
- *
- * @psalm-suppress MissingConstructor
  */
 abstract class AbstractBaseFixtures extends Fixture
 {
@@ -52,27 +50,18 @@ abstract class AbstractBaseFixtures extends Fixture
     abstract protected function loadData(): void;
 
     /**
-     * Create many objects at once:.
-     *
-     *      $this->createMany(10, function(int $i) {
-     *          $user = new User();
-     *          $user->setFirstName('Ryan');
-     *
-     *           return $user;
-     *      });
+     * Create many objects at once.
      *
      * @param int      $count     Number of object to create
      * @param string   $groupName Tag these created objects with this group name,
      *                            and use this later with getRandomReference(s)
      *                            to fetch only from this specific group
      * @param callable $factory   Defines method of creating objects
-     *
-     * @psalm-suppress PossiblyNullReference
      */
     protected function createMany(int $count, string $groupName, callable $factory): void
     {
         for ($i = 0; $i < $count; ++$i) {
-            /** @var object|null $entity */
+            /** @var object $entity */
             $entity = $factory($i);
 
             if (null === $entity) {
@@ -81,7 +70,7 @@ abstract class AbstractBaseFixtures extends Fixture
 
             $this->manager->persist($entity);
 
-            // store for usage later than groupName_#COUNT#
+            // Store for usage later than groupName_#COUNT#
             $this->addReference(sprintf('%s_%d', $groupName, $i), $entity);
         }
     }
@@ -92,9 +81,6 @@ abstract class AbstractBaseFixtures extends Fixture
      * @param string $groupName Objects group name
      *
      * @return object Random object reference
-     *
-     * @psalm-suppress MixedAssignment
-     * @psalm-suppress UnusedForeachValue
      */
     protected function getRandomReference(string $groupName): object
     {
@@ -112,7 +98,7 @@ abstract class AbstractBaseFixtures extends Fixture
             throw new \InvalidArgumentException(sprintf('Did not find any references saved with the group name "%s"', $groupName));
         }
 
-        $randomReferenceKey = (string) $this->faker->randomElement($this->referencesIndex[$groupName]);
+        $randomReferenceKey = $this->faker->randomElement($this->referencesIndex[$groupName]);
 
         return $this->getReference($randomReferenceKey);
     }
@@ -124,8 +110,6 @@ abstract class AbstractBaseFixtures extends Fixture
      * @param int    $count     Number of references
      *
      * @return object[] Result
-     *
-     * @psalm-return list<object>
      */
     protected function getRandomReferences(string $groupName, int $count): array
     {

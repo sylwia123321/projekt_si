@@ -26,10 +26,6 @@ class UserFixtures extends AbstractBaseFixtures
      */
     protected function loadData(): void
     {
-        if (!$this->manager instanceof ObjectManager || !$this->faker instanceof Generator) {
-            return;
-        }
-
         $this->createMany(10, 'users', function (int $i) {
             $user = new User();
             $user->setEmail(sprintf('user%d@example.com', $i));

@@ -42,7 +42,8 @@ class RecipeController extends AbstractController
     #[Route(name: 'recipe_index', methods: 'GET')]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
-        $pagination = $this->recipeService->getPaginatedList($page);
+        $pagination = $this->recipeService->getPaginatedList($page,
+            $this->getUser());
 
         return $this->render('recipe/index.html.twig', ['pagination' => $pagination]);
     }
@@ -55,6 +56,7 @@ class RecipeController extends AbstractController
      * @return Response HTTP response
      */
     #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
+    #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Recipe $recipe): Response
     {
         return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
@@ -70,7 +72,10 @@ class RecipeController extends AbstractController
     #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
+        /** @var User $user */
+        $user = $this->getUser();
         $recipe = new Recipe();
+        $recipe->setAuthor($user);
         $form = $this->createForm(
             RecipeType::class,
             $recipe,
@@ -101,6 +106,7 @@ class RecipeController extends AbstractController
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[IsGranted('VIEW', subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe): Response
     {
         $form = $this->createForm(
@@ -142,6 +148,7 @@ class RecipeController extends AbstractController
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[IsGranted('VIEW', subject: 'recipe')]
     public function delete(Request $request, Recipe $recipe): Response
     {
         $form = $this->createForm(

@@ -22,6 +22,8 @@
             <dd>{{ recipe.ingredients }}</dd>
             <dt>{{ 'label.instructions'|trans }}</dt>
             <dd>{{ recipe.instructions }}</dd>
+            <dt>{{ 'label.author'|trans }}</dt>
+            <dd>{{ recipe.author.username }}</dd>
             <dt>{{ 'label.actions'|trans }}</dt>
             <dd>
                 <a href="{{ path('recipe_index') }}" title="{{ 'action.back_to_list'|trans }}">

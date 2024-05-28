@@ -7,6 +7,7 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use App\Entity\Recipe;
+use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\ORM\NoResultException;
@@ -112,5 +113,22 @@ class RecipeRepository extends ServiceEntityRepository
     private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('recipe');
+    }
+
+    /**
+     * Query recipes by author.
+     *
+     * @param User $user User entity
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function queryByAuthor(User $user): QueryBuilder
+    {
+        $queryBuilder = $this->queryAll();
+
+        $queryBuilder->andWhere('recipe.author = :author')
+            ->setParameter('author', $user);
+
+        return $queryBuilder;
     }
 }

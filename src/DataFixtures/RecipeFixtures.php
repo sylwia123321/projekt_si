@@ -6,29 +6,19 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use App\Entity\Recipe;
 use App\Entity\Tag;
-use App\Repository\TagRepository;
-use Doctrine\Bundle\FixturesBundle\Fixture;
+use App\Entity\Recipe;
+use App\Entity\User;
+use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
-use Faker\Factory;
-use Doctrine\Common\Collections\ArrayCollection;
+use Faker\Generator;
 
 /**
  * Class RecipeFixtures.
  */
-class RecipeFixtures extends Fixture implements DependentFixtureInterface
+class RecipeFixtures extends AbstractBaseFixtures implements DependentFixtureInterface
 {
-    private $faker;
-    private $tagRepository;
-
-    public function __construct(TagRepository $tagRepository)
-    {
-        $this->faker = Factory::create();
-        $this->tagRepository = $tagRepository;
-    }
-
     /**
      * Load data.
      *
@@ -36,42 +26,51 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
      * @psalm-suppress PossiblyNullReference
      * @psalm-suppress UnusedClosureParam
      */
-    public function load(ObjectManager $manager): void
+    public function loadData(): void
     {
-        // Pobierz wszystkie tagi z bazy danych
-        $tags = $this->tagRepository->findAll();
+        if (!$this->manager instanceof ObjectManager || !$this->faker instanceof Generator) {
+            return;
+        }
 
-        for ($i = 0; $i < 100; $i++) {
+        $this->createMany(100, 'recipes', function (int $i) {
             $recipe = new Recipe();
             $recipe->setTitle($this->faker->sentence);
             $recipe->setDescription($this->faker->paragraph);
             $recipe->setIngredients($this->faker->paragraph);
             $recipe->setInstructions($this->faker->paragraph);
+
             $recipe->setCreatedAt(
-                \DateTimeImmutable::createFromMutable(
+                DateTimeImmutable::createFromMutable(
                     $this->faker->dateTimeBetween('-100 days', '-1 days')
                 )
             );
             $recipe->setUpdatedAt(
-                \DateTimeImmutable::createFromMutable(
+                DateTimeImmutable::createFromMutable(
                     $this->faker->dateTimeBetween('-100 days', '-1 days')
                 )
             );
 
             /** @var Category $category */
-            $category = $this->getReference('categories_' . $this->faker->numberBetween(0, 19));
+            $category = $this->getRandomReference('categories');
             $recipe->setCategory($category);
 
-            // Dodaj kilka losowych tagów do przepisu
-            $randomTags = $this->faker->randomElements($tags, $this->faker->numberBetween(1, 5));
-            foreach ($randomTags as $tag) {
+            /** @var array<array-key, Tag> $tags */
+            $tags = $this->getRandomReferences(
+                'tags',
+                $this->faker->numberBetween(0, 5)
+            );
+            foreach ($tags as $tag) {
                 $recipe->addTag($tag);
             }
 
-            $manager->persist($recipe);
-        }
+            /** @var User $author */
+            $author = $this->getRandomReference('users');
+            $recipe->setAuthor($author);
 
-        $manager->flush();
+            return $recipe;
+        });
+
+        $this->manager->flush();
     }
 
     /**
@@ -80,10 +79,10 @@ class RecipeFixtures extends Fixture implements DependentFixtureInterface
      *
      * @return string[] of dependencies
      *
-     * @psalm-return array{0: CategoryFixtures::class, 1: TagFixtures::class}
+     * @psalm-return array{0: CategoryFixtures::class, 1: TagFixtures::class, 2: UserFixtures::class}
      */
     public function getDependencies(): array
     {
-        return [CategoryFixtures::class, TagFixtures::class];
+        return [CategoryFixtures::class, TagFixtures::class, UserFixtures::class];
     }
 }

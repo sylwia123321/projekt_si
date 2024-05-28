@@ -41,8 +41,12 @@ class TagFixtures extends Fixture
             );
 
             $manager->persist($tag);
+
+            // Zapisujemy referencje z grupą "tags"
+            $this->addReference('tags_'.$i, $tag);
         }
 
         $manager->flush();
     }
 }
+

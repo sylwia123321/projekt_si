@@ -6,6 +6,7 @@
 namespace App\Service;
 
 use App\Entity\Recipe;
+use App\Entity\User;
 use App\Repository\RecipeRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -40,13 +41,14 @@ class RecipeService implements RecipeServiceInterface
      * Get paginated list.
      *
      * @param int $page Page number
+     * @param User $author Author
      *
      * @return PaginationInterface<string, mixed> Paginated list
      */
-    public function getPaginatedList(int $page): PaginationInterface
+    public function getPaginatedList(int $page, User $author): PaginationInterface
     {
         return $this->paginator->paginate(
-            $this->recipeRepository->queryAll(),
+            $this->recipeRepository->queryByAuthor($author),
             $page,
             self::PAGINATOR_ITEMS_PER_PAGE
         );

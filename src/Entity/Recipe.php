@@ -65,8 +65,19 @@ class Recipe
      */
     #[Assert\Valid]
     #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
-    #[ORM\JoinTable(name: 'tasks_tags')]
+    #[ORM\JoinTable(name: 'recipes_tags')]
     private $tags;
+
+    /**
+     * Author.
+     *
+     * @var User|null
+     */
+    #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Type(User::class)]
+    private ?User $author;
 
     /**
      * Constructor.
@@ -236,5 +247,17 @@ class Recipe
     public function removeTag(Tag $tag): void
     {
         $this->tags->removeElement($tag);
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
+
+        return $this;
     }
 }
