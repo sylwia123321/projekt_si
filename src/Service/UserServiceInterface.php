@@ -6,7 +6,7 @@
 namespace App\Service;
 
 use App\Entity\User;
-use App\Repository\UserRepository;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 
 /**
  * Interface UserServiceInterface.
@@ -14,11 +14,13 @@ use App\Repository\UserRepository;
 interface UserServiceInterface
 {
     /**
-     * Constructor.
+     * Get paginated list.
      *
-     * @param UserRepository $userRepository User repository
+     * @param int $page Page number
+     *
+     * @return PaginationInterface<string, mixed> Paginated list
      */
-    public function __construct(UserRepository $userRepository);
+    public function getPaginatedList(int $page): PaginationInterface;
 
     /**
      * Save entity.
@@ -26,4 +28,11 @@ interface UserServiceInterface
      * @param User $user User entity
      */
     public function save(User $user): void;
+
+    /**
+     * Delete entity.
+     *
+     * @param User $user User entity
+     */
+    public function delete(User $user): void;
 }

@@ -14,8 +14,6 @@
             <dd>{{ user.email }}</dd>
             <dt>{{ 'label.roles'|trans }}</dt>
             <dd>{{ user.roles|join(', ') }}</dd>
-            <dt>{{ 'label.password'|trans }}</dt>
-            <dd>{{ user.password }}</dd>
             <dt>{{ 'label.actions'|trans }}</dt>
             <dd>
                 <a href="{{ path('user_index') }}" title="{{ 'action.back_to_list'|trans }}">

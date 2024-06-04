@@ -6,6 +6,9 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
+use App\Entity\User;
+use App\Entity\Category;
+use App\Entity\Tag;
 use App\Form\Type\RecipeType;
 use App\Service\RecipeServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -11,6 +11,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 class SecurityController extends AbstractController
 {
@@ -53,7 +54,8 @@ class SecurityController extends AbstractController
 
                 $this->addFlash('success', 'Password successfully changed.');
 
-                return $this->redirectToRoute('recipe_index'); // Adjust the route as needed
+                // Now, instead of using redirectToRoute, we'll use RedirectResponse directly
+                return new RedirectResponse($this->generateUrl('recipe_index')); // Adjust the route as needed
             } else {
                 $form->get('currentPassword')->addError(new FormError('Current password is incorrect.'));
             }

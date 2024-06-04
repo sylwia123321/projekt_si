@@ -1,13 +1,13 @@
 <?php
 /**
- * Tag controller.
+ * User controller.
  */
 
 namespace App\Controller;
 
-use App\Entity\Tag;
-use App\Form\Type\TagType;
-use App\Service\TagServiceInterface;
+use App\Entity\User;
+use App\Form\Type\UserType;
+use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -15,22 +15,20 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Security\Voter\TagCategoryVoter;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
- * Class TagController.
+ * Class UserController.
  */
-#[Route('/tag')]
-class TagController extends AbstractController
+#[Route('/user')]
+class UserController extends AbstractController
 {
     /**
      * Constructor.
      *
-     * @param TagServiceInterface $tagService Tag service
+     * @param UserServiceInterface $userService User service
      * @param TranslatorInterface $translator Translator
      */
-    public function __construct(private readonly TagServiceInterface $tagService, private readonly TranslatorInterface $translator)
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator)
     {
     }
 
@@ -41,25 +39,25 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(name: 'tag_index', methods: 'GET')]
+    #[Route(name: 'user_index', methods: 'GET')]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
-        $pagination = $this->tagService->getPaginatedList($page);
+        $pagination = $this->userService->getPaginatedList($page);
 
-        return $this->render('tag/index.html.twig', ['pagination' => $pagination]);
+        return $this->render('user/index.html.twig', ['pagination' => $pagination]);
     }
 
     /**
      * Show action.
      *
-     * @param Tag $tag Tag entity
+     * @param User $user User entity
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}', name: 'tag_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
-    public function show(Tag $tag): Response
+    #[Route('/{id}', name: 'user_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
+    public function show(User $user): Response
     {
-        return $this->render('tag/show.html.twig', ['tag' => $tag]);
+        return $this->render('user/show.html.twig', ['user' => $user]);
     }
 
     /**
@@ -69,74 +67,68 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/create', name: 'tag_create', methods: 'GET|POST')]
+    #[Route('/create', name: 'user_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
-        // Sprawdzamy, czy użytkownik ma uprawnienie MANAGE
-        $this->denyAccessUnlessGranted('manage');
-
-        $tag = new Tag();
+        $user = new User();
         $form = $this->createForm(
-            TagType::class,
-            $tag,
-            ['action' => $this->generateUrl('tag_create')]
+            UserType::class,
+            $user,
+            ['action' => $this->generateUrl('user_create')]
         );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->tagService->save($tag);
+            $this->userService->save($user);
 
             $this->addFlash(
                 'success',
                 $this->translator->trans('message.created_successfully')
             );
 
-            return $this->redirectToRoute('tag_index');
+            return $this->redirectToRoute('user_index');
         }
 
-        return $this->render('tag/create.html.twig', ['form' => $form->createView()]);
+        return $this->render('user/create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param Tag     $tag     Tag entity
+     * @param User     $user     User entity
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'tag_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
-    public function edit(Request $request, Tag $tag): Response
+    #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    public function edit(Request $request, User $user): Response
     {
-        // Sprawdzamy, czy użytkownik ma uprawnienie MANAGE
-        $this->denyAccessUnlessGranted('manage');
-
         $form = $this->createForm(
-            TagType::class,
-            $tag,
+            UserType::class,
+            $user,
             [
                 'method' => 'PUT',
-                'action' => $this->generateUrl('tag_edit', ['id' => $tag->getId()]),
+                'action' => $this->generateUrl('user_edit', ['id' => $user->getId()]),
             ]
         );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->tagService->save($tag);
+            $this->userService->save($user);
 
             $this->addFlash(
                 'success',
                 $this->translator->trans('message.edited_successfully')
             );
 
-            return $this->redirectToRoute('tag_index');
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render(
-            'tag/edit.html.twig',
+            'user/edit.html.twig',
             [
                 'form' => $form->createView(),
-                'tag' => $tag,
+                'user' => $user,
             ]
         );
     }
@@ -145,42 +137,39 @@ class TagController extends AbstractController
      * Delete action.
      *
      * @param Request $request HTTP request
-     * @param Tag     $tag     Tag entity
+     * @param User     $user     User entity
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    public function delete(Request $request, Tag $tag): Response
+    #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    public function delete(Request $request, User $user): Response
     {
-        // Sprawdzamy, czy użytkownik ma uprawnienie MANAGE
-        $this->denyAccessUnlessGranted('manage');
-
         $form = $this->createForm(
             FormType::class,
-            $tag,
+            $user,
             [
                 'method' => 'DELETE',
-                'action' => $this->generateUrl('tag_delete', ['id' => $tag->getId()]),
+                'action' => $this->generateUrl('user_delete', ['id' => $user->getId()]),
             ]
         );
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $this->tagService->delete($tag);
+            $this->userService->delete($user);
 
             $this->addFlash(
                 'success',
                 $this->translator->trans('message.deleted_successfully')
             );
 
-            return $this->redirectToRoute('tag_index');
+            return $this->redirectToRoute('user_index');
         }
 
         return $this->render(
-            'tag/delete.html.twig',
+            'user/delete.html.twig',
             [
                 'form' => $form->createView(),
-                'tag' => $tag,
+                'user' => $user,
             ]
         );
     }

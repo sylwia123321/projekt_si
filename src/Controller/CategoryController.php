@@ -12,7 +12,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
@@ -61,6 +61,7 @@ class CategoryController extends AbstractController
     {
         return $this->render('category/show.html.twig', ['category' => $category]);
     }
+
     /**
      * Create action.
      *
@@ -75,6 +76,11 @@ class CategoryController extends AbstractController
     )]
     public function create(Request $request): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Access denied. Only administrators can manage categories.');
+            return $this->redirectToRoute('category_index');
+        }
+
         $category = new Category();
         $form = $this->createForm(CategoryType::class, $category);
         $form->handleRequest($request);
@@ -95,6 +101,7 @@ class CategoryController extends AbstractController
             ['form' => $form->createView()]
         );
     }
+
     /**
      * Edit action.
      *
@@ -106,6 +113,11 @@ class CategoryController extends AbstractController
     #[Route('/{id}/edit', name: 'category_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     public function edit(Request $request, Category $category): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Access denied. Only administrators can manage categories.');
+            return $this->redirectToRoute('category_index');
+        }
+
         $form = $this->createForm(
             CategoryType::class,
             $category,
@@ -135,6 +147,7 @@ class CategoryController extends AbstractController
             ]
         );
     }
+
     /**
      * Delete action.
      *
@@ -146,6 +159,11 @@ class CategoryController extends AbstractController
     #[Route('/{id}/delete', name: 'category_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     public function delete(Request $request, Category $category): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Access denied. Only administrators can manage categories.');
+            return $this->redirectToRoute('category_index');
+        }
+
         if (!$this->categoryService->canBeDeleted($category)) {
             $this->addFlash(
                 'warning',
