@@ -6,6 +6,7 @@
 namespace App\Entity;
 
 use App\Repository\RecipeRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -78,6 +79,12 @@ class Recipe
     #[Assert\NotBlank]
     #[Assert\Type(User::class)]
     private ?User $author;
+
+    /**
+     * Comment.
+     */
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $comment = null;
 
     /**
      * Constructor.
@@ -257,6 +264,24 @@ class Recipe
     public function setAuthor(?User $author): static
     {
         $this->author = $author;
+
+        return $this;
+    }
+
+    /**
+     * Getter for comment.
+     */
+    public function getComment(): ?string
+    {
+        return $this->comment;
+    }
+
+    /**
+     * Setter for comment.
+     */
+    public function setComment(?string $comment): static
+    {
+        $this->comment = $comment;
 
         return $this;
     }

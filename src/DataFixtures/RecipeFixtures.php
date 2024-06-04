@@ -38,7 +38,7 @@ class RecipeFixtures extends AbstractBaseFixtures implements DependentFixtureInt
             $recipe->setDescription($this->faker->paragraph);
             $recipe->setIngredients($this->faker->paragraph);
             $recipe->setInstructions($this->faker->paragraph);
-
+            $recipe->setComment($this->faker->paragraph);
             $recipe->setCreatedAt(
                 DateTimeImmutable::createFromMutable(
                     $this->faker->dateTimeBetween('-100 days', '-1 days')

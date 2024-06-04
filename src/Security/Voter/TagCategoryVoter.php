@@ -32,7 +32,7 @@ class TagCategoryVoter extends Voter
         }
 
         // Admin ma zawsze dostęp
-        if ($user->isAdmin()) {
+        if ('ROLE_ADMIN') {
             return true;
         }
 

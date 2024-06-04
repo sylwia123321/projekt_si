@@ -79,6 +79,15 @@ class RecipeType extends AbstractType
             ]
         );
         $builder->add(
+            'comment',
+            TextareaType::class,
+            [
+                'label' => 'label.comment',
+                'required' => false,
+                'attr' => ['rows' => 5],
+            ]
+        );
+        $builder->add(
             'category',
             EntityType::class,
             [
