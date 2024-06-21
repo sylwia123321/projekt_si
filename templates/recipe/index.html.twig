@@ -30,6 +30,7 @@
                 <th>{{ 'label.category'|trans }}</th>
                 <th>{{ 'label.author'|trans }}</th>
                 <th>{{ 'label.comment'|trans }}</th>
+                <th>{{ 'label.tag'|trans }}</th>
                 <th>{{ 'label.actions'|trans }}</th>
             </tr>
             </thead>
@@ -43,9 +44,28 @@
                     <td>{{ recipe.description }}</td>
                     <td>{{ recipe.ingredients }}</td>
                     <td>{{ recipe.instructions }}</td>
-                    <td>{{ recipe.category.title }}</td>
+                    <td>
+                        <a class="btn btn-outline-primary"
+                           href="{{ url('recipe_index', {'categoryId' : recipe.category.id}) }}"
+                           title="{{ recipe.category.title }}">
+                            {{ recipe.category.title }}
+                        </a>
+                    </td>
                     <td>{{ recipe.author.username }}</td>
                     <td>{{ recipe.comment }}</td>
+                    <td>
+                        {% if recipe.tags is defined and recipe.tags|length %}
+                            {% for tag in recipe.tags %}
+                                <a class="btn btn-outline-primary"
+                                   href="{{ url('recipe_index', {'tagId' : tag.id}) }}"
+                                   title="{{ tag.title }}">
+                                    {{ tag.title }}
+                                </a>
+                            {% endfor %}
+                        {% else %}
+                            &nbsp;
+                        {% endif %}
+                    </td>
                     <td>
                         {% if is_granted('VIEW', recipe) %}
                             <a class="btn btn-outline-primary" href="{{ url('recipe_show', {id: recipe.id}) }}" title="{{ 'action.show'|trans }}">

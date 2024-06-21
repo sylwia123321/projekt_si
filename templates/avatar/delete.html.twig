@@ -1,6 +1,5 @@
-{% include 'default/_form.html.twig' with {
-    page_title: 'title.avatar_delete'|trans({'%id%': avatar.id|default('')}),
-    form: form,
-    submit_label: 'action.delete'|trans,
-    back_to_list_path: 'avatar_index',
-} %}
+<form action="{{ path('avatar_delete', {'id': avatar.id}) }}" method="POST">
+    <input type="hidden" name="_method" value="DELETE">
+    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avatar.id) }}">
+    <button type="submit">Usuń Avatar</button>
+</form>

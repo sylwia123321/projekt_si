@@ -8,6 +8,9 @@ namespace App\Service;
 use App\Entity\Recipe;
 use App\Entity\User;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use App\Dto\RecipeListInputFiltersDto;
+use App\Dto\RecipeListFiltersDto;
+use App\Resolver\RecipeListInputFiltersDtoResolver;
 
 /**
  * Interface RecipeServiceInterface.
@@ -21,7 +24,7 @@ interface RecipeServiceInterface
      *
      * @return PaginationInterface<string, mixed> Paginated list
      */
-    public function getPaginatedList(int $page, User $author): PaginationInterface;
+    public function getPaginatedList(int $page, User $author, RecipeListInputFiltersDto $filters): PaginationInterface;
 
     /**
      * Save entity.

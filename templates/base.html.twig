@@ -14,34 +14,46 @@
 </head>
 <body>
 <main role="main" class="container-fluid">
-
-    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
-        <img class="nav-profile-img" src="{{ asset(avatars_directory~app.user.avatar.filename) }}">
-    {% endif %}
-
     <div class="container-fluid">
         {% include 'default/_flash_messages.html.twig' %}
         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-            <div>{{ app.user.email }}</div>
             <div>
-                <a href="{{ url('app_logout') }}">{{ 'action_logout'|trans }}</a>
+                {% if app.user.avatar and app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+                    <img class="nav-profile-img" src="{{ asset(avatars_directory ~ app.user.avatar.filename) }}" alt="User Avatar">
+                {% endif %}
+                {{ app.user.email }}
             </div>
             <div>
-                <a href="{{ url('app_change_password') }}">{{ 'action_change_password'|trans }}</a>
+                <a href="{{ path('app_logout') }}" class="btn btn-primary">{{ 'action_logout'|trans }}</a>
+            </div>
+            <div>
+                <a href="{{ path('app_change_password') }}" class="btn btn-warning">{{ 'action_change_password'|trans }}</a>
+            </div>
+            <div>
+                {% if app.user.avatar %}
+                    <a href="{{ path('avatar_edit', { 'id': app.user.avatar.id }) }}" class="btn btn-warning">Edytuj Avatar</a>
+
+                    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+                        <img class="nav-profile-img" src="{{ asset(avatars_directory~app.user.avatar.filename) }}">
+
+                    {% endif %}
+
+                {% else %}
+                    <a href="{{ path('avatar_create') }}" class="btn btn-primary">Dodaj Avatar</a>
+                {% endif %}
             </div>
         {% else %}
             <div>
-                <a href="{{ url('app_login') }}">{{ 'action_login'|trans }}</a>
+                <a href="{{ path('app_login') }}" class="btn btn-primary">{{ 'action_login'|trans }}</a>
             </div>
             <div>
-                <a href="{{ url('app_register') }}">{{ 'action_register'|trans }}</a>
+                <a href="{{ path('app_register') }}" class="btn btn-primary">{{ 'action_register'|trans }}</a>
             </div>
         {% endif %}
         {% block body %}{% endblock %}
     </div>
 </main>
 {% block javascripts %}
-    {# {% block importmap %}{{ importmap('app') }}{% endblock %}#}
     <script
             src="https://code.jquery.com/jquery-3.7.1.slim.min.js"
             integrity="sha256-kmHvs0B+OpCW5GVHUNjv9rOmY0IvSIRcf7zGUDTDQM8="

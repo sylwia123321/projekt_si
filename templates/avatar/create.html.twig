@@ -4,3 +4,8 @@
     submit_label: 'action.save'|trans,
     back_to_list_path: 'avatar_index',
 } %}
+
+{% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+    <img class="nav-profile-img" src="{{ asset(avatars_directory~app.user.avatar.filename) }}">
+    <a href="{{ path('avatar_delete', {'id': app.user.avatar.id}) }}" class="btn btn-danger">Delete Avatar</a>
+{% endif %}

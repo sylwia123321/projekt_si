@@ -5,6 +5,8 @@ namespace App\Repository;
 use App\Entity\Avatar;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use App\Controller\AvatarController;
+use App\Controller\AvatarServiceInterface;
 
 /**
  * @extends ServiceEntityRepository<Avatar>

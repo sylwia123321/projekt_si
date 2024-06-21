@@ -59,6 +59,10 @@ class CategoryController extends AbstractController
     )]
     public function show(Category $category): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Access denied. Only administrators can manage categories.');
+            return $this->redirectToRoute('category_index');
+        }
         return $this->render('category/show.html.twig', ['category' => $category]);
     }
 

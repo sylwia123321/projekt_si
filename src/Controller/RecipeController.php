@@ -18,6 +18,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Dto\RecipeListInputFiltersDto;
+use App\Dto\RecipeListFiltersDto;
+use App\Resolver\RecipeListInputFiltersDtoResolver;
 
 /**
  * Class RecipeController.
@@ -38,15 +41,24 @@ class RecipeController extends AbstractController
     /**
      * Index action.
      *
-     * @param int $page Page number
+     * @param RecipeListInputFiltersDto $filters Input filters
+     * @param int                     $page    Page number
      *
      * @return Response HTTP response
      */
-    #[Route(name: 'recipe_index', methods: 'GET')]
-    public function index(#[MapQueryParameter] int $page = 1): Response
+    #[Route(
+        name: 'recipe_index',
+        methods: 'GET'
+    )]
+    public function index(#[MapQueryString(resolver: RecipeListInputFiltersDtoResolver::class)] RecipeListInputFiltersDto $filters, #[MapQueryParameter] int $page = 1): Response
     {
-        $pagination = $this->recipeService->getPaginatedList($page,
-            $this->getUser());
+        /** @var User $user */
+        $user = $this->getUser();
+        $pagination = $this->recipeService->getPaginatedList(
+            $page,
+            $user,
+            $filters
+        );
 
         return $this->render('recipe/index.html.twig', ['pagination' => $pagination]);
     }
@@ -62,6 +74,14 @@ class RecipeController extends AbstractController
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Recipe $recipe): Response
     {
+        if ($recipe->getAuthor() !== $this->getUser()) {
+            $this->addFlash(
+                'warning',
+                $this->translator->trans('message.record_not_found')
+            );
+
+            return $this->redirectToRoute('recipe_index');
+        }
         return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
     }
 
@@ -112,6 +132,14 @@ class RecipeController extends AbstractController
     #[IsGranted('VIEW', subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe): Response
     {
+        if ($recipe->getAuthor() !== $this->getUser()) {
+            $this->addFlash(
+                'warning',
+                $this->translator->trans('message.record_not_found')
+            );
+
+            return $this->redirectToRoute('recipe_index');
+        }
         $form = $this->createForm(
             RecipeType::class,
             $recipe,
@@ -154,6 +182,14 @@ class RecipeController extends AbstractController
     #[IsGranted('VIEW', subject: 'recipe')]
     public function delete(Request $request, Recipe $recipe): Response
     {
+        if ($recipe->getAuthor() !== $this->getUser()) {
+            $this->addFlash(
+                'warning',
+                $this->translator->trans('message.record_not_found')
+            );
+
+            return $this->redirectToRoute('recipe_index');
+        }
         $form = $this->createForm(
             FormType::class,
             $recipe,

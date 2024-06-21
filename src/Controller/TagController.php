@@ -57,8 +57,13 @@ class TagController extends AbstractController
      * @return Response HTTP response
      */
     #[Route('/{id}', name: 'tag_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
+    #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Tag $tag): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Access denied. Only administrators can manage tags.');
+            return $this->redirectToRoute('tag_index');
+        }
         return $this->render('tag/show.html.twig', ['tag' => $tag]);
     }
 
@@ -72,9 +77,10 @@ class TagController extends AbstractController
     #[Route('/create', name: 'tag_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
-        // Sprawdzamy, czy użytkownik ma uprawnienie MANAGE
-        $this->denyAccessUnlessGranted('manage');
-
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Access denied. Only administrators can manage tags.');
+            return $this->redirectToRoute('tag_index');
+        }
         $tag = new Tag();
         $form = $this->createForm(
             TagType::class,
@@ -106,11 +112,13 @@ class TagController extends AbstractController
      * @return Response HTTP response
      */
     #[Route('/{id}/edit', name: 'tag_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[IsGranted('EDIT', subject: 'recipe')]
     public function edit(Request $request, Tag $tag): Response
     {
-        // Sprawdzamy, czy użytkownik ma uprawnienie MANAGE
-        $this->denyAccessUnlessGranted('manage');
-
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Access denied. Only administrators can manage tags.');
+            return $this->redirectToRoute('tag_index');
+        }
         $form = $this->createForm(
             TagType::class,
             $tag,
@@ -150,11 +158,13 @@ class TagController extends AbstractController
      * @return Response HTTP response
      */
     #[Route('/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[IsGranted('DELETE', subject: 'recipe')]
     public function delete(Request $request, Tag $tag): Response
     {
-        // Sprawdzamy, czy użytkownik ma uprawnienie MANAGE
-        $this->denyAccessUnlessGranted('manage');
-
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('error', 'Access denied. Only administrators can manage tags.');
+            return $this->redirectToRoute('tag_index');
+        }
         $form = $this->createForm(
             FormType::class,
             $tag,

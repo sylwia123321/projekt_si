@@ -63,4 +63,16 @@ class AvatarService implements AvatarServiceInterface
         $avatar->setFilename($avatarFilename);
         $this->avatarRepository->save($avatar);
     }
+
+    public function delete(Avatar $avatar): void
+    {
+        $filename = $avatar->getFilename();
+
+        if ($filename !== null) {
+            $this->filesystem->remove($this->targetDirectory.'/'.$filename);
+            $avatar->setFilename(null); // Clear the filename in the entity
+            $this->avatarRepository->save($avatar);
+        }
+    }
+
 }

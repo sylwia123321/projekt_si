@@ -34,4 +34,13 @@ interface AvatarServiceInterface
      * @param User         $user         User entity
      */
     public function create(UploadedFile $uploadedFile, Avatar $avatar, User $user): void;
+
+// App/Service/AvatarServiceInterface.php
+
+    /**
+     * Delete avatar.
+     *
+     * @param Avatar $avatar Avatar entity to delete
+     */
+    public function delete(Avatar $avatar): void;
 }

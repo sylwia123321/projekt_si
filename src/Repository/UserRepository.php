@@ -5,48 +5,27 @@ namespace App\Repository;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
-use Symfony\Component\Security\Core\Exception\UnsupportedUserException;
-use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
-use Symfony\Component\Security\Core\User\PasswordUpgraderInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * @extends ServiceEntityRepository<User>
  */
-class UserRepository extends ServiceEntityRepository implements PasswordUpgraderInterface
+class UserRepository extends ServiceEntityRepository
 {
+    private EntityManagerInterface $entityManager;
+
     /**
      * Constructor.
      *
      * @param ManagerRegistry $registry Manager registry
+     * @param EntityManagerInterface $entityManager Entity manager
      */
-    public function __construct(ManagerRegistry $registry)
+    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, User::class);
-    }
-
-    /**
-     * Used to upgrade (rehash) the user's password automatically over time.
-     */
-    public function upgradePassword(PasswordAuthenticatedUserInterface $user, string $newHashedPassword): void
-    {
-        if (!$user instanceof User) {
-            throw new UnsupportedUserException(sprintf('Instances of "%s" are not supported.', $user::class));
-        }
-
-        $user->setPassword($newHashedPassword);
-        $this->getEntityManager()->persist($user);
-        $this->getEntityManager()->flush();
-    }
-
-    /**
-     * Query all records.
-     *
-     * @return QueryBuilder Query builder
-     */
-    public function queryAll(): QueryBuilder
-    {
-        return $this->getOrCreateQueryBuilder();
+        $this->entityManager = $entityManager;
     }
 
     /**
@@ -56,57 +35,58 @@ class UserRepository extends ServiceEntityRepository implements PasswordUpgrader
      */
     public function save(User $user): void
     {
-        assert($this->_em instanceof EntityManager);
-        $this->_em->persist($user);
-        $this->_em->flush();
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
     }
 
     /**
-     * Delete entity.
+     * Delete user entity and related entities.
+     *
+     * @param User $user User entity to delete
+     * @throws ForeignKeyConstraintViolationException If a foreign key constraint is violated
+     */
+    public function deleteUserWithRelatedEntities(User $user): void
+    {
+        $this->entityManager->beginTransaction();
+
+        try {
+            // Usuń powiązane encje (np. przepisy)
+            $this->deleteRelatedEntities($user);
+
+            // Usuń użytkownika
+            $this->entityManager->remove($user);
+            $this->entityManager->flush();
+
+            $this->entityManager->commit();
+        } catch (\Exception $e) {
+            $this->entityManager->rollback();
+            throw $e;
+        }
+    }
+
+    /**
+     * Delete related entities (e.g., recipes) associated with the user.
      *
      * @param User $user User entity
      */
-    public function delete(User $user): void
+    private function deleteRelatedEntities(User $user): void
     {
-        assert($this->_em instanceof EntityManager);
-        $this->_em->remove($user);
-        $this->_em->flush();
+        $recipes = $user->getRecipes(); // Przykładowe pobranie powiązanych encji (np. przepisów)
+
+        foreach ($recipes as $recipe) {
+            $this->entityManager->remove($recipe);
+        }
+
+        $this->entityManager->flush();
     }
 
     /**
-     * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder Query builder
+     * Query all records.
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    public function queryAll(): QueryBuilder
     {
-        return $queryBuilder ?? $this->createQueryBuilder('user');
+        return $this->createQueryBuilder('user');
     }
-
-    //    /**
-    //     * @return User[] Returns an array of User objects
-    //     */
-    //    public function findByExampleField($value): array
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->orderBy('u.id', 'ASC')
-    //            ->setMaxResults(10)
-    //            ->getQuery()
-    //            ->getResult()
-    //        ;
-    //    }
-
-    //    public function findOneBySomeField($value): ?User
-    //    {
-    //        return $this->createQueryBuilder('u')
-    //            ->andWhere('u.exampleField = :val')
-    //            ->setParameter('val', $value)
-    //            ->getQuery()
-    //            ->getOneOrNullResult()
-    //        ;
-    //    }
 }

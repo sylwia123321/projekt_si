@@ -1,6 +1,21 @@
-{% include 'default/_form.html.twig' with {
-    page_title: 'title.avatar_edit'|trans({'%id%': avatar.id|default('')}),
-    form: form,
-    submit_label: 'action.edit'|trans,
-    back_to_list_path: 'avatar_index',
-} %}
+{# templates/avatar/edit.html.twig #}
+
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Avatar{% endblock %}
+
+{% block body %}
+    <h1>Edit Avatar</h1>
+
+    {{ form_start(form) }}
+    {{ form_row(form.file) }}
+
+    <button type="submit" class="btn btn-primary">Update Avatar</button>
+    {{ form_end(form) }}
+
+    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
+        <img class="nav-profile-img" src="{{ asset(avatars_directory~app.user.avatar.filename) }}">
+        <a href="{{ path('avatar_delete', {'id': app.user.avatar.id}) }}" class="btn btn-danger">Delete Avatar</a>
+    {% endif %}
+{% endblock %}
+

@@ -1,7 +1,9 @@
 <?php
+// src/Controller/SecurityController.php
+
 namespace App\Controller;
 
-use App\Form\Type\UserType;
+use App\Form\Type\UserPasswordChangeType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
@@ -30,7 +32,7 @@ class SecurityController extends AbstractController
         throw new \LogicException('This method can be blank - it will be intercepted by the logout key on your firewall.');
     }
 
-    #[Route('/change-password', name: 'app_change_password')]
+    #[Route(path: '/change-password', name: 'app_change_password')]
     public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
         $user = $this->getUser();
@@ -39,7 +41,7 @@ class SecurityController extends AbstractController
             throw $this->createAccessDeniedException();
         }
 
-        $form = $this->createForm(UserType::class);
+        $form = $this->createForm(UserPasswordChangeType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -54,8 +56,7 @@ class SecurityController extends AbstractController
 
                 $this->addFlash('success', 'Password successfully changed.');
 
-                // Now, instead of using redirectToRoute, we'll use RedirectResponse directly
-                return new RedirectResponse($this->generateUrl('recipe_index')); // Adjust the route as needed
+                return $this->redirectToRoute('recipe_index'); // Adjust the route as needed
             } else {
                 $form->get('currentPassword')->addError(new FormError('Current password is incorrect.'));
             }

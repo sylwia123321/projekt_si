@@ -39,17 +39,23 @@ class RecipeRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
+     * @param RecipeListFiltersDto $filters Filters
+     *
      * @return QueryBuilder Query builder
      */
-    public function queryAll(): QueryBuilder
+    public function queryAll(RecipeListFiltersDto $filters): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
+        $queryBuilder = $this->getOrCreateQueryBuilder()
             ->select(
-                'partial recipe.{id, createdAt, updatedAt, title, description, ingredients, instructions, comment}',
-                'partial category.{id, title}'
+                'partial recipe.{id, createdAt, updatedAt, title}',
+                'partial category.{id, title}',
+                'partial tags.{id, title}'
             )
             ->join('recipe.category', 'category')
+            ->leftJoin('recipe.tags', 'tags')
             ->orderBy('recipe.updatedAt', 'DESC');
+
+        return $this->applyFiltersToList($queryBuilder, $filters);
     }
 
     /**
@@ -118,16 +124,40 @@ class RecipeRepository extends ServiceEntityRepository
     /**
      * Query recipes by author.
      *
-     * @param User $user User entity
+     * @param User      $user    User entity
+     * @param RecipeListFiltersDto $filters Filters
      *
      * @return QueryBuilder Query builder
      */
-    public function queryByAuthor(User $user): QueryBuilder
+    public function queryByAuthor(User $user, RecipeListFiltersDto $filters): QueryBuilder
     {
-        $queryBuilder = $this->queryAll();
+        $queryBuilder = $this->queryAll($filters);
 
         $queryBuilder->andWhere('recipe.author = :author')
             ->setParameter('author', $user);
+
+        return $queryBuilder;
+    }
+
+    /**
+     * Apply filters to paginated list.
+     *
+     * @param QueryBuilder       $queryBuilder Query builder
+     * @param RecipeListFiltersDto $filters      Filters
+     *
+     * @return QueryBuilder Query builder
+     */
+    private function applyFiltersToList(QueryBuilder $queryBuilder, RecipeListFiltersDto $filters): QueryBuilder
+    {
+        if ($filters->category instanceof Category) {
+            $queryBuilder->andWhere('category = :category')
+                ->setParameter('category', $filters->category);
+        }
+
+        if ($filters->tag instanceof Tag) {
+            $queryBuilder->andWhere('tags IN (:tag)')
+                ->setParameter('tag', $filters->tag);
+        }
 
         return $queryBuilder;
     }

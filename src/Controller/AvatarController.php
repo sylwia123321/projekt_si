@@ -15,6 +15,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Doctrine\ORM\EntityManagerInterface;
+
 
 /**
  * Class AvatarController.
@@ -22,14 +24,31 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/avatar')]
 class AvatarController extends AbstractController
 {
+    private EntityManagerInterface $entityManager;
     /**
      * Constructor.
      *
      * @param AvatarServiceInterface $avatarService Avatar service
      * @param TranslatorInterface    $translator    Translator
      */
-    public function __construct(private readonly AvatarServiceInterface $avatarService, private readonly TranslatorInterface $translator)
+    public function __construct(EntityManagerInterface $entityManager, private readonly AvatarServiceInterface $avatarService, private readonly TranslatorInterface $translator)
     {
+        $this->entityManager = $entityManager;
+    }
+
+    #[Route(name: 'avatar_index', methods: 'GET')]
+    public function index(): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if ($user->getAvatar()) {
+            return $this->redirectToRoute(
+                'avatar_edit',
+                ['id' => $user->getId()]
+            );
+        }
+
+        return $this->redirectToRoute('avatar_create');
     }
 
     /**
@@ -77,7 +96,7 @@ class AvatarController extends AbstractController
                 $this->translator->trans('message.created_successfully')
             );
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('recipe_index');
         }
 
         return $this->render(
@@ -132,7 +151,7 @@ class AvatarController extends AbstractController
                 $this->translator->trans('message.edited_successfully')
             );
 
-            return $this->redirectToRoute('task_index');
+            return $this->redirectToRoute('recipe_index');
         }
 
         return $this->render(
@@ -143,4 +162,48 @@ class AvatarController extends AbstractController
             ]
         );
     }
+
+
+    /**
+     * Delete action.
+     *
+     * @param Request $request HTTP request
+     * @param Avatar  $avatar  Avatar entity
+     *
+     * @return Response HTTP response
+     */
+    #[Route(
+        '/{id}/delete',
+        name: 'avatar_delete',
+        requirements: ['id' => '[1-9]\d*'],
+        methods: ['GET', 'DELETE'] // Allow both GET and DELETE methods
+    )]
+    public function delete(Request $request, Avatar $avatar): Response
+    {
+        /** @var User $user */
+        $user = $this->getUser();
+        if (!$user->getAvatar() || $user->getAvatar()->getId() !== $avatar->getId()) {
+            throw $this->createAccessDeniedException('Access denied.');
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$avatar->getId(), $request->request->get('_token'))) {
+            $this->avatarService->delete($avatar);
+
+            $this->addFlash(
+                'success',
+                $this->translator->trans('message.deleted_successfully')
+            );
+        } else {
+            $this->addFlash(
+                'error',
+                $this->translator->trans('message.invalid_token')
+            );
+        }
+
+        return $this->redirectToRoute('recipe_index');
+    }
+
+
+
+
 }
