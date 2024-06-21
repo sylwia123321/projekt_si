@@ -39,23 +39,17 @@ class RecipeRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
-     * @param RecipeListFiltersDto $filters Filters
-     *
      * @return QueryBuilder Query builder
      */
-    public function queryAll(RecipeListFiltersDto $filters): QueryBuilder
+    public function queryAll(): QueryBuilder
     {
-        $queryBuilder = $this->getOrCreateQueryBuilder()
+        return $this->getOrCreateQueryBuilder()
             ->select(
-                'partial recipe.{id, createdAt, updatedAt, title}',
-                'partial category.{id, title}',
-                'partial tags.{id, title}'
+                'partial recipe.{id, createdAt, updatedAt, title, description, ingredients, instructions, comment}',
+                'partial category.{id, title}'
             )
             ->join('recipe.category', 'category')
-            ->leftJoin('recipe.tags', 'tags')
             ->orderBy('recipe.updatedAt', 'DESC');
-
-        return $this->applyFiltersToList($queryBuilder, $filters);
     }
 
     /**
@@ -124,14 +118,13 @@ class RecipeRepository extends ServiceEntityRepository
     /**
      * Query recipes by author.
      *
-     * @param User      $user    User entity
-     * @param RecipeListFiltersDto $filters Filters
+     * @param User $user User entity
      *
      * @return QueryBuilder Query builder
      */
-    public function queryByAuthor(User $user, RecipeListFiltersDto $filters): QueryBuilder
+    public function queryByAuthor(User $user): QueryBuilder
     {
-        $queryBuilder = $this->queryAll($filters);
+        $queryBuilder = $this->queryAll();
 
         $queryBuilder->andWhere('recipe.author = :author')
             ->setParameter('author', $user);
