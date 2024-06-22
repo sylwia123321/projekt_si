@@ -11,9 +11,17 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
 use Symfony\Component\Validator\Constraints\NotCompromisedPassword;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 class UserPasswordChangeType extends AbstractType
 {
+    private $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -23,7 +31,7 @@ class UserPasswordChangeType extends AbstractType
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter your current password',
+                        'message' => $this->translator->trans('validators.current_password'),
                     ]),
                 ],
             ])
@@ -31,16 +39,16 @@ class UserPasswordChangeType extends AbstractType
                 'type' => PasswordType::class,
                 'first_options' => ['label' => 'New Password'],
                 'second_options' => ['label' => 'Repeat New Password'],
-                'invalid_message' => 'The password fields must match.',
+                'invalid_message' => $this->translator->trans('validators.password_mismatch'),
                 'required' => true,
                 'mapped' => false,
                 'constraints' => [
                     new NotBlank([
-                        'message' => 'Please enter a new password',
+                        'message' => $this->translator->trans('validators.new_password'),
                     ]),
                     new Length([
                         'min' => 6,
-                        'minMessage' => 'Your password should be at least {{ limit }} characters',
+                        'minMessage' => $this->translator->trans('validators.password_length', ['{{ limit }}' => 6]),
                         'max' => 4096,
                     ]),
                     new NotCompromisedPassword(),

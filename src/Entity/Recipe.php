@@ -12,6 +12,7 @@ use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Enum\RecipeStatus;
 
 /**
  * Class Recipe.
@@ -92,6 +93,21 @@ class Recipe
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+    }
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private ?string $status;
+
+    public function getStatus(): ?string
+    {
+        return $this->status;
+    }
+
+    public function setStatus(?string $status): void
+    {
+        $this->status = $status;
     }
 
     /**

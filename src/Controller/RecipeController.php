@@ -7,20 +7,16 @@ namespace App\Controller;
 
 use App\Entity\Recipe;
 use App\Entity\User;
-use App\Entity\Category;
-use App\Entity\Tag;
 use App\Form\Type\RecipeType;
 use App\Service\RecipeServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Dto\RecipeListInputFiltersDto;
-use App\Dto\RecipeListFiltersDto;
-use App\Resolver\RecipeListInputFiltersDtoResolver;
+use App\Service\CategoryServiceInterface;
+use App\Service\TagServiceInterface;
 
 /**
  * Class RecipeController.
@@ -28,40 +24,44 @@ use App\Resolver\RecipeListInputFiltersDtoResolver;
 #[Route('/recipe')]
 class RecipeController extends AbstractController
 {
-    /**
-     * Constructor.
-     *
-     * @param RecipeServiceInterface $recipeService Recipe service
-     * @param TranslatorInterface    $translator    Translator
-     */
-    public function __construct(private readonly RecipeServiceInterface $recipeService, private readonly TranslatorInterface $translator)
-    {
+    private CategoryServiceInterface $categoryService;
+    private TagServiceInterface $tagService;
+    private RecipeServiceInterface $recipeService;
+
+    public function __construct(
+        CategoryServiceInterface $categoryService,
+        TagServiceInterface $tagService,
+        RecipeServiceInterface $recipeService
+    ) {
+        $this->categoryService = $categoryService;
+        $this->tagService = $tagService;
+        $this->recipeService = $recipeService;
     }
 
-    /**
-     * Index action.
-     *
-     * @param RecipeListInputFiltersDto $filters Input filters
-     * @param int                     $page    Page number
-     *
-     * @return Response HTTP response
-     */
-    #[Route(
-        name: 'recipe_index',
-        methods: 'GET'
-    )]
-    public function index(#[MapQueryString(resolver: RecipeListInputFiltersDtoResolver::class)] RecipeListInputFiltersDto $filters, #[MapQueryParameter] int $page = 1): Response
+    #[Route(name: 'recipe_index', methods: 'GET')]
+    public function index(Request $request): Response
     {
         /** @var User $user */
         $user = $this->getUser();
-        $pagination = $this->recipeService->getPaginatedList(
-            $page,
-            $user,
-            $filters
-        );
 
-        return $this->render('recipe/index.html.twig', ['pagination' => $pagination]);
+        $categoryId = $request->query->get('categoryId');
+        $tagId = $request->query->get('tagId');
+
+        $categoryId = ctype_digit($categoryId) ? (int)$categoryId : null;
+        $tagId = ctype_digit($tagId) ? (int)$tagId : null;
+
+        $categories = $this->categoryService->findAll();
+        $tags = $this->tagService->findAll();
+
+        $pagination = $this->recipeService->getPaginatedList(1, $user, $categoryId, $tagId);
+
+        return $this->render('recipe/index.html.twig', [
+            'pagination' => $pagination,
+            'categories' => $categories,
+            'tags' => $tags,
+        ]);
     }
+
 
     /**
      * Show action.

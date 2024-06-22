@@ -3,6 +3,7 @@ namespace App\Service;
 
 use App\Entity\Category;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\ORM\EntityManagerInterface;
 
 interface CategoryServiceInterface
 {
@@ -39,4 +40,6 @@ public function getCategoryById(int $id): ?Category;
      * @throws NonUniqueResultException
      */
     public function findOneById(int $id): ?Category;
+
+    public function findAll(): array;
 }

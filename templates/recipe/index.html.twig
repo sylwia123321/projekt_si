@@ -11,8 +11,33 @@
         <a href="{{ path('recipe_create') }}" class="btn btn-primary">{{ 'title.recipe_create'|trans }}</a>
     </div>
 
-    {% if pagination is defined and pagination.items|length %}
+    <form method="get" action="{{ path('recipe_index') }}" class="form-inline mb-3">
+        <div class="form-group mr-2">
+            <label for="categoryId" class="mr-2">{{ 'label.category'|trans }}</label>
+            <select id="categoryId" name="categoryId" class="form-control">
+                <option value="">{{ 'label.all_categories'|trans }}</option>
+                {% for category in categories %}
+                    <option value="{{ category.id }}" {% if app.request.query.get('categoryId') == category.id %}selected{% endif %}>
+                        {{ category.title }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="form-group mr-2">
+            <label for="tagId" class="mr-2">{{ 'label.tag'|trans }}</label>
+            <select id="tagId" name="tagId" class="form-control">
+                <option value="">{{ 'label.all_tags'|trans }}</option>
+                {% for tag in tags %}
+                    <option value="{{ tag.id }}" {% if app.request.query.get('tagId') == tag.id %}selected{% endif %}>
+                        {{ tag.title }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn btn-primary">{{ 'action.filter'|trans }}</button>
+    </form>
 
+    {% if pagination is defined and pagination.items|length %}
         <div class="navigation text-center">
             {{ knp_pagination_render(pagination) }}
         </div>
@@ -38,16 +63,14 @@
             {% for recipe in pagination.items %}
                 <tr>
                     <td>{{ recipe.id }}</td>
-                    <td>{{ recipe.createdAt|format_date('long') }}</td>
-                    <td>{{ recipe.updatedAt|format_date('long') }}</td>
+                    <td>{{ recipe.createdAt|date('Y-m-d H:i') }}</td>
+                    <td>{{ recipe.updatedAt|date('Y-m-d H:i') }}</td>
                     <td>{{ recipe.title }}</td>
                     <td>{{ recipe.description }}</td>
                     <td>{{ recipe.ingredients }}</td>
                     <td>{{ recipe.instructions }}</td>
                     <td>
-                        <a class="btn btn-outline-primary"
-                           href="{{ url('recipe_index', {'categoryId' : recipe.category.id}) }}"
-                           title="{{ recipe.category.title }}">
+                        <a class="btn btn-outline-primary" href="{{ path('recipe_index', {'categoryId': recipe.category.id}) }}">
                             {{ recipe.category.title }}
                         </a>
                     </td>
@@ -56,9 +79,7 @@
                     <td>
                         {% if recipe.tags is defined and recipe.tags|length %}
                             {% for tag in recipe.tags %}
-                                <a class="btn btn-outline-primary"
-                                   href="{{ url('recipe_index', {'tagId' : tag.id}) }}"
-                                   title="{{ tag.title }}">
+                                <a class="btn btn-outline-primary" href="{{ path('recipe_index', {'tagId': tag.id}) }}">
                                     {{ tag.title }}
                                 </a>
                             {% endfor %}
@@ -68,17 +89,17 @@
                     </td>
                     <td>
                         {% if is_granted('VIEW', recipe) %}
-                            <a class="btn btn-outline-primary" href="{{ url('recipe_show', {id: recipe.id}) }}" title="{{ 'action.show'|trans }}">
+                            <a class="btn btn-outline-primary" href="{{ path('recipe_show', {'id': recipe.id}) }}">
                                 {{ 'action.show'|trans }}
                             </a>
                         {% endif %}
                         {% if is_granted('EDIT', recipe) %}
-                            <a class="btn btn-outline-success" href="{{ url('recipe_edit', {id: recipe.id}) }}" title="{{ 'action.edit'|trans }}">
+                            <a class="btn btn-outline-success" href="{{ path('recipe_edit', {'id': recipe.id}) }}">
                                 {{ 'action.edit'|trans }}
                             </a>
                         {% endif %}
                         {% if is_granted('DELETE', recipe) %}
-                            <a class="btn btn-outline-danger" href="{{ url('recipe_delete', {id: recipe.id}) }}" title="{{ 'action.delete'|trans }}">
+                            <a class="btn btn-outline-danger" href="{{ path('recipe_delete', {'id': recipe.id}) }}">
                                 {{ 'action.delete'|trans }}
                             </a>
                         {% endif %}
@@ -92,8 +113,6 @@
             {{ knp_pagination_render(pagination) }}
         </div>
     {% else %}
-        <p>
-            {{ 'message.empty_list'|trans }}
-        </p>
+        <p>{{ 'message.empty_list'|trans }}</p>
     {% endif %}
 {% endblock %}

@@ -7,17 +7,19 @@ use App\Repository\CategoryRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 use App\Repository\RecipeRepository;
+use Doctrine\ORM\EntityManagerInterface;
 
 class CategoryService implements CategoryServiceInterface
 {
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
-    public function __construct(
-        private readonly CategoryRepository $categoryRepository,
-        private readonly PaginatorInterface $paginator,
-        private readonly RecipeRepository $recipeRepository // Dodano RecipeRepository
-    )
+    private EntityManagerInterface $entityManager;
+    private $categoryRepository;
+
+    public function __construct(EntityManagerInterface $entityManager)
     {
+        $this->entityManager = $entityManager;
+        $this->categoryRepository = $entityManager->getRepository(Category::class); // Get Category repository
     }
 
     public function getPaginatedList(int $page): PaginationInterface
@@ -84,5 +86,10 @@ class CategoryService implements CategoryServiceInterface
     public function findOneById(int $id): ?Category
     {
         return $this->categoryRepository->findOneById($id);
+    }
+
+    public function findAll(): array
+    {
+        return $this->categoryRepository->findAll();
     }
 }

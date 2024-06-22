@@ -138,6 +138,134 @@
           <source>label.none</source>
           <target>Brak etykiety</target>
       </trans-unit>
+      <trans-unit id="validators.current_password">
+        <source>Please enter your current password</source>
+        <target>Proszę wprowadzić swoje aktualne hasło</target>
+      </trans-unit>
+      <trans-unit id="validators.new_password">
+        <source>Please enter a new password</source>
+        <target>Proszę wprowadzić nowe hasło</target>
+      </trans-unit>
+      <trans-unit id="validators.password_length">
+        <source>Your password should be at least {{ limit }} characters</source>
+        <target>Twoje hasło powinno mieć co najmniej {{ limit }} znaków</target>
+      </trans-unit>
+      <trans-unit id="validators.password_mismatch">
+        <source>The password fields must match.</source>
+        <target>Pola hasła muszą się zgadzać.</target>
+      </trans-unit>
+      <trans-unit id="message.invalid_token">
+        <source>message.invalid_token</source>
+        <target>Nieprawidłowy token</target>
+      </trans-unit>
+      <trans-unit id="title.avatar_create">
+        <source>title.avatar_create</source>
+        <target>Utwórz avatar</target>
+      </trans-unit>
+      <trans-unit id="title.avatar_list">
+        <source>title.avatar_list</source>
+        <target>Lista avatarów</target>
+      </trans-unit>
+      <trans-unit id="label.user">
+        <source>label.user</source>
+        <target>Użytkownik</target>
+      </trans-unit>
+      <trans-unit id="label.filename">
+        <source>label.filename</source>
+        <target>Nazwa pliku</target>
+      </trans-unit>
+      <trans-unit id="title.avatar_details">
+        <source>title.avatar_details</source>
+        <target>Szczegóły avatara</target>
+      </trans-unit>
+      <trans-unit id="action_logout">
+        <source>action_logout</source>
+        <target>Wyloguj się</target>
+      </trans-unit>
+      <trans-unit id="action_change_password">
+        <source>action_change_password</source>
+        <target>Zmień hasło</target>
+      </trans-unit>
+      <trans-unit id="action_login">
+        <source>action_login</source>
+        <target>Zaloguj się</target>
+      </trans-unit>
+      <trans-unit id="action_register">
+        <source>action_register</source>
+        <target>Zarejestruj się</target>
+      </trans-unit>
+      <trans-unit id="title.category_list">
+        <source>title.category_list</source>
+        <target>Lista kategorii</target>
+      </trans-unit>
+      <trans-unit id="label.author">
+        <source>label.author</source>
+        <target>Autor</target>
+      </trans-unit>
+      <trans-unit id="label.comment">
+        <source>label.comment</source>
+        <target>Komentarz</target>
+      </trans-unit>
+      <trans-unit id="label.tag">
+        <source>label.tag</source>
+        <target>Tag</target>
+      </trans-unit>
+      <trans-unit id="label_comment">
+        <source>label_comment</source>
+        <target>Komentarz</target>
+      </trans-unit>
+      <trans-unit id="title.change_password">
+        <source>title.change_password</source>
+        <target>Zmień hasło</target>
+      </trans-unit>
+      <trans-unit id="title.tag_create">
+        <source>title.tag_create</source>
+        <target>Utwórz tag</target>
+      </trans-unit>
+      <trans-unit id="title.tag_delete">
+        <source>title.tag_delete</source>
+        <target>Usuń tag</target>
+      </trans-unit>
+      <trans-unit id="title.tag_edit">
+        <source>title.tag_edit</source>
+        <target>Edytuj tag</target>
+      </trans-unit>
+      <trans-unit id="title.tag_list">
+        <source>title.tag_list</source>
+        <target>Lista tagów</target>
+      </trans-unit>
+      <trans-unit id="title.tag_details">
+        <source>title.tag_details</source>
+        <target>Szczegóły tagu</target>
+      </trans-unit>
+      <trans-unit id="title.user_create">
+        <source>title.user_create</source>
+        <target>Utwórz użytkownika</target>
+      </trans-unit>
+      <trans-unit id="title.user_delete">
+        <source>title.user_delete</source>
+        <target>Usuń użytkownika</target>
+      </trans-unit>
+      <trans-unit id="title.user_edit">
+        <source>title.user_edit</source>
+        <target>Edytuj użytkownika</target>
+      </trans-unit>
+      <trans-unit id="title.user_list">
+        <source>title.user_list</source>
+        <target>Lista użytkowników</target>
+      </trans-unit>
+      <trans-unit id="label.email">
+        <source>label.email</source>
+        <target>Email</target>
+      </trans-unit>
+      <trans-unit id="label.roles">
+        <source>label.roles</source>
+        <target>Role</target>
+      </trans-unit>
+      <trans-unit id="title.user_details">
+        <source>title.user_details</source>
+        <target>Szczegóły użytkownika</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>
