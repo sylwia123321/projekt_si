@@ -12,20 +12,22 @@ use Doctrine\ORM\EntityManagerInterface;
 class CategoryService implements CategoryServiceInterface
 {
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
-
     private EntityManagerInterface $entityManager;
+    private PaginatorInterface $paginator;
     private $categoryRepository;
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator)
     {
         $this->entityManager = $entityManager;
-        $this->categoryRepository = $entityManager->getRepository(Category::class); // Get Category repository
+        $this->paginator = $paginator;
+        $this->categoryRepository = $entityManager->getRepository(Category::class);
     }
 
     public function getPaginatedList(int $page): PaginationInterface
     {
+        $query = $this->categoryRepository->queryAll();
         return $this->paginator->paginate(
-            $this->categoryRepository->queryAll(),
+            $query,
             $page,
             self::PAGINATOR_ITEMS_PER_PAGE
         );

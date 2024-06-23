@@ -17,6 +17,10 @@ use Doctrine\ORM\NonUniqueResultException;
  */
 class TagService implements TagServiceInterface
 {
+    private EntityManagerInterface $entityManager;
+    private PaginatorInterface $paginator;
+    private TagRepository $tagRepository;
+
     /**
      * Items per page.
      *
@@ -28,10 +32,6 @@ class TagService implements TagServiceInterface
      */
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
-    private $tagRepository;
-
-    private EntityManagerInterface $entityManager;
-
     /**
      * Constructor.
      *
@@ -39,10 +39,11 @@ class TagService implements TagServiceInterface
      * @param PaginatorInterface $paginator     Paginator
      */
 
-    public function __construct(EntityManagerInterface $entityManager)
+    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, TagRepository $tagRepository)
     {
         $this->entityManager = $entityManager;
-        $this->tagRepository = $entityManager->getRepository(Tag::class); // Get Tag repository
+        $this->paginator = $paginator;
+        $this->tagRepository = $tagRepository;
     }
 
     /**
@@ -54,8 +55,9 @@ class TagService implements TagServiceInterface
      */
     public function getPaginatedList(int $page): PaginationInterface
     {
+        $query = $this->tagRepository->queryAll();
         return $this->paginator->paginate(
-            $this->tagRepository->queryAll(),
+            $query,
             $page,
             self::PAGINATOR_ITEMS_PER_PAGE
         );

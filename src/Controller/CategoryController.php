@@ -14,6 +14,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Service\CategoryService;
 
 /**
  * Class CategoryController.
@@ -63,7 +64,10 @@ class CategoryController extends AbstractController
             $this->addFlash('error', 'Access denied. Only administrators can manage categories.');
             return $this->redirectToRoute('category_index');
         }
-        return $this->render('category/show.html.twig', ['category' => $category]);
+
+        return $this->render('category/show.html.twig', [
+            'category' => $category,
+        ]);
     }
 
     /**

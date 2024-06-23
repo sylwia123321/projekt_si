@@ -7,6 +7,8 @@ namespace App\Entity;
 
 use App\Repository\CategoryRepository;
 use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -70,6 +72,19 @@ class Category
     #[Assert\Length(min: 3, max: 64)]
     #[Gedmo\Slug(fields: ['title'])]
     private ?string $slug;
+
+    /**
+     * Recipes.
+     *
+     * @var Collection<int, Recipe>
+     */
+    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Recipe::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $recipes;
+
+    public function __construct()
+    {
+        $this->recipes = new ArrayCollection();
+    }
 
     /**
      * Getter for Id.
@@ -151,5 +166,42 @@ class Category
         $this->slug = $slug;
 
         return $this;
+    }
+
+    /**
+     * Getter for recipes.
+     *
+     * @return Collection<int, Recipe>
+     */
+    public function getRecipes(): Collection
+    {
+        return $this->recipes;
+    }
+
+    /**
+     * Add recipe.
+     *
+     * @param Recipe $recipe Recipe entity
+     */
+    public function addRecipe(Recipe $recipe): void
+    {
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes[] = $recipe;
+            $recipe->setCategory($this); // Ustawia odwrotną relację
+        }
+    }
+
+    /**
+     * Remove recipe.
+     *
+     * @param Recipe $recipe Recipe entity
+     */
+    public function removeRecipe(Recipe $recipe): void
+    {
+        $this->recipes->removeElement($recipe);
+        // set the owning side to null (unless already changed)
+        if ($recipe->getCategory() === $this) {
+            $recipe->setCategory(null);
+        }
     }
 }

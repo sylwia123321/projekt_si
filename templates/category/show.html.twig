@@ -21,6 +21,13 @@
             <th>Updated At</th>
             <td>{{ category.updatedAt|date('Y-m-d H:i:s') }}</td>
         </tr>
+        <tr>
+            <th>Recipe/nie zapomnij o tlumaczeniach</th>
+            <td>{% for recipe in category.recipes %}
+                    <li>{{ recipe.title }}</li>
+                {% endfor %}</td>
+        </tr>
+
         </tbody>
     </table>
 
