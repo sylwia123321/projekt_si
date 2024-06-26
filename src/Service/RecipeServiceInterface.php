@@ -39,4 +39,6 @@ interface RecipeServiceInterface
      * @param Recipe $recipe Recipe entity
      */
     public function delete(Recipe $recipe): void;
+
+    public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface;
 }

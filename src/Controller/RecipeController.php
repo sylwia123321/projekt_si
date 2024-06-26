@@ -31,11 +31,13 @@ class RecipeController extends AbstractController
     public function __construct(
         CategoryServiceInterface $categoryService,
         TagServiceInterface $tagService,
-        RecipeServiceInterface $recipeService
+        RecipeServiceInterface $recipeService,
+        TranslatorInterface $translator
     ) {
         $this->categoryService = $categoryService;
         $this->tagService = $tagService;
         $this->recipeService = $recipeService;
+        $this->translator = $translator;
     }
 
     #[Route(name: 'recipe_index', methods: 'GET')]
@@ -53,7 +55,11 @@ class RecipeController extends AbstractController
         $categories = $this->categoryService->findAll();
         $tags = $this->tagService->findAll();
 
-        $pagination = $this->recipeService->getPaginatedList(1, $user, $categoryId, $tagId);
+        if ($this->isGranted('ROLE_ADMIN')) {
+            $pagination = $this->recipeService->getAllPaginatedList(1, $categoryId, $tagId);
+        } else {
+            $pagination = $this->recipeService->getPaginatedList(1, $user, $categoryId, $tagId);
+        }
 
         return $this->render('recipe/index.html.twig', [
             'pagination' => $pagination,
@@ -74,15 +80,20 @@ class RecipeController extends AbstractController
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Recipe $recipe): Response
     {
-        if ($recipe->getAuthor() !== $this->getUser()) {
-            $this->addFlash(
-                'warning',
-                $this->translator->trans('message.record_not_found')
-            );
-
-            return $this->redirectToRoute('recipe_index');
+        if ($this->isGranted('ROLE_ADMIN')) {
+            return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
         }
-        return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
+        else {
+            if ($recipe->getAuthor() !== $this->getUser()) {
+                $this->addFlash(
+                    'warning',
+                    $this->translator->trans('message.record_not_found')
+                );
+
+                return $this->redirectToRoute('recipe_index');
+            }
+            return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
+        }
     }
 
     /**
@@ -132,7 +143,7 @@ class RecipeController extends AbstractController
     #[IsGranted('VIEW', subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe): Response
     {
-        if ($recipe->getAuthor() !== $this->getUser()) {
+        if ($recipe->getAuthor() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash(
                 'warning',
                 $this->translator->trans('message.record_not_found')
@@ -182,7 +193,7 @@ class RecipeController extends AbstractController
     #[IsGranted('VIEW', subject: 'recipe')]
     public function delete(Request $request, Recipe $recipe): Response
     {
-        if ($recipe->getAuthor() !== $this->getUser()) {
+        if ($recipe->getAuthor() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash(
                 'warning',
                 $this->translator->trans('message.record_not_found')

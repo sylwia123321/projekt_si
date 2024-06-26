@@ -80,4 +80,17 @@ class RecipeService implements RecipeServiceInterface
     {
         $this->recipeRepository->delete($recipe);
     }
+
+    public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface
+    {
+        $category = null !== $categoryId ? $this->categoryService->findOneById($categoryId) : null;
+        $tag = null !== $tagId ? $this->tagService->findOneById($tagId) : null;
+
+        return $this->paginator->paginate(
+            $this->recipeRepository->queryByFilters($category, $tag),
+            $page,
+            self::PAGINATOR_ITEMS_PER_PAGE
+        );
+    }
+
 }

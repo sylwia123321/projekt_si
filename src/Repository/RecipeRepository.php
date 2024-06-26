@@ -31,6 +31,16 @@ use Doctrine\ORM\EntityManager;
 class RecipeRepository extends ServiceEntityRepository
 {
     /**
+     * Items per page.
+     *
+     * Use constants to define configuration options that rarely change instead
+     * of specifying them in configuration files.
+     * See https://symfony.com/doc/current/best_practices.html#configuration
+     *
+     * @constant int
+     */
+    public const PAGINATOR_ITEMS_PER_PAGE = 10;
+    /**
      * Constructor.
      *
      * @param ManagerRegistry $registry Manager registry
@@ -43,9 +53,12 @@ class RecipeRepository extends ServiceEntityRepository
     /**
      * Query all records.
      *
+     * @param int $page
+     * @param int $limit
+     *
      * @return QueryBuilder Query builder
      */
-    public function queryAll(): QueryBuilder
+    public function queryAll(int $page = 1, int $limit = 10): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
             ->select(
@@ -53,7 +66,9 @@ class RecipeRepository extends ServiceEntityRepository
                 'partial category.{id, title}'
             )
             ->join('recipe.category', 'category')
-            ->orderBy('recipe.updatedAt', 'DESC');
+            ->orderBy('recipe.createdAt', 'DESC') // Sortowanie od najnowszych do najstarszych
+            ->setFirstResult(($page - 1) * $limit)
+            ->setMaxResults($limit);
     }
 
     /**
@@ -146,4 +161,22 @@ class RecipeRepository extends ServiceEntityRepository
     {
         return $queryBuilder ?? $this->createQueryBuilder('recipe');
     }
+
+    public function queryByFilters(?Category $category, ?Tag $tag): QueryBuilder
+    {
+        $qb = $this->createQueryBuilder('r');
+
+        if (null !== $category) {
+            $qb->andWhere('r.category = :category')
+                ->setParameter('category', $category);
+        }
+
+        if (null !== $tag) {
+            $qb->andWhere('r.tags = :tag')
+                ->setParameter('tag', $tag);
+        }
+
+        return $qb;
+    }
+
 }
