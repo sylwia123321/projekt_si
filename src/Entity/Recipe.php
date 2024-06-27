@@ -87,12 +87,16 @@ class Recipe
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'recipe')]
+    private $ratings;
+
     /**
      * Constructor.
      */
     public function __construct()
     {
         $this->tags = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     /**
@@ -314,5 +318,49 @@ class Recipe
         $this->comment = $comment;
 
         return $this;
+    }
+
+    /**
+     * @return Collection|Rating[]
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): self
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings[] = $rating;
+            $rating->setRecipe($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): self
+    {
+        if ($this->ratings->contains($rating)) {
+            $this->ratings->removeElement($rating);
+            // set the owning side to null (unless already changed)
+            if ($rating->getRecipe() === $this) {
+                $rating->setRecipe(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getAverageRating(): ?float
+    {
+        $total = 0;
+        $count = 0;
+
+        foreach ($this->ratings as $rating) {
+            $total += $rating->getScore();
+            $count++;
+        }
+
+        return $count > 0 ? $total / $count : null;
     }
 }

@@ -18,6 +18,10 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Service\CategoryServiceInterface;
 use App\Service\TagServiceInterface;
 use Symfony\Component\Security\Core\Security;
+use App\Entity\Rating;
+use App\Form\Type\RatingType;
+use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\RecipeRepository;
 
 /**
  * Class RecipeController.
@@ -188,5 +192,55 @@ class RecipeController extends AbstractController
         }
 
         return $this->render('recipe/delete.html.twig', ['form' => $form->createView(), 'recipe' => $recipe]);
+    }
+
+
+    /**
+     * @param Request $request
+     * @param Recipe $recipe
+     * @param Security $security
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
+    #[Route('/{id}/rate', name: 'recipe_rate', methods: 'GET|POST')]
+    public function rate(Request $request, Recipe $recipe, Security $security, EntityManagerInterface $entityManager): Response
+    {
+        $user = $security->getUser();
+        if (!$user) {
+            throw $this->createAccessDeniedException($this->translator->trans('message.access_denied'));
+        }
+
+        $rating = new Rating();
+        $rating->setUser($user);
+        $rating->setRecipe($recipe);
+
+        $form = $this->createForm(RatingType::class, $rating);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($rating);
+            $entityManager->flush();
+
+            return $this->redirectToRoute('recipe_index', ['id' => $recipe->getId()]);
+        }
+
+        return $this->render('recipe/rate.html.twig', [
+            'form' => $form->createView(),
+            'recipe' => $recipe,
+        ]);
+    }
+
+    /**
+     * @param RecipeRepository $recipeRepository
+     * @return Response
+     */
+    #[Route('/top-rated', name: 'recipe_top-rated')]
+    public function topRated(RecipeRepository $recipeRepository): Response
+    {
+        $topRatedRecipes = $recipeRepository->findTopRatedRecipes();
+
+        return $this->render('recipe/top_rated.html.twig', [
+            'recipes' => $topRatedRecipes,
+        ]);
     }
 }

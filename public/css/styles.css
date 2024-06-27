@@ -1,10 +1,9 @@
 .nav-profile-img {
-    width: 50px; /* Ustaw rozmiar szerokości na 50 pikseli */
-    height: 50px; /* Ustaw rozmiar wysokości na 50 pikseli */
+    width: 50px;
+    height: 50px;
     margin-top: 5px;
 }
 
-/* Pogrubienie etykiet pól formularza */
 label {
     font-weight: bold;
 }
@@ -14,7 +13,6 @@ label {
     margin-bottom: 5px;
 }
 
-/* Dodanie czerwonej gwiazdki dla pól wymaganych */
 .required:after {
     content: '*';
     color: red;
@@ -24,5 +22,14 @@ label {
 .navigation text-center, .create_category {
     margin-top: 20px;
     margin-bottom: 20px;
+}
+
+table {
+    table-layout: fixed;
+    width: 100%;
+}
+
+th, td {
+    word-wrap: break-word;
 }
 

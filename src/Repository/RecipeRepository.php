@@ -182,4 +182,19 @@ class RecipeRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    /**
+     * @param int $limit
+     * @return array
+     */
+    public function findTopRatedRecipes(int $limit = 10): array
+    {
+        return $this->createQueryBuilder('r')
+            ->select('r, AVG(ra.score) AS avgRating')
+            ->leftJoin('r.ratings', 'ra')
+            ->groupBy('r.id')
+            ->orderBy('avgRating', 'DESC')
+            ->setMaxResults($limit)
+            ->getQuery()
+            ->getResult();
+    }
 }

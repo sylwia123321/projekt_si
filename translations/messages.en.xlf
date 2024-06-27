@@ -423,6 +423,14 @@
             <source>message/logged_out</source>
             <target>Logged out</target>
         </trans-unit>
+        <trans-unit id="label.average_rating">
+            <source>label.average_rating</source>
+            <target>Rating</target>
+        </trans-unit>
+        <trans-unit id="action.rate">
+            <source>action.rate</source>
+            <target>Rate</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

@@ -15,7 +15,12 @@
 <body>
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('recipe_index') }}">{{ 'label.recipes'|trans }}</a>
+        <ul class="navbar-nav me-auto">
+            <li>{% if app.user %}
+                <p class="text-secondary">{{ app.user.email }}</p>
+            {% endif %}</li>
+            <li class="nav-item"><a class="nav-link" href="{{ path('recipe_index') }}">{{ 'label.recipes'|trans }}</a></li>
+        </ul>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"
                 aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -61,6 +66,10 @@
         </div>
     </div>
 </nav>
+
+<div>
+    <a class="btn btn-outline-primary" href="{{ path('recipe_top-rated') }}">{{ 'label.top_recipes'|trans }}</a>
+</div>
 
 <main role="main" class="container">
     <div class="container">
