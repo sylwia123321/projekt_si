@@ -109,6 +109,9 @@ class TagService implements TagServiceInterface
         return $this->tagRepository->findOneById($id);
     }
 
+    /**
+     * @return array
+     */
     public function findAll(): array
     {
         return $this->tagRepository->findAll();

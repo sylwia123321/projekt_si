@@ -11,6 +11,9 @@ use Doctrine\ORM\NoResultException;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
+/**
+ * Class CategoryService.
+ */
 class CategoryService implements CategoryServiceInterface
 {
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
@@ -18,20 +21,30 @@ class CategoryService implements CategoryServiceInterface
     private EntityManagerInterface $entityManager;
     private PaginatorInterface $paginator;
     private CategoryRepository $categoryRepository;
-    private RecipeRepository $recipeRepository; // Dodane wstrzykiwanie RecipeRepository
+    private RecipeRepository $recipeRepository;
 
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param PaginatorInterface $paginator
+     * @param CategoryRepository $categoryRepository
+     * @param RecipeRepository $recipeRepository
+     */
     public function __construct(
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator,
         CategoryRepository $categoryRepository,
-        RecipeRepository $recipeRepository // Wstrzyknięcie RecipeRepository
+        RecipeRepository $recipeRepository
     ) {
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
         $this->categoryRepository = $categoryRepository;
-        $this->recipeRepository = $recipeRepository; // Inicjalizacja RecipeRepository
+        $this->recipeRepository = $recipeRepository;
     }
 
+    /**
+     * @param int $page
+     * @return PaginationInterface
+     */
     public function getPaginatedList(int $page): PaginationInterface
     {
         $query = $this->categoryRepository->queryAll();
@@ -42,6 +55,10 @@ class CategoryService implements CategoryServiceInterface
         );
     }
 
+    /**
+     * @param int $id
+     * @return Category|null
+     */
     public function getCategoryById(int $id): ?Category
     {
         return $this->categoryRepository->find($id);
@@ -98,6 +115,9 @@ class CategoryService implements CategoryServiceInterface
         return $this->categoryRepository->findOneById($id);
     }
 
+    /**
+     * @return array
+     */
     public function findAll(): array
     {
         return $this->categoryRepository->findAll();

@@ -15,8 +15,6 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Security\Voter\TagCategoryVoter;
-use Symfony\Component\Security\Core\Exception\AccessDeniedException;
 
 /**
  * Class TagController.

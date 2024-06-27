@@ -31,6 +31,13 @@ class RecipeController extends AbstractController
     private RecipeServiceInterface $recipeService;
     private TranslatorInterface $translator;
 
+    /**
+     * @param CategoryServiceInterface $categoryService
+     * @param TagServiceInterface $tagService
+     * @param RecipeServiceInterface $recipeService
+     * @param TranslatorInterface $translator
+     * @param Security $security
+     */
     public function __construct(
         CategoryServiceInterface $categoryService,
         TagServiceInterface $tagService,
@@ -45,6 +52,10 @@ class RecipeController extends AbstractController
         $this->security = $security;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     #[Route(name: 'recipe_index', methods: 'GET')]
     public function index(Request $request): Response
     {
@@ -73,6 +84,10 @@ class RecipeController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Recipe $recipe
+     * @return Response
+     */
     #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Recipe $recipe): Response
@@ -85,6 +100,10 @@ class RecipeController extends AbstractController
         return $this->redirectToRoute('recipe_index');
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
@@ -111,6 +130,11 @@ class RecipeController extends AbstractController
         return $this->render('recipe/create.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @param Request $request
+     * @param Recipe $recipe
+     * @return Response
+     */
     #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe): Response
@@ -136,6 +160,11 @@ class RecipeController extends AbstractController
         return $this->render('recipe/edit.html.twig', ['form' => $form->createView(), 'recipe' => $recipe]);
     }
 
+    /**
+     * @param Request $request
+     * @param Recipe $recipe
+     * @return Response
+     */
     #[Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function delete(Request $request, Recipe $recipe): Response

@@ -62,11 +62,11 @@ class RecipeRepository extends ServiceEntityRepository
     {
         return $this->getOrCreateQueryBuilder()
             ->select(
-                'partial recipe.{id, createdAt, updatedAt, title, description, ingredients, instructions}', // Added fields
+                'partial recipe.{id, createdAt, updatedAt, title, description, ingredients, instructions}',
                 'partial category.{id, title}'
             )
             ->join('recipe.category', 'category')
-            ->orderBy('recipe.createdAt', 'DESC') // Sortowanie od najnowszych do najstarszych
+            ->orderBy('recipe.createdAt', 'DESC')
             ->setFirstResult(($page - 1) * $limit)
             ->setMaxResults($limit);
     }
@@ -93,13 +93,10 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
     /**
-     * Query recipes by author and filters.
-     *
-     * @param User $author Author entity
-     * @param Category|null $category Category entity
-     * @param Tag|null $tag Tag entity
-     *
-     * @return QueryBuilder Query builder
+     * @param User|null $author
+     * @param Category|null $category
+     * @param Tag|null $tag
+     * @return QueryBuilder
      */
     public function queryByAuthorAndFilters(?User $author, ?Category $category, ?Tag $tag): QueryBuilder
     {
@@ -162,10 +159,15 @@ class RecipeRepository extends ServiceEntityRepository
         return $queryBuilder ?? $this->createQueryBuilder('recipe');
     }
 
+    /**
+     * @param Category|null $category
+     * @param Tag|null $tag
+     * @return QueryBuilder
+     */
     public function queryByFilters(?Category $category, ?Tag $tag): QueryBuilder
     {
         $qb = $this->createQueryBuilder('r')
-            ->leftJoin('r.tags', 't'); // Join with 'tags' association
+            ->leftJoin('r.tags', 't');
 
         if (null !== $category) {
             $qb->andWhere('r.category = :category')
@@ -173,7 +175,7 @@ class RecipeRepository extends ServiceEntityRepository
         }
 
         if (null !== $tag) {
-            $qb->andWhere(':tag MEMBER OF r.tags') // Check if tag is in 'tags' collection
+            $qb->andWhere(':tag MEMBER OF r.tags')
             ->setParameter('tag', $tag);
         }
 

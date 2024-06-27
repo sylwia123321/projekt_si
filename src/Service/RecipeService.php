@@ -63,9 +63,10 @@ class RecipeService implements RecipeServiceInterface
 
 
     /**
-     * Save entity.
-     *
-     * @param Recipe $recipe Recipe entity
+     * @param Recipe $recipe
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function save(Recipe $recipe): void
     {
@@ -73,15 +74,22 @@ class RecipeService implements RecipeServiceInterface
     }
 
     /**
-     * Delete entity.
-     *
-     * @param Recipe $recipe Recipe entity
+     * @param Recipe $recipe
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function delete(Recipe $recipe): void
     {
         $this->recipeRepository->delete($recipe);
     }
 
+    /**
+     * @param int $page
+     * @param int|null $categoryId
+     * @param int|null $tagId
+     * @return PaginationInterface
+     */
     public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface
     {
         $category = null !== $categoryId ? $this->categoryService->findOneById($categoryId) : null;

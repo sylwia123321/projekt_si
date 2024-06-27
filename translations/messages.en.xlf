@@ -311,6 +311,118 @@
           <source>validators.password_mismatch</source>
           <target>The password fields must match.</target>
       </trans-unit>
+            <trans-unit id="action.delete_avatar">
+              <source>action.delete_avatar</source>
+              <target>Delete Avatar</target>
+            </trans-unit>
+            <trans-unit id="action.edit_avatar">
+              <source>action.edit_avatar</source>
+              <target>Edit Avatar</target>
+            </trans-unit>
+            <trans-unit id="label.recipes">
+              <source>label.recipes</source>
+              <target>Recipes</target>
+            </trans-unit>
+            <trans-unit id="label.categories">
+              <source>label.categories</source>
+              <target>Categories</target>
+            </trans-unit>
+            <trans-unit id="action.change_password">
+              <source>action.change_password</source>
+              <target>Change Password</target>
+            </trans-unit>
+            <trans-unit id="action.add_avatar">
+              <source>action.add_avatar</source>
+              <target>Add Avatar</target>
+            </trans-unit>
+            <trans-unit id="action.logout">
+              <source>action.logout</source>
+              <target>Logout</target>
+            </trans-unit>
+            <trans-unit id="action.login">
+              <source>action.login</source>
+              <target>Login</target>
+            </trans-unit>
+            <trans-unit id="action.register">
+              <source>action.register</source>
+              <target>Register</target>
+            </trans-unit>
+            <trans-unit id="label.page_title">
+              <source>label.page_title</source>
+              <target>Page Title</target>
+            </trans-unit>
+            <trans-unit id="label.category_details">
+              <source>label.category_details</source>
+              <target>Category Details</target>
+            </trans-unit>
+            <trans-unit id="label.recipe_title">
+              <source>label.recipe_title</source>
+              <target>Recipe Title</target>
+            </trans-unit>
+            <trans-unit id="title.comment_create">
+              <source>title.comment_create</source>
+              <target>Create Comment</target>
+            </trans-unit>
+            <trans-unit id="title.comment_delete">
+              <source>title.comment_delete</source>
+              <target>Delete Comment</target>
+            </trans-unit>
+            <trans-unit id="title.comment_edit">
+              <source>title.comment_edit</source>
+              <target>Edit Comment</target>
+            </trans-unit>
+            <trans-unit id="title.comment_list">
+              <source>title.comment_list</source>
+              <target>Comment List</target>
+            </trans-unit>
+            <trans-unit id="label.recipe">
+              <source>label.recipe</source>
+              <target>Recipe</target>
+            </trans-unit>
+            <trans-unit id="title.comment_details">
+              <source>title.comment_details</source>
+              <target>Comment Details</target>
+            </trans-unit>
+            <trans-unit id="label.all_categories">
+              <source>label.all_categories</source>
+              <target>All Categories</target>
+            </trans-unit>
+            <trans-unit id="label.all_tags">
+              <source>label.all_tags</source>
+              <target>All Tags</target>
+            </trans-unit>
+            <trans-unit id="action.filter">
+              <source>action.filter</source>
+              <target>Filter</target>
+            </trans-unit>
+            <trans-unit id="message.logged_in">
+              <source>message.logged_in</source>
+              <target>Logged in successfully.</target>
+            </trans-unit>
+            <trans-unit id="message.logged_out">
+              <source>message.logged_out</source>
+              <target>Logged out successfully.</target>
+            </trans-unit>
+            <trans-unit id="action.sign_in">
+              <source>action.sign_in</source>
+              <target>Sign In</target>
+            </trans-unit>
+            <trans-unit id="last_username">
+              <source>last_username</source>
+              <target>Last Username</target>
+            </trans-unit>
+            <trans-unit id="label.password">
+              <source>label.password</source>
+              <target>Password</target>
+            </trans-unit>
+            <trans-unit id="action.remember_me">
+              <source>action.remember_me</source>
+              <target>Remember Me</target>
+            </trans-unit>
+        <trans-unit id="message/logged_out">
+            <source>message/logged_out</source>
+            <target>Logged out</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

@@ -266,6 +266,140 @@
         <source>title.user_details</source>
         <target>Szczegóły użytkownika</target>
       </trans-unit>
+      <trans-unit id="action.delete_avatar">
+          <source>action.delete_avatar</source>
+          <target>Usuń avatar</target>
+      </trans-unit>
+
+      <trans-unit id="action.edit_avatar">
+          <source>action.edit_avatar</source>
+          <target>Edytuj avatar</target>
+      </trans-unit>
+
+      <trans-unit id="label.recipes">
+          <source>label.recipes</source>
+          <target>Przepisy</target>
+      </trans-unit>
+
+      <trans-unit id="label.categories">
+          <source>label.categories</source>
+          <target>Kategorie</target>
+      </trans-unit>
+
+      <trans-unit id="action.change_password">
+          <source>action.change_password</source>
+          <target>Zmień hasło</target>
+      </trans-unit>
+
+      <trans-unit id="action.add_avatar">
+          <source>action.add_avatar</source>
+          <target>Dodaj avatar</target>
+      </trans-unit>
+
+      <trans-unit id="action.logout">
+          <source>action.logout</source>
+          <target>Wyloguj się</target>
+      </trans-unit>
+
+      <trans-unit id="action.login">
+          <source>action.login</source>
+          <target>Zaloguj się</target>
+      </trans-unit>
+
+      <trans-unit id="action.register">
+          <source>action.register</source>
+          <target>Zarejestruj się</target>
+      </trans-unit>
+
+      <trans-unit id="label.page_title">
+          <source>label.page_title</source>
+          <target>Tytuł strony</target>
+      </trans-unit>
+
+      <trans-unit id="label.category_details">
+          <source>label.category_details</source>
+          <target>Szczegóły kategorii</target>
+      </trans-unit>
+
+      <trans-unit id="label.recipe_title">
+          <source>label.recipe_title</source>
+          <target>Tytuł przepisu</target>
+      </trans-unit>
+
+      <trans-unit id="title.comment_create">
+          <source>title.comment_create</source>
+          <target>Utwórz komentarz</target>
+      </trans-unit>
+
+      <trans-unit id="title.comment_delete">
+          <source>title.comment_delete</source>
+          <target>Usuń komentarz</target>
+      </trans-unit>
+
+      <trans-unit id="title.comment_edit">
+          <source>title.comment_edit</source>
+          <target>Edytuj komentarz</target>
+      </trans-unit>
+
+      <trans-unit id="title.comment_list">
+          <source>title.comment_list</source>
+          <target>Lista komentarzy</target>
+      </trans-unit>
+
+      <trans-unit id="label.recipe">
+          <source>label.recipe</source>
+          <target>Przepis</target>
+      </trans-unit>
+
+      <trans-unit id="title.comment_details">
+          <source>title.comment_details</source>
+          <target>Szczegóły komentarza</target>
+      </trans-unit>
+
+      <trans-unit id="label.all_categories">
+          <source>label.all_categories</source>
+          <target>Wszystkie kategorie</target>
+      </trans-unit>
+
+      <trans-unit id="label.all_tags">
+          <source>label.all_tags</source>
+          <target>Wszystkie tagi</target>
+      </trans-unit>
+
+      <trans-unit id="action.filter">
+          <source>action.filter</source>
+          <target>Filtruj</target>
+      </trans-unit>
+
+      <trans-unit id="message.logged_in">
+          <source>message.logged_in</source>
+          <target>Zalogowano</target>
+      </trans-unit>
+
+      <trans-unit id="message/logged_out">
+          <source>message/logged_out</source>
+          <target>Wylogowano</target>
+      </trans-unit>
+
+      <trans-unit id="action.sign_in">
+          <source>action.sign_in</source>
+          <target>Zaloguj się</target>
+      </trans-unit>
+
+      <trans-unit id="last_username">
+          <source>last_username</source>
+          <target>Ostatni użytkownik</target>
+      </trans-unit>
+
+      <trans-unit id="label.password">
+          <source>label.password</source>
+          <target>Hasło</target>
+      </trans-unit>
+
+      <trans-unit id="action.remember_me">
+          <source>action.remember_me</source>
+          <target>Zapamiętaj mnie</target>
+      </trans-unit>
     </body>
   </file>
 </xliff>

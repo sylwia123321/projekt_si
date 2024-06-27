@@ -56,7 +56,15 @@
                 <th>{{ 'label.author'|trans }}</th>
                 <th>{{ 'label.comment'|trans }}</th>
                 <th>{{ 'label.tag'|trans }}</th>
-                <th>{{ 'label.actions'|trans }}</th>
+                {% set displayActions = false %}
+                {% for recipe in pagination.items %}
+                    {% if is_granted('VIEW', recipe) or is_granted('ROLE_ADMIN') %}
+                        {% set displayActions = true %}
+                    {% endif %}
+                {% endfor %}
+                {% if displayActions %}
+                    <th>{{ 'label.actions'|trans }}</th>
+                {% endif %}
             </tr>
             </thead>
             <tbody>
