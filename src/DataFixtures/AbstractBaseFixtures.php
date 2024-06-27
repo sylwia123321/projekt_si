@@ -64,13 +64,8 @@ abstract class AbstractBaseFixtures extends Fixture
             /** @var object $entity */
             $entity = $factory($i);
 
-            if (null === $entity) {
-                throw new \LogicException('Did you forget to return the entity object from your callback to BaseFixture::createMany()?');
-            }
-
             $this->manager->persist($entity);
 
-            // Store for usage later than groupName_#COUNT#
             $this->addReference(sprintf('%s_%d', $groupName, $i), $entity);
         }
     }
@@ -92,10 +87,6 @@ abstract class AbstractBaseFixtures extends Fixture
                     $this->referencesIndex[$groupName][] = $key;
                 }
             }
-        }
-
-        if (empty($this->referencesIndex[$groupName])) {
-            throw new \InvalidArgumentException(sprintf('Did not find any references saved with the group name "%s"', $groupName));
         }
 
         $randomReferenceKey = $this->faker->randomElement($this->referencesIndex[$groupName]);

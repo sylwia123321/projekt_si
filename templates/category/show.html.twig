@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-    Category Details
+    {{ 'label.category_details'|trans }}
 {% endblock %}
 
 {% block body %}
-    <h1>Category Details</h1>
+    <h1>{{ 'label.category_details'|trans }}</h1>
 
     <table class="table">
         <tbody>
@@ -22,7 +22,7 @@
             <td>{{ category.updatedAt|date('Y-m-d H:i:s') }}</td>
         </tr>
         <tr>
-            <th>Recipe/nie zapomnij o tlumaczeniach</th>
+            <th>{{ 'label.recipe_title'|trans }}</th>
             <td>{% for recipe in category.recipes %}
                     <li>{{ recipe.title }}</li>
                 {% endfor %}</td>

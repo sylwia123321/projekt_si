@@ -45,7 +45,6 @@ class FileUploadService implements FileUploadServiceInterface
         try {
             $file->move($this->getTargetDirectory(), $fileName);
         } catch (FileException) {
-            // ... handle exception if something happens during file upload
         }
 
         return $fileName;

@@ -161,6 +161,10 @@ class Category
         return $this->slug;
     }
 
+    /**
+     * @param string $slug
+     * @return $this
+     */
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
@@ -187,7 +191,7 @@ class Category
     {
         if (!$this->recipes->contains($recipe)) {
             $this->recipes[] = $recipe;
-            $recipe->setCategory($this); // Ustawia odwrotną relację
+            $recipe->setCategory($this);
         }
     }
 
@@ -199,7 +203,6 @@ class Category
     public function removeRecipe(Recipe $recipe): void
     {
         $this->recipes->removeElement($recipe);
-        // set the owning side to null (unless already changed)
         if ($recipe->getCategory() === $this) {
             $recipe->setCategory(null);
         }

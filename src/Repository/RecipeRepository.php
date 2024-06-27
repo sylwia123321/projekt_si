@@ -101,7 +101,7 @@ class RecipeRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-    public function queryByAuthorAndFilters(User $author, ?Category $category, ?Tag $tag): QueryBuilder
+    public function queryByAuthorAndFilters(?User $author, ?Category $category, ?Tag $tag): QueryBuilder
     {
         $qb = $this->createQueryBuilder('recipe')
             ->where('recipe.author = :author')
@@ -164,7 +164,8 @@ class RecipeRepository extends ServiceEntityRepository
 
     public function queryByFilters(?Category $category, ?Tag $tag): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('r');
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.tags', 't'); // Join with 'tags' association
 
         if (null !== $category) {
             $qb->andWhere('r.category = :category')
@@ -172,8 +173,8 @@ class RecipeRepository extends ServiceEntityRepository
         }
 
         if (null !== $tag) {
-            $qb->andWhere('r.tags = :tag')
-                ->setParameter('tag', $tag);
+            $qb->andWhere(':tag MEMBER OF r.tags') // Check if tag is in 'tags' collection
+            ->setParameter('tag', $tag);
         }
 
         return $qb;

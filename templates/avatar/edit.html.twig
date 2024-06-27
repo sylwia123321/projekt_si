@@ -1,21 +1,14 @@
-{# templates/avatar/edit.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Avatar{% endblock %}
+{% block title %}{{ 'action.edit_avatar'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>Edit Avatar</h1>
+    <h1>{{ 'action.edit_avatar'|trans }}</h1>
 
     {{ form_start(form) }}
     {{ form_row(form.file) }}
 
     <button type="submit" class="btn btn-primary">Update Avatar</button>
     {{ form_end(form) }}
-
-    {% if app.user.avatar.filename is defined and app.user.avatar.filename|length %}
-        <img class="nav-profile-img" src="{{ asset(avatars_directory~app.user.avatar.filename) }}">
-        <a href="{{ path('avatar_delete', {'id': app.user.avatar.id}) }}" class="btn btn-danger">Delete Avatar</a>
-    {% endif %}
 {% endblock %}
 

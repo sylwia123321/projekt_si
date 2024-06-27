@@ -7,7 +7,6 @@ namespace App\Service;
 
 use App\Entity\Tag;
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Interface TagServiceInterface.
@@ -57,5 +56,8 @@ interface TagServiceInterface
      */
     public function findOneById(int $id): ?Tag;
 
+    /**
+     * @return array
+     */
     public function findAll(): array;
 }

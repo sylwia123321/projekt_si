@@ -3,12 +3,23 @@ namespace App\Service;
 
 use App\Entity\Category;
 use Knp\Component\Pager\Pagination\PaginationInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
+/**
+ * interface CategoryServiceInterface
+ */
 interface CategoryServiceInterface
 {
-public function getPaginatedList(int $page): PaginationInterface;
-public function getCategoryById(int $id): ?Category;
+    /**
+     * @param int $page
+     * @return PaginationInterface
+     */
+    public function getPaginatedList(int $page): PaginationInterface;
+
+    /**
+     * @param int $id
+     * @return Category|null
+     */
+    public function getCategoryById(int $id): ?Category;
     /**
      * Save entity.
      *
@@ -41,5 +52,8 @@ public function getCategoryById(int $id): ?Category;
      */
     public function findOneById(int $id): ?Category;
 
+    /**
+     * @return array
+     */
     public function findAll(): array;
 }

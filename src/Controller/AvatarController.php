@@ -36,6 +36,9 @@ class AvatarController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @return Response
+     */
     #[Route(name: 'avatar_index', methods: 'GET')]
     public function index(): Response
     {
@@ -162,48 +165,4 @@ class AvatarController extends AbstractController
             ]
         );
     }
-
-
-    /**
-     * Delete action.
-     *
-     * @param Request $request HTTP request
-     * @param Avatar  $avatar  Avatar entity
-     *
-     * @return Response HTTP response
-     */
-    #[Route(
-        '/{id}/delete',
-        name: 'avatar_delete',
-        requirements: ['id' => '[1-9]\d*'],
-        methods: ['GET', 'DELETE'] // Allow both GET and DELETE methods
-    )]
-    public function delete(Request $request, Avatar $avatar): Response
-    {
-        /** @var User $user */
-        $user = $this->getUser();
-        if (!$user->getAvatar() || $user->getAvatar()->getId() !== $avatar->getId()) {
-            throw $this->createAccessDeniedException('Access denied.');
-        }
-
-        if ($this->isCsrfTokenValid('delete'.$avatar->getId(), $request->request->get('_token'))) {
-            $this->avatarService->delete($avatar);
-
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.deleted_successfully')
-            );
-        } else {
-            $this->addFlash(
-                'error',
-                $this->translator->trans('message.invalid_token')
-            );
-        }
-
-        return $this->redirectToRoute('recipe_index');
-    }
-
-
-
-
 }

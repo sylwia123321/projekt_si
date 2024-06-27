@@ -100,11 +100,18 @@ class Recipe
      */
     private ?string $status;
 
+    /**
+     * @return string|null
+     */
     public function getStatus(): ?string
     {
         return $this->status;
     }
 
+    /**
+     * @param string|null $status
+     * @return void
+     */
     public function setStatus(?string $status): void
     {
         $this->status = $status;
@@ -272,11 +279,18 @@ class Recipe
         $this->tags->removeElement($tag);
     }
 
+    /**
+     * @return User|null
+     */
     public function getAuthor(): ?User
     {
         return $this->author;
     }
 
+    /**
+     * @param User|null $author
+     * @return $this
+     */
     public function setAuthor(?User $author): static
     {
         $this->author = $author;

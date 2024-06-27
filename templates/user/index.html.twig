@@ -24,6 +24,7 @@
             <tr>
                 <th>{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'user.id') }}</th>
                 <th>{{ 'label.email'|trans }}</th>
+                <th>{{ 'label.password'|trans }}</th>
                 <th>{{ 'label.roles'|trans }}</th>
                 {% if is_granted('ROLE_ADMIN') %}
                     <th>{{ 'label.actions'|trans }}</th>
@@ -35,6 +36,7 @@
                 <tr>
                     <td>{{ user.id }}</td>
                     <td>{{ user.email }}</td>
+                    <td>{{ user.password }}</td>
                     <td>{{ user.roles|join(', ') }}</td>
                     {% if is_granted('ROLE_ADMIN') %}
                         <td>

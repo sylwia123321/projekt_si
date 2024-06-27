@@ -88,17 +88,17 @@
                         {% endif %}
                     </td>
                     <td>
-                        {% if is_granted('VIEW', recipe) %}
+                        {% if is_granted('VIEW', recipe) or is_granted('ROLE_ADMIN') %}
                             <a class="btn btn-outline-primary" href="{{ path('recipe_show', {'id': recipe.id}) }}">
                                 {{ 'action.show'|trans }}
                             </a>
                         {% endif %}
-                        {% if is_granted('EDIT', recipe) %}
+                        {% if is_granted('EDIT', recipe) or is_granted('ROLE_ADMIN') %}
                             <a class="btn btn-outline-success" href="{{ path('recipe_edit', {'id': recipe.id}) }}">
                                 {{ 'action.edit'|trans }}
                             </a>
                         {% endif %}
-                        {% if is_granted('DELETE', recipe) %}
+                        {% if is_granted('DELETE', recipe) or is_granted('ROLE_ADMIN') %}
                             <a class="btn btn-outline-danger" href="{{ path('recipe_delete', {'id': recipe.id}) }}">
                                 {{ 'action.delete'|trans }}
                             </a>

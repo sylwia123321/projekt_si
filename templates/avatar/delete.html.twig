@@ -1,5 +1,5 @@
 <form action="{{ path('avatar_delete', {'id': avatar.id}) }}" method="POST">
     <input type="hidden" name="_method" value="DELETE">
     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ avatar.id) }}">
-    <button type="submit">Usuń Avatar</button>
+    <button type="submit">{{ 'action.delete_avatar'|trans }}</button>
 </form>

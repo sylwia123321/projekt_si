@@ -1,5 +1,4 @@
 <?php
-// src/Controller/RegistrationController.php
 
 namespace App\Controller;
 
@@ -29,7 +28,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Hash the plain password
+            // Hash the password
             $user->setPassword(
                 $passwordHasher->hashPassword(
                     $user,
@@ -37,23 +36,17 @@ class RegistrationController extends AbstractController
                 )
             );
 
-            // Assign default role
             $user->setRoles(['ROLE_USER']);
 
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // Automatically log in the user after registration
-            return $userAuthenticator->authenticateUser(
-                $user,
-                $authenticator,
-                $request
-            );
-
-            // Optionally, redirect to a route after registration
-            // return $this->redirectToRoute('some_route_after_registration');
+            // Redirect on successful registration
+            $this->addFlash('success', 'Registration successful.');
+            return $this->redirectToRoute('recipe_index');
         }
 
+        // If form is submitted but not valid, or on initial load
         return $this->render('registration/register.html.twig', [
             'registrationForm' => $form->createView(),
         ]);

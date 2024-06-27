@@ -49,7 +49,7 @@ class RecipeService implements RecipeServiceInterface
      *
      * @return PaginationInterface Paginated list
      */
-    public function getPaginatedList(int $page, User $author, ?int $categoryId, ?int $tagId): PaginationInterface
+    public function getPaginatedList(int $page, ?User $author, ?int $categoryId, ?int $tagId): PaginationInterface
     {
         $category = null !== $categoryId ? $this->categoryService->findOneById($categoryId) : null;
         $tag = null !== $tagId ? $this->tagService->findOneById($tagId) : null;
@@ -60,6 +60,7 @@ class RecipeService implements RecipeServiceInterface
             self::PAGINATOR_ITEMS_PER_PAGE
         );
     }
+
 
     /**
      * Save entity.

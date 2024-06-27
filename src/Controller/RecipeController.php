@@ -17,6 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Service\CategoryServiceInterface;
 use App\Service\TagServiceInterface;
+use Symfony\Component\Security\Core\Security;
 
 /**
  * Class RecipeController.
@@ -24,26 +25,30 @@ use App\Service\TagServiceInterface;
 #[Route('/recipe')]
 class RecipeController extends AbstractController
 {
+    private Security $security;
     private CategoryServiceInterface $categoryService;
     private TagServiceInterface $tagService;
     private RecipeServiceInterface $recipeService;
+    private TranslatorInterface $translator;
 
     public function __construct(
         CategoryServiceInterface $categoryService,
         TagServiceInterface $tagService,
         RecipeServiceInterface $recipeService,
-        TranslatorInterface $translator
+        TranslatorInterface $translator,
+        Security $security
     ) {
         $this->categoryService = $categoryService;
         $this->tagService = $tagService;
         $this->recipeService = $recipeService;
         $this->translator = $translator;
+        $this->security = $security;
     }
 
     #[Route(name: 'recipe_index', methods: 'GET')]
     public function index(Request $request): Response
     {
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $this->getUser();
 
         $categoryId = $request->query->get('categoryId');
@@ -55,7 +60,7 @@ class RecipeController extends AbstractController
         $categories = $this->categoryService->findAll();
         $tags = $this->tagService->findAll();
 
-        if ($this->isGranted('ROLE_ADMIN')) {
+        if ($this->isGranted('ROLE_ADMIN') || $this->security->getUser() == null) {
             $pagination = $this->recipeService->getAllPaginatedList(1, $categoryId, $tagId);
         } else {
             $pagination = $this->recipeService->getPaginatedList(1, $user, $categoryId, $tagId);
@@ -68,166 +73,91 @@ class RecipeController extends AbstractController
         ]);
     }
 
-
-    /**
-     * Show action.
-     *
-     * @param Recipe $recipe Recipe entity
-     *
-     * @return Response HTTP response
-     */
     #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Recipe $recipe): Response
     {
-        if ($this->isGranted('ROLE_ADMIN')) {
+        if ($this->isGranted('ROLE_ADMIN') || $recipe->getAuthor() === $this->getUser()) {
             return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
         }
-        else {
-            if ($recipe->getAuthor() !== $this->getUser()) {
-                $this->addFlash(
-                    'warning',
-                    $this->translator->trans('message.record_not_found')
-                );
 
-                return $this->redirectToRoute('recipe_index');
-            }
-            return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
-        }
+        $this->addFlash('warning', $this->translator->trans('message.record_not_found'));
+        return $this->redirectToRoute('recipe_index');
     }
 
-    /**
-     * Create action.
-     *
-     * @param Request $request HTTP request
-     *
-     * @return Response HTTP response
-     */
     #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
-        /** @var User $user */
+        /** @var User|null $user */
         $user = $this->getUser();
+
+        if (!$user instanceof User) {
+            $this->addFlash('error', 'You need to be logged in to create a recipe.');
+            return $this->redirectToRoute('app_login');
+        }
+
         $recipe = new Recipe();
         $recipe->setAuthor($user);
-        $form = $this->createForm(
-            RecipeType::class,
-            $recipe,
-            ['action' => $this->generateUrl('recipe_create')]
-        );
+        $form = $this->createForm(RecipeType::class, $recipe, ['action' => $this->generateUrl('recipe_create')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->recipeService->save($recipe);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.created_successfully')
-            );
-
+            $this->addFlash('success', $this->translator->trans('message.created_successfully'));
             return $this->redirectToRoute('recipe_index');
         }
 
-        return $this->render('recipe/create.html.twig',  ['form' => $form->createView()]);
+        return $this->render('recipe/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * Edit action.
-     *
-     * @param Request $request HTTP request
-     * @param Recipe  $recipe  Recipe entity
-     *
-     * @return Response HTTP response
-     */
     #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe): Response
     {
         if ($recipe->getAuthor() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash(
-                'warning',
-                $this->translator->trans('message.record_not_found')
-            );
-
+            $this->addFlash('warning', $this->translator->trans('message.record_not_found'));
             return $this->redirectToRoute('recipe_index');
         }
-        $form = $this->createForm(
-            RecipeType::class,
-            $recipe,
-            [
-                'method' => 'PUT',
-                'action' => $this->generateUrl('recipe_edit', ['id' => $recipe->getId()]),
-            ]
-        );
+
+        $form = $this->createForm(RecipeType::class, $recipe, [
+            'method' => 'PUT',
+            'action' => $this->generateUrl('recipe_edit', ['id' => $recipe->getId()]),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->recipeService->save($recipe);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.edited_successfully')
-            );
-
+            $this->addFlash('success', $this->translator->trans('message.edited_successfully'));
             return $this->redirectToRoute('recipe_index');
         }
 
-        return $this->render(
-            'recipe/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'recipe' => $recipe,
-            ]
-        );
+        return $this->render('recipe/edit.html.twig', ['form' => $form->createView(), 'recipe' => $recipe]);
     }
 
-    /**
-     * Delete action.
-     *
-     * @param Request $request HTTP request
-     * @param Recipe  $recipe  Recipe entity
-     *
-     * @return Response HTTP response
-     */
     #[Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function delete(Request $request, Recipe $recipe): Response
     {
         if ($recipe->getAuthor() !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash(
-                'warning',
-                $this->translator->trans('message.record_not_found')
-            );
-
+            $this->addFlash('warning', $this->translator->trans('message.record_not_found'));
             return $this->redirectToRoute('recipe_index');
         }
-        $form = $this->createForm(
-            FormType::class,
-            $recipe,
-            [
-                'method' => 'DELETE',
-                'action' => $this->generateUrl('recipe_delete', ['id' => $recipe->getId()]),
-            ]
-        );
+
+        $form = $this->createForm(FormType::class, $recipe, [
+            'method' => 'DELETE',
+            'action' => $this->generateUrl('recipe_delete', ['id' => $recipe->getId()]),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->recipeService->delete($recipe);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.deleted_successfully')
-            );
-
+            $this->addFlash('success', $this->translator->trans('message.deleted_successfully'));
             return $this->redirectToRoute('recipe_index');
         }
 
-        return $this->render(
-            'recipe/delete.html.twig',
-            [
-                'form' => $form->createView(),
-                'recipe' => $recipe,
-            ]
-        );
+        return $this->render('recipe/delete.html.twig', ['form' => $form->createView(), 'recipe' => $recipe]);
     }
 }

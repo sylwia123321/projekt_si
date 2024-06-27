@@ -7,7 +7,6 @@ use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
-use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -40,20 +39,16 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Delete user entity and related entities.
-     *
-     * @param User $user User entity to delete
-     * @throws ForeignKeyConstraintViolationException If a foreign key constraint is violated
+     * @param User $user
+     * @return void
+     * @throws \Exception
      */
     public function deleteUserWithRelatedEntities(User $user): void
     {
         $this->entityManager->beginTransaction();
 
         try {
-            // Usuń powiązane encje (np. przepisy)
             $this->deleteRelatedEntities($user);
-
-            // Usuń użytkownika
             $this->entityManager->remove($user);
             $this->entityManager->flush();
 
@@ -71,7 +66,7 @@ class UserRepository extends ServiceEntityRepository
      */
     private function deleteRelatedEntities(User $user): void
     {
-        $recipes = $user->getRecipes(); // Przykładowe pobranie powiązanych encji (np. przepisów)
+        $recipes = $user->getRecipes();
 
         foreach ($recipes as $recipe) {
             $this->entityManager->remove($recipe);
@@ -88,5 +83,16 @@ class UserRepository extends ServiceEntityRepository
     public function queryAll(): QueryBuilder
     {
         return $this->createQueryBuilder('user');
+    }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function delete(User $user): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($user);
+        $entityManager->flush();
     }
 }

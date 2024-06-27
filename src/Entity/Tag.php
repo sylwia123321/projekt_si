@@ -70,7 +70,6 @@ class Tag
      */
     public function __construct()
     {
-        // Initialize collections if any
     }
 
     /**

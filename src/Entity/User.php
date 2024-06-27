@@ -122,7 +122,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = UserRole::ROLE_USER->value;
 
         return array_unique($roles);
@@ -178,18 +177,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function eraseCredentials(): void
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
     }
 
+    /**
+     * @return Avatar|null
+     */
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
     }
 
+    /**
+     * @param Avatar $avatar
+     * @return $this
+     */
     public function setAvatar(Avatar $avatar): static
     {
-        // set the owning side of the relation if necessary
         if ($avatar->getUser() !== $this) {
             $avatar->setUser($this);
         }
