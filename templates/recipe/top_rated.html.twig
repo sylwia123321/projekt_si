@@ -13,7 +13,6 @@
                 <tr>
                     <th>{{ 'label.title'|trans }}</th>
                     <th>{{ 'label.average_rating'|trans }}</th>
-                    <th>{{ 'label.actions'|trans }}</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -21,11 +20,6 @@
                     <tr>
                         <td>{{ recipe[0].title }}</td>
                         <td>{{ recipe.avgRating|number_format(2) }}</td>
-                        <td>
-                            <a class="btn btn-outline-primary" href="{{ path('recipe_show', {'id': recipe[0].id}) }}">
-                                {{ 'action.show'|trans }}
-                            </a>
-                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>

@@ -73,7 +73,7 @@
                         <td>{{ recipe.createdAt|date('Y-m-d H:i') }}</td>
                         <td>{{ recipe.updatedAt|date('Y-m-d H:i') }}</td>
                         <td>{{ recipe.title }}</td>
-                        <td>{{ recipe.author.username }}</td>
+                        <td>{{ recipe.author.email }}</td>
                         <td>
                             <a class="btn btn-outline-primary" href="{{ path('recipe_index', {'categoryId': recipe.category.id}) }}">
                                 {{ recipe.category.title }}
