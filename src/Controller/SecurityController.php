@@ -67,11 +67,11 @@ class SecurityController extends AbstractController
 
                 $entityManager->flush();
 
-                $this->addFlash('success', 'Password successfully changed.');
+                $this->addFlash('success', 'message.password_changed_successfully');
 
                 return $this->redirectToRoute('recipe_index');
             } else {
-                $form->get('currentPassword')->addError(new FormError('Current password is incorrect.'));
+                $form->get('currentPassword')->addError(new FormError('message.incorrect_password'));
             }
         }
 

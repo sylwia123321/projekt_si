@@ -146,7 +146,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '\d+'], methods: ['DELETE'])]
+    #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '\d+'], methods: ['DELETE|GET'])]
     public function delete(Request $request, User $user): Response
     {
         $form = $this->createForm(FormType::class, $user, [
@@ -166,7 +166,7 @@ class UserController extends AbstractController
             } catch (ForeignKeyConstraintViolationException $e) {
                 $this->addFlash(
                     'error',
-                    'Cannot delete user due to existing references.'
+                    ''
                 );
             }
 

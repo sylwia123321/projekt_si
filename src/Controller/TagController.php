@@ -59,7 +59,7 @@ class TagController extends AbstractController
     public function show(Tag $tag): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Access denied. Only administrators can manage tags.');
+            $this->addFlash('error', 'message.access_denied');
             return $this->redirectToRoute('tag_index');
         }
         return $this->render('tag/show.html.twig', ['tag' => $tag]);
@@ -76,7 +76,7 @@ class TagController extends AbstractController
     public function create(Request $request): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Access denied. Only administrators can manage tags.');
+            $this->addFlash('error', 'message.access_denied');
             return $this->redirectToRoute('tag_index');
         }
         $tag = new Tag();
@@ -114,7 +114,7 @@ class TagController extends AbstractController
     public function edit(Request $request, Tag $tag): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Access denied. Only administrators can manage tags.');
+            $this->addFlash('error', 'message.access_denied');
             return $this->redirectToRoute('tag_index');
         }
         $form = $this->createForm(
@@ -160,7 +160,7 @@ class TagController extends AbstractController
     public function delete(Request $request, Tag $tag): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Access denied. Only administrators can manage tags.');
+            $this->addFlash('error', 'message.access_denied');
             return $this->redirectToRoute('tag_index');
         }
         $form = $this->createForm(

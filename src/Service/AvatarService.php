@@ -29,11 +29,12 @@ class AvatarService implements AvatarServiceInterface
     }
 
     /**
-     * Update avatar.
-     *
-     * @param UploadedFile $uploadedFile Uploaded file
-     * @param Avatar       $avatar       Avatar entity
-     * @param User         $user         User entity
+     * @param UploadedFile $uploadedFile
+     * @param Avatar $avatar
+     * @param User $user
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function update(UploadedFile $uploadedFile, Avatar $avatar, User $user): void
     {
@@ -49,11 +50,12 @@ class AvatarService implements AvatarServiceInterface
     }
 
     /**
-     * Create avatar.
-     *
-     * @param UploadedFile $uploadedFile Uploaded file
-     * @param Avatar       $avatar       Avatar entity
-     * @param User         $user         User entity
+     * @param UploadedFile $uploadedFile
+     * @param Avatar $avatar
+     * @param User $user
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function create(UploadedFile $uploadedFile, Avatar $avatar, User $user): void
     {
@@ -67,6 +69,8 @@ class AvatarService implements AvatarServiceInterface
     /**
      * @param Avatar $avatar
      * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function delete(Avatar $avatar): void
     {

@@ -115,7 +115,7 @@ class RecipeController extends AbstractController
         $user = $this->getUser();
 
         if (!$user instanceof User) {
-            $this->addFlash('error', 'You need to be logged in to create a recipe.');
+            $this->addFlash('error', 'message.access_denied');
             return $this->redirectToRoute('app_login');
         }
 
@@ -206,8 +206,9 @@ class RecipeController extends AbstractController
     public function rate(Request $request, Recipe $recipe, Security $security, EntityManagerInterface $entityManager): Response
     {
         $user = $security->getUser();
-        if (!$user) {
+        if (!$user instanceof User)  {
             throw $this->createAccessDeniedException($this->translator->trans('message.access_denied'));
+            return $this->redirectToRoute('app_login');
         }
 
         $rating = new Rating();

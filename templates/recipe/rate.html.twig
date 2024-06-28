@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>{{ 'action.recipe_rate'|rans }}: {{ recipe.title }}</h1>
+    <h1>{{ 'action.recipe_rate'|trans }}: {{ recipe.title }}</h1>
     {{ form_start(form) }}
     {{ form_widget(form) }}
     <input type="submit" value="{{ 'action.submit'|trans }}" class="btn btn-primary"/>

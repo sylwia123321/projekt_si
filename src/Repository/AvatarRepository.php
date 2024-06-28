@@ -6,6 +6,9 @@ use App\Entity\Avatar;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Controller\AvatarServiceInterface;
+use Doctrine\ORM\ORMException;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\EntityManager;
 
 /**
  * @extends ServiceEntityRepository<Avatar>

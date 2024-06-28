@@ -60,7 +60,7 @@ class CategoryController extends AbstractController
     public function show(Category $category): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Access denied. Only administrators can manage categories.');
+            $this->addFlash('error', 'message.access_denied');
             return $this->redirectToRoute('category_index');
         }
 
@@ -84,7 +84,7 @@ class CategoryController extends AbstractController
     public function create(Request $request): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Access denied. Only administrators can manage categories.');
+            $this->addFlash('error', 'message.access_denied');
             return $this->redirectToRoute('category_index');
         }
 
@@ -121,7 +121,7 @@ class CategoryController extends AbstractController
     public function edit(Request $request, Category $category): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Access denied. Only administrators can manage categories.');
+            $this->addFlash('error', 'message.access_denied');
             return $this->redirectToRoute('category_index');
         }
 
@@ -140,7 +140,7 @@ class CategoryController extends AbstractController
 
             $this->addFlash(
                 'success',
-                $this->translator->trans('message.created_successfully')
+                $this->translator->trans('message.edited_successfully')
             );
 
             return $this->redirectToRoute('category_index');
@@ -167,7 +167,7 @@ class CategoryController extends AbstractController
     public function delete(Request $request, Category $category): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'Access denied. Only administrators can manage categories.');
+            $this->addFlash('error', 'message.access_denied');
             return $this->redirectToRoute('category_index');
         }
 

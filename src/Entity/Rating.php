@@ -2,6 +2,9 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Entity\Enum\RecipeStatus;
+use App\Repository\RatingRepository;
 
 /**
  * Class Rating.
@@ -24,8 +27,8 @@ class Rating
     #[ORM\ManyToOne(targetEntity: Recipe::class, fetch: 'EXTRA_LAZY', inversedBy: 'ratings')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
-    #[Assert\Type(User::class)]
-    private $recipe;
+    #[Assert\Type(Recipe::class)]
+    private ?Recipe $recipe = null;
 
     #[ORM\Column(type: 'integer')]
     private $score;

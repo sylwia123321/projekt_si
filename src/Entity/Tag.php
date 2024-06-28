@@ -13,7 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 #[ORM\Entity(repositoryClass: TagRepository::class)]
 #[ORM\Table(name: 'tags')]
-#[ORM\HasLifecycleCallbacks]
 class Tag
 {
     /**
@@ -34,7 +33,6 @@ class Tag
     #[ORM\Column(type: 'string', length: 64)]
     #[Assert\Type('string')]
     #[Assert\NotBlank]
-    #[Assert\Length(max: 64)]
     private ?string $title = null;
 
     /**

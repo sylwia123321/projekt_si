@@ -3,6 +3,7 @@ namespace App\Service;
 
 use App\Entity\Category;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * interface CategoryServiceInterface

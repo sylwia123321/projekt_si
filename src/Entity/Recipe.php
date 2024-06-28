@@ -13,13 +13,13 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Entity\Enum\RecipeStatus;
+use DateTimeImmutable;
 
 /**
  * Class Recipe.
  */
 #[ORM\Entity(repositoryClass: RecipeRepository::class)]
 #[ORM\Table(name: 'recipes')]
-#[ORM\HasLifecycleCallbacks]
 class Recipe
 {
     #[ORM\Id]
@@ -28,22 +28,29 @@ class Recipe
     private ?int $id = null;
 
     #[ORM\Column(type: 'string', length: 255)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?string $title = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?string $description = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?string $ingredients = null;
 
-    #[ORM\Column(type: 'text', nullable: true)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?string $instructions = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\Type(DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'create')]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(type: 'datetime_immutable')]
+    #[Assert\Type(DateTimeImmutable::class)]
     #[Gedmo\Timestampable(on: 'update')]
     private ?\DateTimeImmutable $updatedAt = null;
 
@@ -58,6 +65,7 @@ class Recipe
      */
     #[ORM\ManyToOne(targetEntity: Category::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?Category $category = null;
 
     /**
@@ -66,7 +74,7 @@ class Recipe
      * @var ArrayCollection<int, Tag>
      */
     #[Assert\Valid]
-    #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
+    #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinTable(name: 'recipes_tags')]
     private $tags;
 
@@ -87,7 +95,7 @@ class Recipe
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $comment = null;
 
-    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'recipe')]
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'recipe', fetch: 'EXTRA_LAZY')]
     private $ratings;
 
     /**
@@ -97,28 +105,20 @@ class Recipe
     {
         $this->tags = new ArrayCollection();
         $this->ratings = new ArrayCollection();
+        $this->status = 'draft';
     }
 
-    /**
-     * @ORM\Column(type="string", length=255)
-     */
+    #[ORM\Column(type: 'string', length: 64)]
+    #[ORM\JoinColumn(nullable: false)]
+    #[Assert\NotBlank]
     private ?string $status;
 
     /**
-     * @return string|null
+     * @return string
      */
     public function getStatus(): ?string
     {
         return $this->status;
-    }
-
-    /**
-     * @param string|null $status
-     * @return void
-     */
-    public function setStatus(?string $status): void
-    {
-        $this->status = $status;
     }
 
     /**
@@ -328,6 +328,10 @@ class Recipe
         return $this->ratings;
     }
 
+    /**
+     * @param Rating $rating
+     * @return $this
+     */
     public function addRating(Rating $rating): self
     {
         if (!$this->ratings->contains($rating)) {
@@ -338,11 +342,14 @@ class Recipe
         return $this;
     }
 
+    /**
+     * @param Rating $rating
+     * @return $this
+     */
     public function removeRating(Rating $rating): self
     {
         if ($this->ratings->contains($rating)) {
             $this->ratings->removeElement($rating);
-            // set the owning side to null (unless already changed)
             if ($rating->getRecipe() === $this) {
                 $rating->setRecipe(null);
             }
@@ -351,6 +358,9 @@ class Recipe
         return $this;
     }
 
+    /**
+     * @return float|null
+     */
     public function getAverageRating(): ?float
     {
         $total = 0;

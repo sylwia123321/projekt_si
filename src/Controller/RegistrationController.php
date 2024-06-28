@@ -51,7 +51,7 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Registration successful.');
+            $this->addFlash('success', 'message.created_successfully');
             return $this->redirectToRoute('recipe_index');
         }
 

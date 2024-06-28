@@ -75,9 +75,10 @@ class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Delete entity.
-     *
-     * @param Category $category Category entity
+     * @param Category $category
+     * @return void
+     * @throws \Doctrine\ORM\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function delete(Category $category): void
     {

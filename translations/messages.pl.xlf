@@ -408,6 +408,34 @@
             <source>action.rate</source>
             <target>Oceń</target>
         </trans-unit>
+        <trans-unit id="message.access_denied">
+            <source>message.access_denied</source>
+            <target>Brak dostępu</target>
+        </trans-unit>
+        <trans-unit id="label.top_recipes">
+            <source>label.top_recipes</source>
+            <target>Najwyżej ocenione przepisy</target>
+        </trans-unit>
+        <trans-unit id="Top Rated Recipes">
+            <source>Top Rated Recipes</source>
+            <target>Najwyżej ocenione przepisy</target>
+        </trans-unit>
+        <trans-unit id="No top-rated recipes found.">
+            <source>No top-rated recipes found.</source>
+            <target>Nie znaleziono najwyżej ocenionych przepisów</target>
+        </trans-unit>
+        <trans-unit id="label.users">
+            <source>label.users</source>
+            <target>Użytkownicy</target>
+        </trans-unit>
+        <trans-unit id="action.recipe_rate">
+            <source>action.recipe_rate</source>
+            <target>Oceń</target>
+        </trans-unit>
+        <trans-unit id="action.submit">
+            <source>action.submit</source>
+            <target>Wyślij</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

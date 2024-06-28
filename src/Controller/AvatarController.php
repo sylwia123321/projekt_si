@@ -17,7 +17,6 @@ use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
-
 /**
  * Class AvatarController.
  */
@@ -93,6 +92,9 @@ class AvatarController extends AbstractController
                 $avatar,
                 $user
             );
+
+            $this->entityManager->persist($avatar);
+            $this->entityManager->flush();
 
             $this->addFlash(
                 'success',

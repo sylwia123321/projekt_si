@@ -40,14 +40,12 @@ class RecipeService implements RecipeServiceInterface
     }
 
     /**
-     * Get paginated list.
-     *
-     * @param int    $page       Page number
-     * @param User   $author     Recipes author
-     * @param int|null $categoryId Category ID
-     * @param int|null $tagId      Tag ID
-     *
-     * @return PaginationInterface Paginated list
+     * @param int $page
+     * @param User|null $author
+     * @param int|null $categoryId
+     * @param int|null $tagId
+     * @return PaginationInterface
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getPaginatedList(int $page, ?User $author, ?int $categoryId, ?int $tagId): PaginationInterface
     {
@@ -89,6 +87,7 @@ class RecipeService implements RecipeServiceInterface
      * @param int|null $categoryId
      * @param int|null $tagId
      * @return PaginationInterface
+     * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface
     {

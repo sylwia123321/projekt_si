@@ -17,11 +17,11 @@ class RatingType extends AbstractType
      * @param array $options
      * @return void
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('score', IntegerType::class, [
-                'label' => 'Score (1-5)',
+                'label' => 'label.score (1-5)',
                 'attr' => ['min' => 1, 'max' => 5]
             ]);
     }
@@ -30,7 +30,7 @@ class RatingType extends AbstractType
      * @param OptionsResolver $resolver
      * @return void
      */
-    public function configureOptions(OptionsResolver $resolver)
+    public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => Rating::class,
