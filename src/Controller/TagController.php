@@ -58,12 +58,6 @@ class TagController extends AbstractController
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Tag $tag): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'message.access_denied');
-
-            return $this->redirectToRoute('tag_index');
-        }
-
         return $this->render('tag/show.html.twig', ['tag' => $tag]);
     }
 
@@ -116,11 +110,6 @@ class TagController extends AbstractController
     #[IsGranted('EDIT', subject: 'recipe')]
     public function edit(Request $request, Tag $tag): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'message.access_denied');
-
-            return $this->redirectToRoute('tag_index');
-        }
         $form = $this->createForm(
             TagType::class,
             $tag,
@@ -136,7 +125,7 @@ class TagController extends AbstractController
 
             $this->addFlash(
                 'success',
-                $this->translator->trans('message.edited_successfully')
+                $this->translator->trans('message.created_successfully')
             );
 
             return $this->redirectToRoute('tag_index');
@@ -152,30 +141,18 @@ class TagController extends AbstractController
     }
 
     /**
-     * Delete action.
-     *
-     * @param Request $request HTTP request
-     * @param Tag     $tag     Tag entity
-     *
-     * @return Response HTTP response
+     * @param Request $request
+     * @param Tag $tag
+     * @return Response
      */
     #[Route('/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
-    #[IsGranted('DELETE', subject: 'recipe')]
+    #[IsGranted('DELETE', subject: 'tag', message: 'Denied')]
     public function delete(Request $request, Tag $tag): Response
     {
-        if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'message.access_denied');
-
-            return $this->redirectToRoute('tag_index');
-        }
-        $form = $this->createForm(
-            FormType::class,
-            $tag,
-            [
-                'method' => 'DELETE',
-                'action' => $this->generateUrl('tag_delete', ['id' => $tag->getId()]),
-            ]
-        );
+        $form = $this->createForm(FormType::class, $tag, [
+            'method' => 'DELETE',
+            'action' => $this->generateUrl('tag_delete', ['id' => $tag->getId()]),
+        ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

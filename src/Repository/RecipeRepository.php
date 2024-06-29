@@ -7,8 +7,6 @@ use App\Entity\Recipe;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\NonUniqueResultException;
-use Doctrine\ORM\NoResultException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\ORMException;
@@ -20,6 +18,9 @@ use Doctrine\ORM\EntityManager;
  */
 class RecipeRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Recipe::class);
@@ -51,9 +52,8 @@ class RecipeRepository extends ServiceEntityRepository
 
 
     /**
-     * Find top-rated recipes using native SQL query.
-     *
-     * @return Recipe[]
+     * @return array
+     * @throws \Doctrine\DBAL\Exception
      */
     public function findTopRatedRecipes(): array
     {
