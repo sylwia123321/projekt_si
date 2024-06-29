@@ -477,6 +477,10 @@
             <source>label.update_avatar</source>
             <target>Zmodyfikuj avatar</target>
         </trans-unit>
+        <trans-unit id="message.incorrect_password">
+            <source>message.incorrect_password</source>
+            <target>Nieprawidłowe hasło</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

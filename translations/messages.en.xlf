@@ -500,6 +500,10 @@
             <source>label.update_avatar</source>
             <target>Update avatar</target>
         </trans-unit>
+        <trans-unit id="message.incorrect_password">
+            <source>message.incorrect_password</source>
+            <target>Incorrect password</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>
