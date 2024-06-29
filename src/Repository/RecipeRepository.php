@@ -50,43 +50,6 @@ class RecipeRepository extends ServiceEntityRepository
         return $qb;
     }
 
-
-    /**
-     * @return array
-     * @throws \Doctrine\DBAL\Exception
-     */
-    public function findTopRatedRecipes(): array
-    {
-        $entityManager = $this->getEntityManager();
-
-        $connection = $entityManager->getConnection();
-        $sql = '
-            SELECT r.*, AVG(ra.score) as avgScore
-            FROM recipes r
-            LEFT JOIN ratings ra ON r.id = ra.recipe_id
-            GROUP BY r.id
-            ORDER BY avgScore DESC
-            LIMIT 10
-        ';
-
-        $statement = $connection->prepare($sql);
-        $statement->execute();
-        $results = $statement->fetchAllAssociative();
-
-        $recipes = [];
-        foreach ($results as $result) {
-            $recipe = $this->find($result['id']);
-            if ($recipe !== null) {
-                $recipes[] = [
-                    'recipe' => $recipe,
-                    'avgScore' => $result['avgScore'],
-                ];
-            }
-        }
-
-        return $recipes;
-    }
-
     /**
      * @param User|null $author
      * @param Category|null $category

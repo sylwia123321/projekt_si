@@ -48,10 +48,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th>{{ knp_pagination_sortable(pagination, 'label.id'|trans, 'recipe.id') }}</th>
-                    <th>{{ knp_pagination_sortable(pagination, 'label.created_at'|trans, 'recipe.createdAt') }}</th>
-                    <th>{{ knp_pagination_sortable(pagination, 'label.updated_at'|trans, 'recipe.updatedAt') }}</th>
-                    <th>{{ knp_pagination_sortable(pagination, 'label.title'|trans, 'recipe.title') }}</th>
+                    <th>{{ 'label.id'|trans }}</th>
+                    <th>{{ 'label.created_at'|trans }}</th>
+                    <th>{{ 'label.updated_at'|trans }}</th>
+                    <th>{{ 'label.title'|trans }}</th>
                     <th>{{ 'label.author'|trans }}</th>
                     <th>{{ 'label.category'|trans }}</th>
                     <th>{{ 'label.tag'|trans }}</th>
@@ -109,11 +109,6 @@
                                     {{ 'action.delete'|trans }}
                                 </a>
                             {% endif %}
-                            {# {% if is_granted('EDIT', recipe) %}
-                                <a class="btn btn-outline-success" href="{{ path('recipe_rate', {'id': recipe.id}) }}">
-                                {{ 'action.rate'|trans }}
-                                </a>
-                            {% endif %} #}
                         </td>
                     </tr>
                 {% endfor %}

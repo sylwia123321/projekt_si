@@ -11,12 +11,23 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class SecurityController.
  */
 class SecurityController extends AbstractController
 {
+    private TranslatorInterface $translator;
+
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(
+        TranslatorInterface $translator,
+    ) {
+        $this->translator = $translator;
+    }
     /**
      * Login action.
      *
@@ -67,11 +78,11 @@ class SecurityController extends AbstractController
 
                 $entityManager->flush();
 
-                $this->addFlash('success', 'message.password_changed_successfully');
+                $this->addFlash('success', $this->translator->trans('message.edited_successfully'));
 
                 return $this->redirectToRoute('recipe_index');
             } else {
-                $form->get('currentPassword')->addError(new FormError('message.incorrect_password'));
+                $form->get('currentPassword')->addError(new FormError($this->translator->trans('message.incorrect_password')));
             }
         }
 

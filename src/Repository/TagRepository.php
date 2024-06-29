@@ -35,9 +35,10 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * Save entity.
-     *
-     * @param Tag $tag Tag entity
+     * @param Tag $tag
+     * @return void
+     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function save(Tag $tag): void
     {
@@ -47,9 +48,10 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * Delete entity.
-     *
-     * @param Tag $tag Tag entity
+     * @param Tag $tag
+     * @return void
+     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function delete(Tag $tag): void
     {

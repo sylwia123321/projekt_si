@@ -61,9 +61,10 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * Save entity.
-     *
-     * @param Tag $tag Tag entity
+     * @param Tag $tag
+     * @return void
+     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function save(Tag $tag): void
     {
@@ -71,9 +72,10 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * Delete entity.
-     *
-     * @param Tag $tag Tag entity
+     * @param Tag $tag
+     * @return void
+     * @throws \Doctrine\ORM\Exception\ORMException
+     * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function delete(Tag $tag): void
     {
