@@ -84,7 +84,7 @@
       </trans-unit>
       <trans-unit id="message.category_contains_tasks">
           <source>message.category_contains_tasks</source>
-          <target>Ta kategoria zawiera zadania i nie może być usunięta.</target>
+          <target>Ta kategoria zawiera zadania i nie moźe być usunięta.</target>
       </trans-unit>
       <trans-unit id="message.deleted_successfully">
           <source>message.deleted_successfully</source>
@@ -120,7 +120,7 @@
       </trans-unit>
       <trans-unit id="message.form_error">
           <source>message.form_error</source>
-          <target>Wystąpił błąd podczas przesyłania formularza. Sprawdź formularz i spróbuj ponownie.</target>
+          <target>Występił błąd podczas przesyłania formularza. Sprawdź formularz i spróbuj ponownie.</target>
       </trans-unit>
       <trans-unit id="title.recipe_create">
           <source>title.recipe_create</source>
@@ -152,7 +152,7 @@
       </trans-unit>
       <trans-unit id="validators.password_mismatch">
         <source>The password fields must match.</source>
-        <target>Pola hasła muszą się zgadzać.</target>
+        <target>Pola hasła muszż się zgadzać.</target>
       </trans-unit>
       <trans-unit id="message.invalid_token">
         <source>message.invalid_token</source>
@@ -236,7 +236,7 @@
       </trans-unit>
       <trans-unit id="title.tag_details">
         <source>title.tag_details</source>
-        <target>Szczegóły tagu</target>
+        <target>Szczegły tagu</target>
       </trans-unit>
       <trans-unit id="title.user_create">
         <source>title.user_create</source>
@@ -264,7 +264,7 @@
       </trans-unit>
       <trans-unit id="title.user_details">
         <source>title.user_details</source>
-        <target>Szczegóły użytkownika</target>
+        <target>Szczegły użytkownika</target>
       </trans-unit>
       <trans-unit id="action.delete_avatar">
           <source>action.delete_avatar</source>
@@ -318,7 +318,7 @@
 
       <trans-unit id="label.category_details">
           <source>label.category_details</source>
-          <target>Szczegóły kategorii</target>
+          <target>Szczegóy kategorii</target>
       </trans-unit>
 
       <trans-unit id="label.recipe_title">
@@ -426,7 +426,7 @@
         </trans-unit>
         <trans-unit id="label.users">
             <source>label.users</source>
-            <target>Użytkownicy</target>
+            <target>Uźytkownicy</target>
         </trans-unit>
         <trans-unit id="action.recipe_rate">
             <source>action.recipe_rate</source>
