@@ -24,7 +24,7 @@ class TagFixtures extends Fixture
      */
     public function load(ObjectManager $manager): void
     {
-        for ($i = 0; $i < 100; $i++) {
+        for ($i = 0; $i < 100; ++$i) {
             $tag = new Tag();
             $tag->setTitle($this->faker->word);
             $tag->setCreatedAt(

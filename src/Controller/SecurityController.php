@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Controller;
 
 use App\Form\Type\UserPasswordChangeType;
@@ -20,14 +21,12 @@ class SecurityController extends AbstractController
 {
     private TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(
         TranslatorInterface $translator,
     ) {
         $this->translator = $translator;
     }
+
     /**
      * Login action.
      *
@@ -48,14 +47,10 @@ class SecurityController extends AbstractController
      * Logout action.
      */
     #[Route(path: '/logout', name: 'app_logout')]
-    public function logout(): void{}
+    public function logout(): void
+    {
+    }
 
-    /**
-     * @param Request $request
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @param EntityManagerInterface $entityManager
-     * @return Response
-     */
     #[Route(path: '/change-password', name: 'app_change_password')]
     public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {

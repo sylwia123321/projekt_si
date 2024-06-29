@@ -11,24 +11,13 @@ use Symfony\Component\Security\Core\User\UserInterface;
  */
 class TagCategoryVoter extends Voter
 {
-    const MANAGE = 'manage';
+    public const MANAGE = 'manage';
 
-    /**
-     * @param string $attribute
-     * @param $subject
-     * @return bool
-     */
     protected function supports(string $attribute, $subject): bool
     {
-        return $attribute === self::MANAGE;
+        return self::MANAGE === $attribute;
     }
 
-    /**
-     * @param string $attribute
-     * @param $subject
-     * @param TokenInterface $token
-     * @return bool
-     */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();

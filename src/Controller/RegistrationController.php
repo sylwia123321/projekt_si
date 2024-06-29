@@ -20,18 +20,12 @@ class RegistrationController extends AbstractController
     /**
      * Constructor.
      *
-     * @param TranslatorInterface      $translator      Translator
+     * @param TranslatorInterface $translator Translator
      */
     public function __construct(private readonly TranslatorInterface $translator)
     {
     }
 
-    /**
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @param UserPasswordHasherInterface $passwordHasher
-     * @return Response
-     */
     #[Route('/register', name: 'app_register')]
     public function register(
         Request $request,

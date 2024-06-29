@@ -24,6 +24,7 @@ use Doctrine\ORM\EntityManagerInterface;
 class AvatarController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
+
     /**
      * Constructor.
      *
@@ -35,9 +36,6 @@ class AvatarController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return Response
-     */
     #[Route(name: 'avatar_index', methods: 'GET')]
     public function index(): Response
     {

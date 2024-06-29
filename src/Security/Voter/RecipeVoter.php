@@ -81,8 +81,8 @@ class RecipeVoter extends Voter
     /**
      * Checks if user can edit recipe.
      *
-     * @param Recipe          $recipe Recipe entity
-     * @param UserInterface $user User
+     * @param Recipe        $recipe Recipe entity
+     * @param UserInterface $user   User
      *
      * @return bool Result
      */
@@ -94,8 +94,8 @@ class RecipeVoter extends Voter
     /**
      * Checks if user can view recipe.
      *
-     * @param Recipe          $recipe Recipe entity
-     * @param UserInterface $user User
+     * @param Recipe        $recipe Recipe entity
+     * @param UserInterface $user   User
      *
      * @return bool Result
      */
@@ -107,8 +107,8 @@ class RecipeVoter extends Voter
     /**
      * Checks if user can delete recipe.
      *
-     * @param Recipe          $recipe Recipe entity
-     * @param UserInterface $user User
+     * @param Recipe        $recipe Recipe entity
+     * @param UserInterface $user   User
      *
      * @return bool Result
      */

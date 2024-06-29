@@ -24,7 +24,6 @@ interface RecipeServiceInterface
      */
     public function getPaginatedList(int $page, ?User $author, ?int $categoryId, ?int $tagId): PaginationInterface;
 
-
     /**
      * Save entity.
      *
@@ -39,13 +38,6 @@ interface RecipeServiceInterface
      */
     public function delete(Recipe $recipe): void;
 
-    /**
-     * @param int      $page
-     * @param int|null $categoryId
-     * @param int|null $tagId
-     *
-     * @return PaginationInterface
-     */
     public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface;
 
     /**

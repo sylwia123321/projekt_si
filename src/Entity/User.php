@@ -22,8 +22,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     /**
      * Primary key.
-     *
-     * @var int|null
      */
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -32,8 +30,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Email.
-     *
-     * @var string|null
      */
     #[ORM\Column(type: 'string', length: 180, unique: true)]
     #[Assert\NotBlank]
@@ -50,8 +46,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * Password.
-     *
-     * @var string|null
      */
     #[ORM\Column(type: 'string')]
     #[Assert\NotBlank]
@@ -59,7 +53,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Avatar $avatar = null;
-
 
     public function __construct()
     {
@@ -184,17 +177,12 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     {
     }
 
-    /**
-     * @return Avatar|null
-     */
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
     }
 
     /**
-     * @param Avatar $avatar
-     *
      * @return $this
      */
     public function setAvatar(Avatar $avatar): static

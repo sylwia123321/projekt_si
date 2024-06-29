@@ -35,8 +35,6 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Tag $tag
-     * @return void
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -48,8 +46,6 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Tag $tag
-     * @return void
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -67,7 +63,7 @@ class TagRepository extends ServiceEntityRepository
      *
      * @return QueryBuilder Query builder
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('tag');
     }

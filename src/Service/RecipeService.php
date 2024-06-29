@@ -41,13 +41,6 @@ class RecipeService implements RecipeServiceInterface
     }
 
     /**
-     * @param int       $page
-     * @param User|null $author
-     * @param int|null  $categoryId
-     * @param int|null  $tagId
-     *
-     * @return PaginationInterface
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getPaginatedList(int $page, ?User $author, ?int $categoryId, ?int $tagId): PaginationInterface
@@ -62,12 +55,7 @@ class RecipeService implements RecipeServiceInterface
         );
     }
 
-
     /**
-     * @param Recipe $recipe
-     *
-     * @return void
-     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -77,10 +65,6 @@ class RecipeService implements RecipeServiceInterface
     }
 
     /**
-     * @param Recipe $recipe
-     *
-     * @return void
-     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -90,12 +74,6 @@ class RecipeService implements RecipeServiceInterface
     }
 
     /**
-     * @param int      $page
-     * @param int|null $categoryId
-     * @param int|null $tagId
-     *
-     * @return PaginationInterface
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface

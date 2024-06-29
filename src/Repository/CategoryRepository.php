@@ -2,6 +2,7 @@
 /**
  * Category repository.
  */
+
 namespace App\Repository;
 
 use App\Entity\Category;
@@ -14,9 +15,8 @@ use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\EntityManager;
 
 /**
- * Class CategoryRepository
+ * Class CategoryRepository.
  *
- * @package App\Repository
  * @method Category|null find($id, $lockMode = null, $lockVersion = null)
  * @method Category|null findOneBy(array $criteria, array $orderBy = null)
  * @method Category[]    findAll()
@@ -26,16 +26,11 @@ class CategoryRepository extends ServiceEntityRepository
 {
     /**
      * Entity Manager.
-     *
-     * @var EntityManagerInterface
      */
     private EntityManagerInterface $entityManager;
 
     /**
      * CategoryRepository constructor.
-     *
-     * @param ManagerRegistry $registry
-     * @param EntityManagerInterface $entityManager
      */
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
@@ -45,8 +40,6 @@ class CategoryRepository extends ServiceEntityRepository
 
     /**
      * Query all records.
-     *
-     * @return QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {
@@ -56,14 +49,13 @@ class CategoryRepository extends ServiceEntityRepository
 
     /**
      * Save entity.
-     *
-     * @param Category $category
      */
     public function save(Category $category): void
     {
         $this->entityManager->persist($category);
         $this->entityManager->flush();
     }
+
     /**
      * Delete entity.
      *

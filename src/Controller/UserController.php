@@ -26,10 +26,6 @@ class UserController extends AbstractController
 
     /**
      * Constructor.
-     *
-     * @param UserServiceInterface $userService
-     * @param EntityManagerInterface $entityManager
-     * @param TranslatorInterface $translator
      */
     public function __construct(UserServiceInterface $userService, EntityManagerInterface $entityManager, TranslatorInterface $translator)
     {
@@ -50,7 +46,7 @@ class UserController extends AbstractController
         $pagination = $this->userService->getPaginatedList($page);
 
         return $this->render('user/index.html.twig', [
-            'pagination' => $pagination
+            'pagination' => $pagination,
         ]);
     }
 
@@ -90,7 +86,7 @@ class UserController extends AbstractController
      * Edit action.
      *
      * @param Request $request HTTP request
-     * @param User     $user     User entity
+     * @param User    $user    User entity
      *
      * @return Response HTTP response
      */

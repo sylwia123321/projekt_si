@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use App\Entity\User;
@@ -20,25 +21,17 @@ class RegistrationFormType extends AbstractType
 
     /**
      * Constructor.
-     *
-     * @param TranslatorInterface $translator
      */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
 
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     *
-     * @return void
-     */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('email', EmailType::class, [
-                'label' => $this->translator->trans('label.email')
+                'label' => $this->translator->trans('label.email'),
             ])
             ->add('password', RepeatedType::class, [
                 'type' => PasswordType::class,
@@ -46,15 +39,10 @@ class RegistrationFormType extends AbstractType
                 'second_options' => ['label' => $this->translator->trans('label.repeat_password')],
             ])
             ->add('submit', SubmitType::class, [
-                'label' => $this->translator->trans('label.register')
+                'label' => $this->translator->trans('label.register'),
             ]);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     *
-     * @return void
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

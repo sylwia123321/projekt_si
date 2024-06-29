@@ -61,8 +61,6 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * @param Tag $tag
-     * @return void
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -72,8 +70,6 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * @param Tag $tag
-     * @return void
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -108,18 +104,11 @@ class TagService implements TagServiceInterface
         return $this->tagRepository->findOneById($id);
     }
 
-    /**
-     * @return array
-     */
     public function findAll(): array
     {
         return $this->tagRepository->findAll();
     }
 
-    /**
-     * @param array $titles
-     * @return array
-     */
     public function findByTitles(array $titles): array
     {
         $tags = $this->tagRepository->createQueryBuilder('t')
@@ -135,5 +124,4 @@ class TagService implements TagServiceInterface
 
         return $tagMap;
     }
-
 }

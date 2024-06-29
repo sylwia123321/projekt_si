@@ -23,12 +23,6 @@ class CategoryService implements CategoryServiceInterface
     private CategoryRepository $categoryRepository;
     private RecipeRepository $recipeRepository;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param PaginatorInterface $paginator
-     * @param CategoryRepository $categoryRepository
-     * @param RecipeRepository $recipeRepository
-     */
     public function __construct(
         EntityManagerInterface $entityManager,
         PaginatorInterface $paginator,
@@ -41,13 +35,10 @@ class CategoryService implements CategoryServiceInterface
         $this->recipeRepository = $recipeRepository;
     }
 
-    /**
-     * @param int $page
-     * @return PaginationInterface
-     */
     public function getPaginatedList(int $page): PaginationInterface
     {
         $query = $this->categoryRepository->queryAll();
+
         return $this->paginator->paginate(
             $query,
             $page,
@@ -55,10 +46,6 @@ class CategoryService implements CategoryServiceInterface
         );
     }
 
-    /**
-     * @param int $id
-     * @return Category|null
-     */
     public function getCategoryById(int $id): ?Category
     {
         return $this->categoryRepository->find($id);
@@ -75,8 +62,6 @@ class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * @param Category $category
-     * @return void
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -96,8 +81,9 @@ class CategoryService implements CategoryServiceInterface
     {
         try {
             $result = $this->recipeRepository->countByCategory($category);
+
             return !($result > 0);
-        } catch (NoResultException | NonUniqueResultException $e) {
+        } catch (NoResultException|NonUniqueResultException $e) {
             return false;
         }
     }
@@ -116,9 +102,6 @@ class CategoryService implements CategoryServiceInterface
         return $this->categoryRepository->findOneById($id);
     }
 
-    /**
-     * @return array
-     */
     public function findAll(): array
     {
         return $this->categoryRepository->findAll();

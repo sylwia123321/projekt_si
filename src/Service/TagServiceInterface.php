@@ -57,14 +57,7 @@ interface TagServiceInterface
      */
     public function findOneById(int $id): ?Tag;
 
-    /**
-     * @return array
-     */
     public function findAll(): array;
 
-    /**
-     * @param array $titles
-     * @return array
-     */
     public function findByTitles(array $titles): array;
 }

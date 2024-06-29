@@ -18,7 +18,7 @@ class UserRepository extends ServiceEntityRepository
     /**
      * Constructor.
      *
-     * @param ManagerRegistry $registry Manager registry
+     * @param ManagerRegistry        $registry      Manager registry
      * @param EntityManagerInterface $entityManager Entity manager
      */
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
@@ -39,8 +39,6 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
-     * @return void
      * @throws \Exception
      */
     public function deleteUserWithRelatedEntities(User $user): void
@@ -85,10 +83,6 @@ class UserRepository extends ServiceEntityRepository
         return $this->createQueryBuilder('user');
     }
 
-    /**
-     * @param User $user
-     * @return void
-     */
     public function delete(User $user): void
     {
         $entityManager = $this->getEntityManager();

@@ -65,9 +65,9 @@ class CategoryController extends AbstractController
             $this->addFlash('warning', 'message.access_denied');
 
             return $this->redirectToRoute('category_index');
-        }
-        else
+        } else {
             return $this->render('category/show.html.twig', ['category' => $category]);
+        }
     }
 
     /**

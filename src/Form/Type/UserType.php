@@ -1,4 +1,5 @@
 <?php
+
 namespace App\Form\Type;
 
 use Symfony\Component\Form\AbstractType;
@@ -15,24 +16,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class UserType extends AbstractType
 {
-    /**
-     * @var TranslatorInterface
-     */
     private TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
-    /**
-     * @param FormBuilderInterface $builder
-     * @param array                $options
-     *
-     * @return void
-     */
+
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
@@ -55,11 +45,6 @@ class UserType extends AbstractType
             ]);
     }
 
-    /**
-     * @param OptionsResolver $resolver
-     *
-     * @return void
-     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

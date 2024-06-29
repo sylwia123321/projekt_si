@@ -29,10 +29,6 @@ class AvatarService implements AvatarServiceInterface
     }
 
     /**
-     * @param UploadedFile $uploadedFile
-     * @param Avatar $avatar
-     * @param User $user
-     * @return void
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -50,10 +46,6 @@ class AvatarService implements AvatarServiceInterface
     }
 
     /**
-     * @param UploadedFile $uploadedFile
-     * @param Avatar $avatar
-     * @param User $user
-     * @return void
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -67,8 +59,6 @@ class AvatarService implements AvatarServiceInterface
     }
 
     /**
-     * @param Avatar $avatar
-     * @return void
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -76,11 +66,10 @@ class AvatarService implements AvatarServiceInterface
     {
         $filename = $avatar->getFilename();
 
-        if ($filename !== null) {
+        if (null !== $filename) {
             $this->filesystem->remove($this->targetDirectory.'/'.$filename);
             $avatar->setFilename(null);
             $this->avatarRepository->save($avatar);
         }
     }
-
 }
