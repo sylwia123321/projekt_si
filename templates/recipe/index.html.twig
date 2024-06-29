@@ -7,9 +7,11 @@
 {% block body %}
     <h1>{{ 'title.recipe_list'|trans }}</h1>
 
-    <div class="mb-3">
-        <a href="{{ path('recipe_create') }}" class="btn btn-primary">{{ 'title.recipe_create'|trans }}</a>
-    </div>
+    {% if is_granted('ROLE_USER') %}
+        <div class="mb-3">
+            <a href="{{ path('recipe_create') }}" class="btn btn-primary">{{ 'title.recipe_create'|trans }}</a>
+        </div>
+    {% endif %}
 
     <form method="get" action="{{ path('recipe_index') }}" class="form-inline mb-3">
         <div class="form-group mr-2">
@@ -17,7 +19,7 @@
             <select id="categoryId" name="categoryId" class="form-control">
                 <option value="">{{ 'label.all_categories'|trans }}</option>
                 {% for category in categories %}
-                    <option value="{{ category.id }}" {% if app.request.query.get('categoryId') == category.id %}selected{% endif %}>
+                    <option value="{{ category.id }}" {% if app.request.query.get('categoryId') == category.id %}{{ 'label.selected'|trans }}{% endif %}>
                         {{ category.title }}
                     </option>
                 {% endfor %}
@@ -28,7 +30,7 @@
             <select id="tagId" name="tagId" class="form-control">
                 <option value="">{{ 'label.all_tags'|trans }}</option>
                 {% for tag in tags %}
-                    <option value="{{ tag.id }}" {% if app.request.query.get('tagId') == tag.id %}selected{% endif %}>
+                    <option value="{{ tag.id }}" {% if app.request.query.get('tagId') == tag.id %}{{ 'label.selected'|trans }}{% endif %}>
                         {{ tag.title }}
                     </option>
                 {% endfor %}
@@ -54,7 +56,7 @@
                     <th>{{ 'label.category'|trans }}</th>
                     <th>{{ 'label.tag'|trans }}</th>
                     <th>{{ 'label.comment'|trans }}</th>
-                    <th>{{ 'label.average_rating'|trans }}</th>
+
                     {% set displayActions = false %}
                     {% for recipe in pagination.items %}
                         {% if is_granted('VIEW', recipe) or is_granted('ROLE_ADMIN') %}
@@ -73,7 +75,7 @@
                         <td>{{ recipe.createdAt|date('Y-m-d H:i') }}</td>
                         <td>{{ recipe.updatedAt|date('Y-m-d H:i') }}</td>
                         <td>{{ recipe.title }}</td>
-                        <td>{{ recipe.author.email }}</td>
+                        <td>{{ recipe.author.username }}</td>
                         <td>
                             <a class="btn btn-outline-primary" href="{{ path('recipe_index', {'categoryId': recipe.category.id}) }}">
                                 {{ recipe.category.title }}
@@ -92,9 +94,6 @@
                         </td>
                         <td>{{ recipe.comment }}</td>
                         <td>
-                            {{ recipe.getAverageRating()|number_format(2) }}
-                        </td>
-                        <td>
                             {% if is_granted('VIEW', recipe) or is_granted('ROLE_ADMIN') %}
                                 <a class="btn btn-outline-primary" href="{{ path('recipe_show', {'id': recipe.id}) }}">
                                     {{ 'action.show'|trans }}
@@ -110,11 +109,11 @@
                                     {{ 'action.delete'|trans }}
                                 </a>
                             {% endif %}
-                            {% if is_granted('EDIT', recipe) %}
+                            {# {% if is_granted('EDIT', recipe) %}
                                 <a class="btn btn-outline-success" href="{{ path('recipe_rate', {'id': recipe.id}) }}">
-                                    {{ 'action.rate'|trans }}
+                                {{ 'action.rate'|trans }}
                                 </a>
-                            {% endif %}
+                            {% endif %} #}
                         </td>
                     </tr>
                 {% endfor %}

@@ -57,23 +57,21 @@ class TagsDataTransformer implements DataTransformerInterface
      */
     public function reverseTransform($value): array
     {
-        $tagTitles = explode(',', $value);
+        $tagTitles = array_map('trim', explode(',', $value));
+        $existingTags = $this->tagService->findByTitles($tagTitles);
 
         $tags = [];
-
         foreach ($tagTitles as $tagTitle) {
-            if ('' !== trim($tagTitle)) {
-                $tag = $this->tagService->findOneByTitle(strtolower($tagTitle));
-                if (null === $tag) {
-                    $tag = new Tag();
-                    $tag->setTitle($tagTitle);
-
-                    $this->tagService->save($tag);
-                }
-                $tags[] = $tag;
+            $tag = $existingTags[strtolower($tagTitle)] ?? null;
+            if (!$tag) {
+                $tag = new Tag();
+                $tag->setTitle($tagTitle);
+                $this->tagService->save($tag);
             }
+            $tags[] = $tag;
         }
 
         return $tags;
     }
+
 }

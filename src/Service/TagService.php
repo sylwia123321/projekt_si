@@ -9,7 +9,6 @@ use App\Entity\Tag;
 use App\Repository\TagRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\NonUniqueResultException;
 
 /**
@@ -17,7 +16,6 @@ use Doctrine\ORM\NonUniqueResultException;
  */
 class TagService implements TagServiceInterface
 {
-    private EntityManagerInterface $entityManager;
     private PaginatorInterface $paginator;
     private TagRepository $tagRepository;
 
@@ -38,10 +36,8 @@ class TagService implements TagServiceInterface
      * @param TagRepository      $tagRepository Tag repository
      * @param PaginatorInterface $paginator     Paginator
      */
-
-    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, TagRepository $tagRepository)
+    public function __construct(PaginatorInterface $paginator, TagRepository $tagRepository)
     {
-        $this->entityManager = $entityManager;
         $this->paginator = $paginator;
         $this->tagRepository = $tagRepository;
     }
@@ -56,6 +52,7 @@ class TagService implements TagServiceInterface
     public function getPaginatedList(int $page): PaginationInterface
     {
         $query = $this->tagRepository->queryAll();
+
         return $this->paginator->paginate(
             $query,
             $page,
@@ -116,4 +113,25 @@ class TagService implements TagServiceInterface
     {
         return $this->tagRepository->findAll();
     }
+
+    /**
+     * @param array $titles
+     * @return array
+     */
+    public function findByTitles(array $titles): array
+    {
+        $tags = $this->tagRepository->createQueryBuilder('t')
+            ->where('LOWER(t.title) IN (:titles)')
+            ->setParameter('titles', array_map('strtolower', $titles))
+            ->getQuery()
+            ->getResult();
+
+        $tagMap = [];
+        foreach ($tags as $tag) {
+            $tagMap[strtolower($tag->getTitle())] = $tag;
+        }
+
+        return $tagMap;
+    }
+
 }

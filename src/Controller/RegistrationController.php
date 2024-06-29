@@ -4,14 +4,13 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Type\RegistrationFormType;
-use App\Security\LoginFormAuthenticator;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class RegistrationController.
@@ -19,11 +18,18 @@ use Symfony\Component\Security\Http\Authentication\UserAuthenticatorInterface;
 class RegistrationController extends AbstractController
 {
     /**
+     * Constructor.
+     *
+     * @param TranslatorInterface      $translator      Translator
+     */
+    public function __construct(private readonly TranslatorInterface $translator)
+    {
+    }
+
+    /**
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param UserPasswordHasherInterface $passwordHasher
-     * @param UserAuthenticatorInterface $userAuthenticator
-     * @param LoginFormAuthenticator $authenticator
      * @return Response
      */
     #[Route('/register', name: 'app_register')]
@@ -31,8 +37,6 @@ class RegistrationController extends AbstractController
         Request $request,
         EntityManagerInterface $entityManager,
         UserPasswordHasherInterface $passwordHasher,
-        UserAuthenticatorInterface $userAuthenticator,
-        LoginFormAuthenticator $authenticator
     ): Response {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -51,7 +55,11 @@ class RegistrationController extends AbstractController
             $entityManager->persist($user);
             $entityManager->flush();
 
-            $this->addFlash('success', 'message.created_successfully');
+            $this->addFlash(
+                'success',
+                $this->translator->trans('message.created_successfully')
+            );
+
             return $this->redirectToRoute('recipe_index');
         }
 

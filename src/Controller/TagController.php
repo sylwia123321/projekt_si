@@ -60,8 +60,10 @@ class TagController extends AbstractController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'message.access_denied');
+
             return $this->redirectToRoute('tag_index');
         }
+
         return $this->render('tag/show.html.twig', ['tag' => $tag]);
     }
 
@@ -77,6 +79,7 @@ class TagController extends AbstractController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'message.access_denied');
+
             return $this->redirectToRoute('tag_index');
         }
         $tag = new Tag();
@@ -115,6 +118,7 @@ class TagController extends AbstractController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'message.access_denied');
+
             return $this->redirectToRoute('tag_index');
         }
         $form = $this->createForm(
@@ -161,6 +165,7 @@ class TagController extends AbstractController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'message.access_denied');
+
             return $this->redirectToRoute('tag_index');
         }
         $form = $this->createForm(

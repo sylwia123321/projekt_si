@@ -459,6 +459,47 @@
             <source>action.submit</source>
             <target>Submit</target>
         </trans-unit>
+
+        <trans-unit id="label.repeat_password">
+            <source>label.repeat_password</source>
+            <target>Repeat password</target>
+        </trans-unit>
+        <trans-unit id="label.register">
+            <source>label.register</source>
+            <target>Register</target>
+        </trans-unit>
+        <trans-unit id="label.current_password">
+            <source>label.current_password</source>
+            <target>Current password</target>
+        </trans-unit>
+        <trans-unit id="label.new_password">
+            <source>label.new_password</source>
+            <target>New password</target>
+        </trans-unit>
+        <trans-unit id="label.repeat_new_password">
+            <source>label.repeat_new_password</source>
+            <target>Repeat new password</target>
+        </trans-unit>
+        <trans-unit id="action_recipe_rate">
+            <source>action_recipe_rate</source>
+            <target>Rate</target>
+        </trans-unit>
+        <trans-unit id="label.selected">
+            <source>label.selected</source>
+            <target>Selected</target>
+        </trans-unit>
+        <trans-unit id="label.back_to_list">
+            <source>label.back_to_list</source>
+            <target>Back to list</target>
+        </trans-unit>
+        <trans-unit id="label.log_in">
+            <source>label.log_in</source>
+            <target>Log in</target>
+        </trans-unit>
+        <trans-unit id="label.update_avatar">
+            <source>label.update_avatar</source>
+            <target>Update avatar</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

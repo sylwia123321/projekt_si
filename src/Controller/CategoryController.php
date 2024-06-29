@@ -8,12 +8,14 @@ namespace App\Controller;
 use App\Entity\Category;
 use App\Form\Type\CategoryType;
 use App\Service\CategoryServiceInterface;
+use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * Class CategoryController.
@@ -26,9 +28,13 @@ class CategoryController extends AbstractController
      *
      * @param CategoryServiceInterface $categoryService Category service
      * @param TranslatorInterface      $translator      Translator
+     * @param ManagerRegistry          $doctrine        Doctrine manager registry
      */
-    public function __construct(private readonly CategoryServiceInterface $categoryService, private readonly TranslatorInterface $translator)
-    {
+    public function __construct(
+        private readonly CategoryServiceInterface $categoryService,
+        private readonly TranslatorInterface $translator,
+        private readonly ManagerRegistry $doctrine
+    ) {
     }
 
     /**
@@ -47,7 +53,7 @@ class CategoryController extends AbstractController
     /**
      * Show action.
      *
-     * @param Category $category Category
+     * @param int $id Category ID
      *
      * @return Response HTTP response
      */
@@ -57,10 +63,17 @@ class CategoryController extends AbstractController
         requirements: ['id' => '[1-9]\d*'],
         methods: 'GET'
     )]
-    public function show(Category $category): Response
+    public function show(int $id): Response
     {
+        $category = $this->doctrine->getRepository(Category::class)->find($id);
+
+        if (!$category) {
+            throw new NotFoundHttpException('Category not found');
+        }
+
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'message.access_denied');
+
             return $this->redirectToRoute('category_index');
         }
 
@@ -85,6 +98,7 @@ class CategoryController extends AbstractController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'message.access_denied');
+
             return $this->redirectToRoute('category_index');
         }
 
@@ -122,6 +136,7 @@ class CategoryController extends AbstractController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'message.access_denied');
+
             return $this->redirectToRoute('category_index');
         }
 
@@ -168,6 +183,7 @@ class CategoryController extends AbstractController
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
             $this->addFlash('error', 'message.access_denied');
+
             return $this->redirectToRoute('category_index');
         }
 

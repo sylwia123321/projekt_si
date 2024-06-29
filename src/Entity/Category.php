@@ -71,18 +71,7 @@ class Category
     #[Gedmo\Slug(fields: ['title'])]
     private ?string $slug;
 
-    /**
-     * Recipes.
-     *
-     * @var Collection<int, Recipe>
-     */
-    #[ORM\OneToMany(mappedBy: 'category', targetEntity: Recipe::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
-    private Collection $recipes;
 
-    public function __construct()
-    {
-        $this->recipes = new ArrayCollection();
-    }
 
     /**
      * Getter for Id.
@@ -173,39 +162,5 @@ class Category
         return $this;
     }
 
-    /**
-     * Getter for recipes.
-     *
-     * @return Collection<int, Recipe>
-     */
-    public function getRecipes(): Collection
-    {
-        return $this->recipes;
-    }
 
-    /**
-     * Add recipe.
-     *
-     * @param Recipe $recipe Recipe entity
-     */
-    public function addRecipe(Recipe $recipe): void
-    {
-        if (!$this->recipes->contains($recipe)) {
-            $this->recipes[] = $recipe;
-            $recipe->setCategory($this);
-        }
-    }
-
-    /**
-     * Remove recipe.
-     *
-     * @param Recipe $recipe Recipe entity
-     */
-    public function removeRecipe(Recipe $recipe): void
-    {
-        $this->recipes->removeElement($recipe);
-        if ($recipe->getCategory() === $this) {
-            $recipe->setCategory(null);
-        }
-    }
 }

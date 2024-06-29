@@ -1,18 +1,12 @@
 <?php
-/**
- * Recipe entity.
- */
-
 namespace App\Entity;
 
 use App\Repository\RecipeRepository;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Entity\Enum\RecipeStatus;
 use DateTimeImmutable;
 
 /**
@@ -32,15 +26,15 @@ class Recipe
     #[Assert\NotBlank]
     private ?string $title = null;
 
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     private ?string $description = null;
 
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     private ?string $ingredients = null;
 
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\Column(type: 'text')]
     #[Assert\NotBlank]
     private ?string $instructions = null;
 
@@ -61,7 +55,7 @@ class Recipe
     /**
      * Category.
      *
-     * @var Category
+     * @var Category|null
      */
     #[ORM\ManyToOne(targetEntity: Category::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
@@ -74,7 +68,7 @@ class Recipe
      * @var ArrayCollection<int, Tag>
      */
     #[Assert\Valid]
-    #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY')]
+    #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
     #[ORM\JoinTable(name: 'recipes_tags')]
     private $tags;
 
@@ -87,16 +81,15 @@ class Recipe
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Type(User::class)]
-    private ?User $author;
+    private ?User $author = null;
 
     /**
      * Comment.
+     *
+     * @var string|null
      */
-    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $comment = null;
-
-    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'recipe', fetch: 'EXTRA_LAZY')]
-    private $ratings;
 
     /**
      * Constructor.
@@ -104,21 +97,6 @@ class Recipe
     public function __construct()
     {
         $this->tags = new ArrayCollection();
-        $this->ratings = new ArrayCollection();
-        $this->status = 'draft';
-    }
-
-    #[ORM\Column(type: 'string', length: 64)]
-    #[ORM\JoinColumn(nullable: false)]
-    #[Assert\NotBlank]
-    private ?string $status;
-
-    /**
-     * @return string
-     */
-    public function getStatus(): ?string
-    {
-        return $this->status;
     }
 
     /**
@@ -244,7 +222,7 @@ class Recipe
     /**
      * Setter for category.
      */
-    public function setCategory(?Category $category): static
+    public function setCategory(?Category $category): self
     {
         $this->category = $category;
 
@@ -284,7 +262,7 @@ class Recipe
     }
 
     /**
-     * @return User|null
+     * Getter for author.
      */
     public function getAuthor(): ?User
     {
@@ -292,10 +270,9 @@ class Recipe
     }
 
     /**
-     * @param User|null $author
-     * @return $this
+     * Setter for author.
      */
-    public function setAuthor(?User $author): static
+    public function setAuthor(?User $author): self
     {
         $this->author = $author;
 
@@ -313,64 +290,10 @@ class Recipe
     /**
      * Setter for comment.
      */
-    public function setComment(?string $comment): static
+    public function setComment(?string $comment): self
     {
         $this->comment = $comment;
 
         return $this;
-    }
-
-    /**
-     * @return Collection|Rating[]
-     */
-    public function getRatings(): Collection
-    {
-        return $this->ratings;
-    }
-
-    /**
-     * @param Rating $rating
-     * @return $this
-     */
-    public function addRating(Rating $rating): self
-    {
-        if (!$this->ratings->contains($rating)) {
-            $this->ratings[] = $rating;
-            $rating->setRecipe($this);
-        }
-
-        return $this;
-    }
-
-    /**
-     * @param Rating $rating
-     * @return $this
-     */
-    public function removeRating(Rating $rating): self
-    {
-        if ($this->ratings->contains($rating)) {
-            $this->ratings->removeElement($rating);
-            if ($rating->getRecipe() === $this) {
-                $rating->setRecipe(null);
-            }
-        }
-
-        return $this;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getAverageRating(): ?float
-    {
-        $total = 0;
-        $count = 0;
-
-        foreach ($this->ratings as $rating) {
-            $total += $rating->getScore();
-            $count++;
-        }
-
-        return $count > 0 ? $total / $count : null;
     }
 }

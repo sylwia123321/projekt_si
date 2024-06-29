@@ -21,15 +21,8 @@
             <th>Updated At</th>
             <td>{{ category.updatedAt|date('Y-m-d H:i:s') }}</td>
         </tr>
-        <tr>
-            <th>{{ 'label.recipe_title'|trans }}</th>
-            <td>{% for recipe in category.recipes %}
-                    <li>{{ recipe.title }}</li>
-                {% endfor %}</td>
-        </tr>
-
         </tbody>
     </table>
 
-    <a href="{{ path('category_index') }}">Back to list</a>
+    <a href="{{ path('category_index') }}">{{ 'label.back_to_list'|trans }}</a>
 {% endblock %}

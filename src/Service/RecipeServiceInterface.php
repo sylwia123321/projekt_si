@@ -8,6 +8,7 @@ namespace App\Service;
 use App\Entity\Recipe;
 use App\Entity\User;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use App\Entity\Tag;
 
 /**
  * Interface RecipeServiceInterface.
@@ -39,10 +40,20 @@ interface RecipeServiceInterface
     public function delete(Recipe $recipe): void;
 
     /**
-     * @param int $page
+     * @param int      $page
      * @param int|null $categoryId
      * @param int|null $tagId
+     *
      * @return PaginationInterface
      */
     public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface;
+
+    /**
+     * Find by title.
+     *
+     * @param string $title Tag title
+     *
+     * @return Tag|null Tag entity
+     */
+    public function findOneByTitle(string $title): ?Tag;
 }

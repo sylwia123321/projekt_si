@@ -436,6 +436,47 @@
             <source>action.submit</source>
             <target>Wyślij</target>
         </trans-unit>
+
+                <trans-unit id="label.repeat_password">
+                    <source>label.repeat_password</source>
+                    <target>Powtórz hasło</target>
+                </trans-unit>
+                <trans-unit id="label.register">
+                    <source>label.register</source>
+                    <target>Zarejestruj się</target>
+                </trans-unit>
+                <trans-unit id="label.current_password">
+                    <source>label.current_password</source>
+                    <target>Obecne hasło</target>
+                </trans-unit>
+                <trans-unit id="label.new_password">
+                    <source>label.new_password</source>
+                    <target>Nowe hasło</target>
+                </trans-unit>
+                <trans-unit id="label.repeat_new_password">
+                    <source>label.repeat_new_password</source>
+                    <target>Powtórz hasło</target>
+                </trans-unit>
+                <trans-unit id="action_recipe_rate">
+                    <source>action_recipe_rate</source>
+                    <target>Oceń</target>
+                </trans-unit>
+                <trans-unit id="label.selected">
+                    <source>label.selected</source>
+                    <target>Wybrane</target>
+                </trans-unit>
+                <trans-unit id="label.back_to_list">
+                    <source>label.back_to_list</source>
+                    <target>Powrót do listy</target>
+                </trans-unit>
+        <trans-unit id="label.log_in">
+            <source>label.log_in</source>
+            <target>Zaloguj się</target>
+        </trans-unit>
+        <trans-unit id="label.update_avatar">
+            <source>label.update_avatar</source>
+            <target>Zmodyfikuj avatar</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

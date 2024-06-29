@@ -29,14 +29,15 @@ class UserPasswordChangeType extends AbstractType
 
     /**
      * @param FormBuilderInterface $builder
-     * @param array $options
+     * @param array                $options
+     *
      * @return void
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
             ->add('currentPassword', PasswordType::class, [
-                'label' => 'Current Password',
+                'label' => $this->translator->trans('label.current_password'),
                 'required' => true,
                 'mapped' => false,
                 'constraints' => [
@@ -47,8 +48,8 @@ class UserPasswordChangeType extends AbstractType
             ])
             ->add('newPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'first_options' => ['label' => 'New Password'],
-                'second_options' => ['label' => 'Repeat New Password'],
+                'first_options' => ['label' => $this->translator->trans('label.new_password')],
+                'second_options' => ['label' => $this->translator->trans('label.repeat_new_password')],
                 'invalid_message' => $this->translator->trans('validators.password_mismatch'),
                 'required' => true,
                 'mapped' => false,
@@ -68,6 +69,7 @@ class UserPasswordChangeType extends AbstractType
 
     /**
      * @param OptionsResolver $resolver
+     *
      * @return void
      */
     public function configureOptions(OptionsResolver $resolver): void

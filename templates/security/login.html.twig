@@ -1,37 +1,37 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Log in!{% endblock %}
+{% block title %}{{ 'label.log_in'|trans }}{% endblock %}
 
 {% block body %}
-<form method="post">
-    {% if error %}
-        <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
-    {% endif %}
+    <form method="post">
+        {% if error %}
+            <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+        {% endif %}
 
-    {% if app.user %}
-        <div class="mb-3">
-            {{ 'message.logged_in'|trans }} {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">{{ 'message/logged_out'|trans }}</a>
+        {% if app.user %}
+            <div class="mb-3">
+                {{ 'message.logged_in'|trans }} {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">{{ 'message/logged_out'|trans }}</a>
+            </div>
+        {% endif %}
+
+        <h1 class="h3 mb-3 font-weight-normal">{{ 'action.sign_in'|trans }}</h1>
+        <label for="inputEmail">{{ 'label.email'|trans }}</label>
+        <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+        <label for="inputPassword">{{ 'label.password'|trans }}</label>
+        <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+
+        <input type="hidden" name="_csrf_token"
+               value="{{ csrf_token('authenticate') }}"
+        >
+
+        <div class="checkbox mb-3">
+            <label>
+                <input type="checkbox" name="_remember_me"> {{ 'action.remember_me'|trans }}
+            </label>
         </div>
-    {% endif %}
 
-    <h1 class="h3 mb-3 font-weight-normal">{{ 'action.sign_in'|trans }}</h1>
-    <label for="inputEmail">{{ 'label.email'|trans }}</label>
-    <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
-    <label for="inputPassword">{{ 'label.password'|trans }}</label>
-    <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
-
-    <input type="hidden" name="_csrf_token"
-           value="{{ csrf_token('authenticate') }}"
-    >
-
-    <div class="checkbox mb-3">
-        <label>
-            <input type="checkbox" name="_remember_me"> {{ 'action.remember_me'|trans }}
-        </label>
-    </div>
-
-    <button class="btn btn-lg btn-primary" type="submit">
-        {{ 'action.sign_in'|trans }}
-    </button>
-</form>
+        <button class="btn btn-lg btn-primary" type="submit">
+            {{ 'action.sign_in'|trans }}
+        </button>
+    </form>
 {% endblock %}

@@ -1,7 +1,4 @@
 <?php
-/**
- * Recipe repository.
- */
 
 namespace App\Repository;
 
@@ -20,76 +17,74 @@ use Doctrine\ORM\EntityManager;
 
 /**
  * Class RecipeRepository.
- *
- * @method Recipe|null find($id, $lockMode = null, $lockVersion = null)
- * @method Recipe|null findOneBy(array $criteria, array $orderBy = null)
- * @method Recipe[]    findAll()
- * @method Recipe[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
- *
- * @extends ServiceEntityRepository<Recipe>
  */
 class RecipeRepository extends ServiceEntityRepository
 {
-    /**
-     * Items per page.
-     *
-     * Use constants to define configuration options that rarely change instead
-     * of specifying them in configuration files.
-     * See https://symfony.com/doc/current/best_practices.html#configuration
-     *
-     * @constant int
-     */
-    public const PAGINATOR_ITEMS_PER_PAGE = 10;
-    /**
-     * Constructor.
-     *
-     * @param ManagerRegistry $registry Manager registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Recipe::class);
     }
 
     /**
-     * Query all records.
-     *
-     * @param int $page
-     * @param int $limit
-     *
-     * @return QueryBuilder Query builder
+     * @param Category|null $category
+     * @param Tag|null $tag
+     * @return QueryBuilder
      */
-    public function queryAll(int $page = 1, int $limit = 10): QueryBuilder
+    public function queryByFilters(?Category $category, ?Tag $tag): QueryBuilder
     {
-        return $this->getOrCreateQueryBuilder()
-            ->select(
-                'partial recipe.{id, createdAt, updatedAt, title, description, ingredients, instructions}',
-                'partial category.{id, title}'
-            )
-            ->join('recipe.category', 'category')
-            ->orderBy('recipe.createdAt', 'DESC')
-            ->setFirstResult(($page - 1) * $limit)
-            ->setMaxResults($limit);
+        $qb = $this->createQueryBuilder('r')
+            ->leftJoin('r.tags', 't')
+            ->addSelect('t');
+
+        if (null !== $category) {
+            $qb->andWhere('r.category = :category')
+                ->setParameter('category', $category);
+        }
+
+        if (null !== $tag) {
+            $qb->andWhere(':tag MEMBER OF r.tags')
+                ->setParameter('tag', $tag);
+        }
+
+        return $qb;
     }
 
-    /**
-     * Count recipes by category.
-     *
-     * @param Category $category Category
-     *
-     * @return int Number of recipes in category
-     *
-     * @throws NoResultException
-     * @throws NonUniqueResultException
-     */
-    public function countByCategory(Category $category): int
-    {
-        $qb = $this->getOrCreateQueryBuilder();
 
-        return $qb->select($qb->expr()->countDistinct('recipe.id'))
-            ->where('recipe.category = :category')
-            ->setParameter('category', $category)
-            ->getQuery()
-            ->getSingleScalarResult();
+    /**
+     * Find top-rated recipes using native SQL query.
+     *
+     * @return Recipe[]
+     */
+    public function findTopRatedRecipes(): array
+    {
+        $entityManager = $this->getEntityManager();
+
+        $connection = $entityManager->getConnection();
+        $sql = '
+            SELECT r.*, AVG(ra.score) as avgScore
+            FROM recipes r
+            LEFT JOIN ratings ra ON r.id = ra.recipe_id
+            GROUP BY r.id
+            ORDER BY avgScore DESC
+            LIMIT 10
+        ';
+
+        $statement = $connection->prepare($sql);
+        $statement->execute();
+        $results = $statement->fetchAllAssociative();
+
+        $recipes = [];
+        foreach ($results as $result) {
+            $recipe = $this->find($result['id']);
+            if ($recipe !== null) {
+                $recipes[] = [
+                    'recipe' => $recipe,
+                    'avgScore' => $result['avgScore'],
+                ];
+            }
+        }
+
+        return $recipes;
     }
 
     /**
@@ -101,6 +96,8 @@ class RecipeRepository extends ServiceEntityRepository
     public function queryByAuthorAndFilters(?User $author, ?Category $category, ?Tag $tag): QueryBuilder
     {
         $qb = $this->createQueryBuilder('recipe')
+            ->leftJoin('recipe.tags', 't')
+            ->addSelect('t')
             ->where('recipe.author = :author')
             ->setParameter('author', $author);
 
@@ -117,20 +114,6 @@ class RecipeRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * Save entity.
-     *
-     * @param Recipe $recipe Recipe entity
-     *
-     * @throws ORMException
-     * @throws OptimisticLockException
-     */
-    public function save(Recipe $recipe): void
-    {
-        assert($this->_em instanceof EntityManager);
-        $this->_em->persist($recipe);
-        $this->_em->flush();
-    }
 
     /**
      * Delete entity.
@@ -148,53 +131,31 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
+     * Save entity.
      *
-     * @param QueryBuilder|null $queryBuilder Query builder
+     * @param Recipe $recipe Recipe entity
      *
-     * @return QueryBuilder Query builder
+     * @throws ORMException
+     * @throws OptimisticLockException
      */
-    private function getOrCreateQueryBuilder(QueryBuilder $queryBuilder = null): QueryBuilder
+    public function save(Recipe $recipe): void
     {
-        return $queryBuilder ?? $this->createQueryBuilder('recipe');
+        assert($this->_em instanceof EntityManager);
+        $this->_em->persist($recipe);
+        $this->_em->flush();
     }
-
     /**
-     * @param Category|null $category
-     * @param Tag|null $tag
-     * @return QueryBuilder
+     * Query all records.
+     *
+     * @return \Doctrine\ORM\QueryBuilder Query builder
      */
-    public function queryByFilters(?Category $category, ?Tag $tag): QueryBuilder
+    public function queryAll(): QueryBuilder
     {
-        $qb = $this->createQueryBuilder('r')
-            ->leftJoin('r.tags', 't');
-
-        if (null !== $category) {
-            $qb->andWhere('r.category = :category')
-                ->setParameter('category', $category);
-        }
-
-        if (null !== $tag) {
-            $qb->andWhere(':tag MEMBER OF r.tags')
-            ->setParameter('tag', $tag);
-        }
-
-        return $qb;
+        return $this->createQueryBuilder('recipe')
+            ->leftJoin('recipe.category', 'category')
+            ->leftJoin('recipe.tags', 'tags')
+            ->addSelect('category', 'tags')
+            ->orderBy('recipe.updatedAt', 'DESC');
     }
 
-    /**
-     * @param int $limit
-     * @return array
-     */
-    public function findTopRatedRecipes(int $limit = 10): array
-    {
-        return $this->createQueryBuilder('r')
-            ->select('r, AVG(ra.score) AS avgRating')
-            ->leftJoin('r.ratings', 'ra')
-            ->groupBy('r.id')
-            ->orderBy('avgRating', 'DESC')
-            ->setMaxResults($limit)
-            ->getQuery()
-            ->getResult();
-    }
 }
