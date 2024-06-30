@@ -30,9 +30,10 @@ class RegistrationController extends AbstractController
     }
 
     /**
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
+     * @param Request                     $request
+     * @param EntityManagerInterface      $entityManager
      * @param UserPasswordHasherInterface $passwordHasher
+     *
      * @return Response
      */
     #[Route('/register', name: 'app_register')]

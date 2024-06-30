@@ -38,6 +38,7 @@ interface UserServiceInterface
 
     /**
      * @param User $user
+     *
      * @return void
      */
     public function deleteUserWithRelatedEntities(User $user): void;

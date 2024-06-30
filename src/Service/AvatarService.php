@@ -17,10 +17,10 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
 class AvatarService implements AvatarServiceInterface
 {
     /**
-     * @param string $targetDirectory
-     * @param AvatarRepository $avatarRepository
+     * @param string                     $targetDirectory
+     * @param AvatarRepository           $avatarRepository
      * @param FileUploadServiceInterface $fileUploadService
-     * @param Filesystem $filesystem
+     * @param Filesystem                 $filesystem
      */
     public function __construct(private readonly string $targetDirectory, private readonly AvatarRepository $avatarRepository, private readonly FileUploadServiceInterface $fileUploadService, private readonly Filesystem $filesystem)
     {
@@ -28,9 +28,11 @@ class AvatarService implements AvatarServiceInterface
 
     /**
      * @param UploadedFile $uploadedFile
-     * @param Avatar $avatar
-     * @param User $user
+     * @param Avatar       $avatar
+     * @param User         $user
+     *
      * @return void
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -49,9 +51,11 @@ class AvatarService implements AvatarServiceInterface
 
     /**
      * @param UploadedFile $uploadedFile
-     * @param Avatar $avatar
-     * @param User $user
+     * @param Avatar       $avatar
+     * @param User         $user
+     *
      * @return void
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -66,7 +70,9 @@ class AvatarService implements AvatarServiceInterface
 
     /**
      * @param Avatar $avatar
+     *
      * @return void
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */

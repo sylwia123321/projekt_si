@@ -27,6 +27,7 @@ class TagFixtures extends Fixture
 
     /**
      * @param ObjectManager $manager
+     *
      * @return void
      */
     public function load(ObjectManager $manager): void

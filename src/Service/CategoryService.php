@@ -28,9 +28,9 @@ class CategoryService implements CategoryServiceInterface
 
     /**
      * @param EntityManagerInterface $entityManager
-     * @param PaginatorInterface $paginator
-     * @param CategoryRepository $categoryRepository
-     * @param RecipeRepository $recipeRepository
+     * @param PaginatorInterface     $paginator
+     * @param CategoryRepository     $categoryRepository
+     * @param RecipeRepository       $recipeRepository
      */
     public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, CategoryRepository $categoryRepository, RecipeRepository $recipeRepository)
     {
@@ -42,6 +42,7 @@ class CategoryService implements CategoryServiceInterface
 
     /**
      * @param int $page
+     *
      * @return PaginationInterface
      */
     public function getPaginatedList(int $page): PaginationInterface
@@ -57,6 +58,7 @@ class CategoryService implements CategoryServiceInterface
 
     /**
      * @param int $id
+     *
      * @return Category|null
      */
     public function getCategoryById(int $id): ?Category
@@ -66,6 +68,7 @@ class CategoryService implements CategoryServiceInterface
 
     /**
      * @param Category $category
+     *
      * @return void
      */
     public function save(Category $category): void
@@ -75,7 +78,9 @@ class CategoryService implements CategoryServiceInterface
 
     /**
      * @param Category $category
+     *
      * @return void
+     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -86,6 +91,7 @@ class CategoryService implements CategoryServiceInterface
 
     /**
      * @param Category $category
+     *
      * @return bool
      */
     public function canBeDeleted(Category $category): bool
@@ -101,6 +107,7 @@ class CategoryService implements CategoryServiceInterface
 
     /**
      * @param int $id
+     *
      * @return Category|null
      */
     public function findOneById(int $id): ?Category

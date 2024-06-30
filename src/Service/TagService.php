@@ -31,7 +31,7 @@ class TagService implements TagServiceInterface
 
     /**
      * @param PaginatorInterface $paginator
-     * @param TagRepository $tagRepository
+     * @param TagRepository      $tagRepository
      */
     public function __construct(PaginatorInterface $paginator, TagRepository $tagRepository)
     {
@@ -41,6 +41,7 @@ class TagService implements TagServiceInterface
 
     /**
      * @param int $page
+     *
      * @return PaginationInterface
      */
     public function getPaginatedList(int $page): PaginationInterface
@@ -56,7 +57,9 @@ class TagService implements TagServiceInterface
 
     /**
      * @param Tag $tag
+     *
      * @return void
+     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -67,7 +70,9 @@ class TagService implements TagServiceInterface
 
     /**
      * @param Tag $tag
+     *
      * @return void
+     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -78,6 +83,7 @@ class TagService implements TagServiceInterface
 
     /**
      * @param string $title
+     *
      * @return Tag|null
      */
     public function findOneByTitle(string $title): ?Tag
@@ -87,6 +93,7 @@ class TagService implements TagServiceInterface
 
     /**
      * @param int $id
+     *
      * @return Tag|null
      */
     public function findOneById(int $id): ?Tag
@@ -94,11 +101,19 @@ class TagService implements TagServiceInterface
         return $this->tagRepository->findOneById($id);
     }
 
+    /**
+     * @return array
+     */
     public function findAll(): array
     {
         return $this->tagRepository->findAll();
     }
 
+    /**
+     * @param array $titles
+     *
+     * @return array
+     */
     public function findByTitles(array $titles): array
     {
         $tags = $this->tagRepository->createQueryBuilder('t')

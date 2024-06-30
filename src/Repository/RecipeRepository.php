@@ -31,7 +31,8 @@ class RecipeRepository extends ServiceEntityRepository
 
     /**
      * @param Category|null $category
-     * @param Tag|null $tag
+     * @param Tag|null      $tag
+     *
      * @return QueryBuilder
      */
     public function queryByFilters(?Category $category, ?Tag $tag): QueryBuilder
@@ -54,9 +55,10 @@ class RecipeRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User|null $author
+     * @param User|null     $author
      * @param Category|null $category
-     * @param Tag|null $tag
+     * @param Tag|null      $tag
+     *
      * @return QueryBuilder
      */
     public function queryByAuthorAndFilters(?User $author, ?Category $category, ?Tag $tag): QueryBuilder

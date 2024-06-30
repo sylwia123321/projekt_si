@@ -72,6 +72,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @param string $email
+     *
      * @return void
      */
     public function setEmail(string $email): void
@@ -108,6 +109,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @param array $roles
+     *
      * @return void
      */
     public function setRoles(array $roles): void
@@ -125,6 +127,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @param string $password
+     *
      * @return void
      */
     public function setPassword(string $password): void
@@ -157,6 +160,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     /**
      * @param Avatar $avatar
+     *
      * @return $this
      */
     public function setAvatar(Avatar $avatar): static

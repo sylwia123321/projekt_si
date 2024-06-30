@@ -19,7 +19,7 @@ class UserRepository extends ServiceEntityRepository
     private EntityManagerInterface $entityManager;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry        $registry
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
@@ -30,6 +30,7 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param User $user
+     *
      * @return void
      */
     public function save(User $user): void
@@ -40,7 +41,9 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param User $user
+     *
      * @return void
+     *
      * @throws \Exception
      */
     public function deleteUserWithRelatedEntities(User $user): void
@@ -69,6 +72,7 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param User $user
+     *
      * @return void
      */
     public function delete(User $user): void
@@ -80,6 +84,7 @@ class UserRepository extends ServiceEntityRepository
 
     /**
      * @param User $user
+     *
      * @return void
      */
     private function deleteRelatedEntities(User $user): void

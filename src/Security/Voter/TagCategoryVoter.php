@@ -19,6 +19,7 @@ class TagCategoryVoter extends Voter
     /**
      * @param string $attribute
      * @param $subject
+     *
      * @return bool
      */
     protected function supports(string $attribute, $subject): bool
@@ -27,9 +28,10 @@ class TagCategoryVoter extends Voter
     }
 
     /**
-     * @param string $attribute
+     * @param string         $attribute
      * @param $subject
      * @param TokenInterface $token
+     *
      * @return bool
      */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool

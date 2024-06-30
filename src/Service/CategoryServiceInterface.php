@@ -16,32 +16,42 @@ interface CategoryServiceInterface
 {
     /**
      * @param int $page
+     *
      * @return PaginationInterface
      */
     public function getPaginatedList(int $page): PaginationInterface;
 
     /**
      * @param int $id
+     *
      * @return Category|null
      */
     public function getCategoryById(int $id): ?Category;
 
     /**
      * @param Category $category
+     *
      * @return void
      */
     public function save(Category $category): void;
 
     /**
      * @param Category $category
+     *
      * @return void
      */
     public function delete(Category $category): void;
 
+    /**
+     * @param Category $category
+     *
+     * @return bool
+     */
     public function canBeDeleted(Category $category): bool;
 
     /**
      * @param int $id
+     *
      * @return Category|null
      */
     public function findOneById(int $id): ?Category;

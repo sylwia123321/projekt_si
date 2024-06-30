@@ -142,7 +142,8 @@ class TagController extends AbstractController
 
     /**
      * @param Request $request
-     * @param Tag $tag
+     * @param Tag     $tag
+     *
      * @return Response
      */
     #[Route('/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]

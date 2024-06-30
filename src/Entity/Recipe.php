@@ -103,6 +103,7 @@ class Recipe
 
     /**
      * @param string|null $title
+     *
      * @return void
      */
     public function setTitle(?string $title): void
@@ -120,6 +121,7 @@ class Recipe
 
     /**
      * @param string|null $description
+     *
      * @return void
      */
     public function setDescription(?string $description): void
@@ -137,6 +139,7 @@ class Recipe
 
     /**
      * @param string|null $ingredients
+     *
      * @return void
      */
     public function setIngredients(?string $ingredients): void
@@ -154,6 +157,7 @@ class Recipe
 
     /**
      * @param string|null $instructions
+     *
      * @return void
      */
     public function setInstructions(?string $instructions): void
@@ -171,6 +175,7 @@ class Recipe
 
     /**
      * @param \DateTimeImmutable $createdAt
+     *
      * @return void
      */
     public function setCreatedAt(\DateTimeImmutable $createdAt): void
@@ -188,6 +193,7 @@ class Recipe
 
     /**
      * @param \DateTimeImmutable|null $updatedAt
+     *
      * @return void
      */
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
@@ -213,6 +219,7 @@ class Recipe
 
     /**
      * @param Category|null $category
+     *
      * @return $this
      */
     public function setCategory(?Category $category): self
@@ -232,6 +239,7 @@ class Recipe
 
     /**
      * @param Tag $tag
+     *
      * @return void
      */
     public function addTag(Tag $tag): void
@@ -243,6 +251,7 @@ class Recipe
 
     /**
      * @param Tag $tag
+     *
      * @return void
      */
     public function removeTag(Tag $tag): void
@@ -260,6 +269,7 @@ class Recipe
 
     /**
      * @param User|null $author
+     *
      * @return $this
      */
     public function setAuthor(?User $author): self
@@ -279,6 +289,7 @@ class Recipe
 
     /**
      * @param string|null $comment
+     *
      * @return $this
      */
     public function setComment(?string $comment): self

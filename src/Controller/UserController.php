@@ -28,9 +28,9 @@ class UserController extends AbstractController
     private TranslatorInterface $translator;
 
     /**
-     * @param UserServiceInterface $userService
+     * @param UserServiceInterface   $userService
      * @param EntityManagerInterface $entityManager
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface    $translator
      */
     public function __construct(UserServiceInterface $userService, EntityManagerInterface $entityManager, TranslatorInterface $translator)
     {
@@ -55,6 +55,7 @@ class UserController extends AbstractController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     #[Route('/create', name: 'user_create', methods: ['GET|POST'])]
@@ -84,7 +85,8 @@ class UserController extends AbstractController
 
     /**
      * @param Request $request
-     * @param User $user
+     * @param User    $user
+     *
      * @return Response
      */
     #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '\d+'], methods: ['GET|PUT'])]
@@ -119,6 +121,7 @@ class UserController extends AbstractController
 
     /**
      * @param User $user
+     *
      * @return Response
      */
     #[Route('/{id}', name: 'user_show', requirements: ['id' => '\d+'], methods: ['GET'])]
@@ -131,7 +134,8 @@ class UserController extends AbstractController
 
     /**
      * @param Request $request
-     * @param User $user
+     * @param User    $user
+     *
      * @return Response
      */
     #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '\d+'], methods: ['DELETE|GET'])]

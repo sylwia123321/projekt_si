@@ -28,7 +28,7 @@ class AvatarController extends AbstractController
     /**
      * @param EntityManagerInterface $entityManager
      * @param AvatarServiceInterface $avatarService
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface    $translator
      */
     public function __construct(EntityManagerInterface $entityManager, private readonly AvatarServiceInterface $avatarService, private readonly TranslatorInterface $translator)
     {
@@ -55,6 +55,7 @@ class AvatarController extends AbstractController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     #[Route(
@@ -109,7 +110,8 @@ class AvatarController extends AbstractController
 
     /**
      * @param Request $request
-     * @param Avatar $avatar
+     * @param Avatar  $avatar
+     *
      * @return Response
      */
     #[Route(

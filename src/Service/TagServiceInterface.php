@@ -64,6 +64,7 @@ interface TagServiceInterface
 
     /**
      * @param array $titles
+     *
      * @return array
      */
     public function findByTitles(array $titles): array;

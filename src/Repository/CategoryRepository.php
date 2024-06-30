@@ -29,7 +29,7 @@ class CategoryRepository extends ServiceEntityRepository
     private EntityManagerInterface $entityManager;
 
     /**
-     * @param ManagerRegistry $registry
+     * @param ManagerRegistry        $registry
      * @param EntityManagerInterface $entityManager
      */
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
@@ -49,6 +49,7 @@ class CategoryRepository extends ServiceEntityRepository
 
     /**
      * @param Category $category
+     *
      * @return void
      */
     public function save(Category $category): void
@@ -59,7 +60,9 @@ class CategoryRepository extends ServiceEntityRepository
 
     /**
      * @param Category $category
+     *
      * @return void
+     *
      * @throws OptimisticLockException
      * @throws \Doctrine\ORM\Exception\ORMException
      */

@@ -33,6 +33,7 @@ class CategoryController extends AbstractController
 
     /**
      * @param int $page
+     *
      * @return Response
      */
     #[Route(name: 'category_index', methods: 'GET')]
@@ -45,6 +46,7 @@ class CategoryController extends AbstractController
 
     /**
      * @param Category $category
+     *
      * @return Response
      */
     #[Route(

@@ -57,9 +57,10 @@ class SecurityController extends AbstractController
     }
 
     /**
-     * @param Request $request
+     * @param Request                     $request
      * @param UserPasswordHasherInterface $passwordHasher
-     * @param EntityManagerInterface $entityManager
+     * @param EntityManagerInterface      $entityManager
+     *
      * @return Response
      */
     #[Route(path: '/change-password', name: 'app_change_password')]

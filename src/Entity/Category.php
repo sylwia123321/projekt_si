@@ -139,6 +139,7 @@ class Category
 
     /**
      * @param string $slug
+     *
      * @return $this
      */
     public function setSlug(string $slug): static

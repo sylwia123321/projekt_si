@@ -32,10 +32,10 @@ class RecipeController extends AbstractController
 
     /**
      * @param CategoryServiceInterface $categoryService
-     * @param TagServiceInterface $tagService
-     * @param RecipeServiceInterface $recipeService
-     * @param TranslatorInterface $translator
-     * @param UserServiceInterface $userService
+     * @param TagServiceInterface      $tagService
+     * @param RecipeServiceInterface   $recipeService
+     * @param TranslatorInterface      $translator
+     * @param UserServiceInterface     $userService
      */
     public function __construct(CategoryServiceInterface $categoryService, TagServiceInterface $tagService, RecipeServiceInterface $recipeService, TranslatorInterface $translator, UserServiceInterface $userService)
     {
@@ -48,6 +48,7 @@ class RecipeController extends AbstractController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     #[Route(name: 'recipe_index', methods: 'GET')]
@@ -80,6 +81,7 @@ class RecipeController extends AbstractController
 
     /**
      * @param Recipe $recipe
+     *
      * @return Response
      */
     #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
@@ -91,6 +93,7 @@ class RecipeController extends AbstractController
 
     /**
      * @param Request $request
+     *
      * @return Response
      */
     #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
@@ -128,7 +131,8 @@ class RecipeController extends AbstractController
 
     /**
      * @param Request $request
-     * @param Recipe $recipe
+     * @param Recipe  $recipe
+     *
      * @return Response
      */
     #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
@@ -167,7 +171,8 @@ class RecipeController extends AbstractController
 
     /**
      * @param Request $request
-     * @param Recipe $recipe
+     * @param Recipe  $recipe
+     *
      * @return Response
      */
     #[Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]

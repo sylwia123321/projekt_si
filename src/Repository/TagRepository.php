@@ -35,7 +35,9 @@ class TagRepository extends ServiceEntityRepository
 
     /**
      * @param Tag $tag
+     *
      * @return void
+     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -48,7 +50,9 @@ class TagRepository extends ServiceEntityRepository
 
     /**
      * @param Tag $tag
+     *
      * @return void
+     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -61,6 +65,7 @@ class TagRepository extends ServiceEntityRepository
 
     /**
      * @param QueryBuilder|null $queryBuilder
+     *
      * @return QueryBuilder
      */
     private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
