@@ -56,13 +56,15 @@ class CategoryController extends AbstractController
     public function show(Category $category): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('warning', 'message.access_denied');
+            $this->addFlash(
+                'danger',
+                $this->translator->trans('message.access_denied')
+            );
 
             return $this->redirectToRoute('category_index');
         }
 
         return $this->render('category/show.html.twig', ['category' => $category]);
-
     }
 
     /**
@@ -80,7 +82,10 @@ class CategoryController extends AbstractController
     public function create(Request $request): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('warning', 'message.access_denied');
+            $this->addFlash(
+                'danger',
+                $this->translator->trans('message.access_denied')
+            );
 
             return $this->redirectToRoute('category_index');
         }
@@ -118,7 +123,10 @@ class CategoryController extends AbstractController
     public function edit(Request $request, Category $category): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('warning', 'message.access_denied');
+            $this->addFlash(
+                'danger',
+                $this->translator->trans('message.access_denied')
+            );
 
             return $this->redirectToRoute('category_index');
         }
@@ -165,7 +173,10 @@ class CategoryController extends AbstractController
     public function delete(Request $request, Category $category): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('warning', 'message.access_denied');
+            $this->addFlash(
+                'danger',
+                $this->translator->trans('message.access_denied')
+            );
 
             return $this->redirectToRoute('category_index');
         }

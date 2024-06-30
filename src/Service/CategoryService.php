@@ -85,11 +85,8 @@ class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Can Category be deleted?
-     *
-     * @param Category $category Category entity
-     *
-     * @return bool Result
+     * @param Category $category
+     * @return bool
      */
     public function canBeDeleted(Category $category): bool
     {
@@ -103,13 +100,8 @@ class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * Find by id.
-     *
-     * @param int $id Category id
-     *
-     * @return Category|null Category entity
-     *
-     * @throws NonUniqueResultException
+     * @param int $id
+     * @return Category|null
      */
     public function findOneById(int $id): ?Category
     {

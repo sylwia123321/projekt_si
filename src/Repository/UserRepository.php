@@ -1,4 +1,7 @@
 <?php
+/**
+ *  User repository.
+ */
 
 namespace App\Repository;
 
@@ -16,10 +19,8 @@ class UserRepository extends ServiceEntityRepository
     private EntityManagerInterface $entityManager;
 
     /**
-     * Constructor.
-     *
-     * @param ManagerRegistry        $registry      Manager registry
-     * @param EntityManagerInterface $entityManager Entity manager
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
@@ -28,9 +29,8 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Save entity.
-     *
-     * @param User $user User entity
+     * @param User $user
+     * @return void
      */
     public function save(User $user): void
     {
@@ -60,9 +60,7 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Query all records.
-     *
-     * @return QueryBuilder Query builder
+     * @return QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {
@@ -81,9 +79,8 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * Delete related entities (e.g., recipes) associated with the user.
-     *
-     * @param User $user User entity
+     * @param User $user
+     * @return void
      */
     private function deleteRelatedEntities(User $user): void
     {

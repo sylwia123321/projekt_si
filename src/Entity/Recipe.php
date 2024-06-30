@@ -55,9 +55,6 @@ class Recipe
     #[Gedmo\Slug(fields: ['title'])]
     private ?string $slug = null;
 
-    /**
-     * @var Category|null
-     */
     #[ORM\ManyToOne(targetEntity: Category::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
@@ -71,18 +68,12 @@ class Recipe
     #[ORM\JoinTable(name: 'recipes_tags')]
     private $tags;
 
-    /**
-     * @var User|null
-     */
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
     #[Assert\NotBlank]
     #[Assert\Type(User::class)]
     private ?User $author = null;
 
-    /**
-     * @var string|null
-     */
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $comment = null;
 

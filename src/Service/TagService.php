@@ -9,7 +9,6 @@ use App\Entity\Tag;
 use App\Repository\TagRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use Doctrine\ORM\NonUniqueResultException;
 
 /**
  * Class TagService.
@@ -95,18 +94,11 @@ class TagService implements TagServiceInterface
         return $this->tagRepository->findOneById($id);
     }
 
-    /**
-     * @return array
-     */
     public function findAll(): array
     {
         return $this->tagRepository->findAll();
     }
 
-    /**
-     * @param array $titles
-     * @return array
-     */
     public function findByTitles(array $titles): array
     {
         $tags = $this->tagRepository->createQueryBuilder('t')

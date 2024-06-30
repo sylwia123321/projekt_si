@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Tag repository.
+ */
 
 namespace App\Repository;
 
@@ -14,9 +17,7 @@ use Doctrine\ORM\EntityManager;
 class TagRepository extends ServiceEntityRepository
 {
     /**
-     * Constructor.
-     *
-     * @param ManagerRegistry $registry Manager registry
+     * @param ManagerRegistry $registry
      */
     public function __construct(ManagerRegistry $registry)
     {
@@ -24,9 +25,7 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * Query all records.
-     *
-     * @return QueryBuilder Query builder
+     * @return QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {
@@ -61,11 +60,8 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * Get or create new query builder.
-     *
-     * @param QueryBuilder|null $queryBuilder Query builder
-     *
-     * @return QueryBuilder Query builder
+     * @param QueryBuilder|null $queryBuilder
+     * @return QueryBuilder
      */
     private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {

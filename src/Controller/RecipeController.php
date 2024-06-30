@@ -9,6 +9,7 @@ use App\Entity\Recipe;
 use App\Entity\User;
 use App\Form\Type\RecipeType;
 use App\Service\RecipeServiceInterface;
+use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
@@ -34,13 +35,15 @@ class RecipeController extends AbstractController
      * @param TagServiceInterface $tagService
      * @param RecipeServiceInterface $recipeService
      * @param TranslatorInterface $translator
+     * @param UserServiceInterface $userService
      */
-    public function __construct(CategoryServiceInterface $categoryService, TagServiceInterface $tagService, RecipeServiceInterface $recipeService, TranslatorInterface $translator
-    ) {
+    public function __construct(CategoryServiceInterface $categoryService, TagServiceInterface $tagService, RecipeServiceInterface $recipeService, TranslatorInterface $translator, UserServiceInterface $userService)
+    {
         $this->categoryService = $categoryService;
         $this->tagService = $tagService;
         $this->recipeService = $recipeService;
         $this->translator = $translator;
+        $this->userService = $userService;
     }
 
     /**
@@ -94,7 +97,10 @@ class RecipeController extends AbstractController
     public function create(Request $request): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'message.access_denied');
+            $this->addFlash(
+                'danger',
+                $this->translator->trans('message.access_denied')
+            );
 
             return $this->redirectToRoute('recipe_index');
         }

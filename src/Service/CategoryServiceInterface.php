@@ -27,33 +27,22 @@ interface CategoryServiceInterface
     public function getCategoryById(int $id): ?Category;
 
     /**
-     * Save entity.
-     *
-     * @param Category $category Category entity
+     * @param Category $category
+     * @return void
      */
     public function save(Category $category): void;
 
     /**
-     * Delete entity.
-     *
-     * @param Category $category Category entity
+     * @param Category $category
+     * @return void
      */
     public function delete(Category $category): void;
 
-    /**
-     * @param Category $category
-     * @return bool
-     */
     public function canBeDeleted(Category $category): bool;
 
     /**
-     * Find by id.
-     *
-     * @param int $id Category id
-     *
-     * @return Category|null Category entity
-     *
-     * @throws NonUniqueResultException
+     * @param int $id
+     * @return Category|null
      */
     public function findOneById(int $id): ?Category;
 
