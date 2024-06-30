@@ -28,10 +28,9 @@ class UserService implements UserServiceInterface
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
-     * Constructor.
-     *
-     * @param UserRepository     $userRepository User repository
-     * @param PaginatorInterface $paginator      Paginator
+     * @param UserRepository $userRepository
+     * @param PaginatorInterface $paginator
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(private readonly UserRepository $userRepository, private readonly PaginatorInterface $paginator, private readonly EntityManagerInterface $entityManager)
     {
@@ -73,6 +72,10 @@ class UserService implements UserServiceInterface
         $this->userRepository->delete($user);
     }
 
+    /**
+     * @param User $user
+     * @return void
+     */
     public function deleteUserWithRelatedEntities(User $user): void
     {
         $this->entityManager->remove($user);

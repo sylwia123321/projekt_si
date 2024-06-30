@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Avatar repository.
+ */
 
 namespace App\Repository;
 
@@ -14,6 +17,9 @@ use Doctrine\ORM\EntityManager;
  */
 class AvatarRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Avatar::class);

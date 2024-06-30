@@ -1,4 +1,7 @@
 <?php
+/**
+ *  Recipe repository.
+ */
 
 namespace App\Repository;
 
@@ -18,11 +21,19 @@ use Doctrine\ORM\EntityManager;
  */
 class RecipeRepository extends ServiceEntityRepository
 {
+    /**
+     * @param ManagerRegistry $registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Recipe::class);
     }
 
+    /**
+     * @param Category|null $category
+     * @param Tag|null $tag
+     * @return QueryBuilder
+     */
     public function queryByFilters(?Category $category, ?Tag $tag): QueryBuilder
     {
         $qb = $this->createQueryBuilder('r')
@@ -42,6 +53,12 @@ class RecipeRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    /**
+     * @param User|null $author
+     * @param Category|null $category
+     * @param Tag|null $tag
+     * @return QueryBuilder
+     */
     public function queryByAuthorAndFilters(?User $author, ?Category $category, ?Tag $tag): QueryBuilder
     {
         $qb = $this->createQueryBuilder('recipe')

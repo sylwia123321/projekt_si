@@ -16,36 +16,37 @@ use App\Entity\Tag;
 interface RecipeServiceInterface
 {
     /**
-     * Get paginated list.
-     *
-     * @param int $page Page number
-     *
-     * @return PaginationInterface<string, mixed> Paginated list
+     * @param int $page
+     * @param User|null $author
+     * @param int|null $categoryId
+     * @param int|null $tagId
+     * @return PaginationInterface
      */
     public function getPaginatedList(int $page, ?User $author, ?int $categoryId, ?int $tagId): PaginationInterface;
 
     /**
-     * Save entity.
-     *
-     * @param Recipe $recipe Recipe entity
+     * @param Recipe $recipe
+     * @return void
      */
     public function save(Recipe $recipe): void;
 
     /**
-     * Delete entity.
-     *
-     * @param Recipe $recipe Recipe entity
+     * @param Recipe $recipe
+     * @return void
      */
     public function delete(Recipe $recipe): void;
 
+    /**
+     * @param int $page
+     * @param int|null $categoryId
+     * @param int|null $tagId
+     * @return PaginationInterface
+     */
     public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface;
 
     /**
-     * Find by title.
-     *
-     * @param string $title Tag title
-     *
-     * @return Tag|null Tag entity
+     * @param string $title
+     * @return Tag|null
      */
     public function findOneByTitle(string $title): ?Tag;
 }

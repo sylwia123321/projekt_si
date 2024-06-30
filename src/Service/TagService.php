@@ -31,10 +31,8 @@ class TagService implements TagServiceInterface
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
     /**
-     * Constructor.
-     *
-     * @param TagRepository      $tagRepository Tag repository
-     * @param PaginatorInterface $paginator     Paginator
+     * @param PaginatorInterface $paginator
+     * @param TagRepository $tagRepository
      */
     public function __construct(PaginatorInterface $paginator, TagRepository $tagRepository)
     {
@@ -43,11 +41,8 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * Get paginated list.
-     *
-     * @param int $page Page number
-     *
-     * @return PaginationInterface<string, mixed> Paginated list
+     * @param int $page
+     * @return PaginationInterface
      */
     public function getPaginatedList(int $page): PaginationInterface
     {
@@ -61,6 +56,8 @@ class TagService implements TagServiceInterface
     }
 
     /**
+     * @param Tag $tag
+     * @return void
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -70,6 +67,8 @@ class TagService implements TagServiceInterface
     }
 
     /**
+     * @param Tag $tag
+     * @return void
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -79,11 +78,8 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * Find by title.
-     *
-     * @param string $title Tag title
-     *
-     * @return Tag|null Tag entity
+     * @param string $title
+     * @return Tag|null
      */
     public function findOneByTitle(string $title): ?Tag
     {
@@ -91,24 +87,26 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * Find by id.
-     *
-     * @param int $id Tag id
-     *
-     * @return Tag|null Tag entity
-     *
-     * @throws NonUniqueResultException
+     * @param int $id
+     * @return Tag|null
      */
     public function findOneById(int $id): ?Tag
     {
         return $this->tagRepository->findOneById($id);
     }
 
+    /**
+     * @return array
+     */
     public function findAll(): array
     {
         return $this->tagRepository->findAll();
     }
 
+    /**
+     * @param array $titles
+     * @return array
+     */
     public function findByTitles(array $titles): array
     {
         $tags = $this->tagRepository->createQueryBuilder('t')

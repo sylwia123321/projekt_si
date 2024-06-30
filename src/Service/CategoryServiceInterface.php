@@ -1,4 +1,7 @@
 <?php
+/**
+ * Category service interface.
+ */
 
 namespace App\Service;
 
@@ -11,8 +14,16 @@ use Doctrine\ORM\NonUniqueResultException;
  */
 interface CategoryServiceInterface
 {
+    /**
+     * @param int $page
+     * @return PaginationInterface
+     */
     public function getPaginatedList(int $page): PaginationInterface;
 
+    /**
+     * @param int $id
+     * @return Category|null
+     */
     public function getCategoryById(int $id): ?Category;
 
     /**
@@ -30,11 +41,8 @@ interface CategoryServiceInterface
     public function delete(Category $category): void;
 
     /**
-     * Can Category be deleted?
-     *
-     * @param Category $category Category entity
-     *
-     * @return bool Result
+     * @param Category $category
+     * @return bool
      */
     public function canBeDeleted(Category $category): bool;
 
@@ -49,5 +57,8 @@ interface CategoryServiceInterface
      */
     public function findOneById(int $id): ?Category;
 
+    /**
+     * @return array
+     */
     public function findAll(): array;
 }

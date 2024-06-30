@@ -39,6 +39,8 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param User $user
+     * @return void
      * @throws \Exception
      */
     public function deleteUserWithRelatedEntities(User $user): void
@@ -58,6 +60,27 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
+     * Query all records.
+     *
+     * @return QueryBuilder Query builder
+     */
+    public function queryAll(): QueryBuilder
+    {
+        return $this->createQueryBuilder('user');
+    }
+
+    /**
+     * @param User $user
+     * @return void
+     */
+    public function delete(User $user): void
+    {
+        $entityManager = $this->getEntityManager();
+        $entityManager->remove($user);
+        $entityManager->flush();
+    }
+
+    /**
      * Delete related entities (e.g., recipes) associated with the user.
      *
      * @param User $user User entity
@@ -71,22 +94,5 @@ class UserRepository extends ServiceEntityRepository
         }
 
         $this->entityManager->flush();
-    }
-
-    /**
-     * Query all records.
-     *
-     * @return QueryBuilder Query builder
-     */
-    public function queryAll(): QueryBuilder
-    {
-        return $this->createQueryBuilder('user');
-    }
-
-    public function delete(User $user): void
-    {
-        $entityManager = $this->getEntityManager();
-        $entityManager->remove($user);
-        $entityManager->flush();
     }
 }

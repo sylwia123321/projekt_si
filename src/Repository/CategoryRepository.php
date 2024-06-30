@@ -30,7 +30,8 @@ class CategoryRepository extends ServiceEntityRepository
     private EntityManagerInterface $entityManager;
 
     /**
-     * CategoryRepository constructor.
+     * @param ManagerRegistry $registry
+     * @param EntityManagerInterface $entityManager
      */
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
@@ -39,7 +40,7 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * Query all records.
+     * @return QueryBuilder
      */
     public function queryAll(): QueryBuilder
     {
@@ -48,7 +49,8 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * Save entity.
+     * @param Category $category
+     * @return void
      */
     public function save(Category $category): void
     {
@@ -57,12 +59,10 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * Delete entity.
-     *
-     * @param Category $category Category entity
-     *
-     * @throws ORMException
+     * @param Category $category
+     * @return void
      * @throws OptimisticLockException
+     * @throws \Doctrine\ORM\Exception\ORMException
      */
     public function delete(Category $category): void
     {

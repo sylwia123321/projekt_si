@@ -1,4 +1,7 @@
 <?php
+/**
+ * Tag fixtures.
+ */
 
 namespace App\DataFixtures;
 
@@ -14,13 +17,17 @@ class TagFixtures extends Fixture
 {
     private $faker;
 
+    /**
+     * Constructor.
+     */
     public function __construct()
     {
         $this->faker = Factory::create();
     }
 
     /**
-     * Load data.
+     * @param ObjectManager $manager
+     * @return void
      */
     public function load(ObjectManager $manager): void
     {

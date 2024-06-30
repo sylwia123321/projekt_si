@@ -27,16 +27,13 @@ class CategoryController extends AbstractController
      * @param CategoryServiceInterface $categoryService Category service
      * @param TranslatorInterface      $translator      Translator
      */
-    public function __construct(
-        private readonly CategoryServiceInterface $categoryService,
-        private readonly TranslatorInterface $translator,
-    ) {
+    public function __construct(private readonly CategoryServiceInterface $categoryService, private readonly TranslatorInterface $translator)
+    {
     }
 
     /**
-     * Index action.
-     *
-     * @return Response HTTP response
+     * @param int $page
+     * @return Response
      */
     #[Route(name: 'category_index', methods: 'GET')]
     public function index(#[MapQueryParameter] int $page = 1): Response
@@ -47,11 +44,8 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * Show action.
-     *
-     * @param Category $category Category
-     *
-     * @return Response HTTP response
+     * @param Category $category
+     * @return Response
      */
     #[Route(
         '/{id}',
@@ -65,9 +59,10 @@ class CategoryController extends AbstractController
             $this->addFlash('warning', 'message.access_denied');
 
             return $this->redirectToRoute('category_index');
-        } else {
-            return $this->render('category/show.html.twig', ['category' => $category]);
         }
+
+        return $this->render('category/show.html.twig', ['category' => $category]);
+
     }
 
     /**

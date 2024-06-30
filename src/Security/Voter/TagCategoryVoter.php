@@ -1,4 +1,7 @@
 <?php
+/**
+ * TagCategory voter.
+ */
 
 namespace App\Security\Voter;
 
@@ -13,11 +16,22 @@ class TagCategoryVoter extends Voter
 {
     public const MANAGE = 'manage';
 
+    /**
+     * @param string $attribute
+     * @param $subject
+     * @return bool
+     */
     protected function supports(string $attribute, $subject): bool
     {
         return self::MANAGE === $attribute;
     }
 
+    /**
+     * @param string $attribute
+     * @param $subject
+     * @param TokenInterface $token
+     * @return bool
+     */
     protected function voteOnAttribute(string $attribute, $subject, TokenInterface $token): bool
     {
         $user = $token->getUser();

@@ -139,20 +139,20 @@
           <target>Brak etykiety</target>
       </trans-unit>
       <trans-unit id="validators.current_password">
-        <source>Please enter your current password</source>
+        <source>validators.current_password</source>
         <target>Proszę wprowadzić swoje aktualne hasło</target>
       </trans-unit>
       <trans-unit id="validators.new_password">
-        <source>Please enter a new password</source>
+        <source>validators.new_password</source>
         <target>Proszę wprowadzić nowe hasło</target>
       </trans-unit>
       <trans-unit id="validators.password_length">
-        <source>Your password should be at least {{ limit }} characters</source>
+        <source>validators.password_length</source>
         <target>Twoje hasło powinno mieć co najmniej {{ limit }} znaków</target>
       </trans-unit>
       <trans-unit id="validators.password_mismatch">
-        <source>The password fields must match.</source>
-        <target>Pola hasła muszż się zgadzać.</target>
+        <source>validators.password_mismatch</source>
+        <target>Pola hasła muszą się zgadzać.</target>
       </trans-unit>
       <trans-unit id="message.invalid_token">
         <source>message.invalid_token</source>
@@ -236,7 +236,7 @@
       </trans-unit>
       <trans-unit id="title.tag_details">
         <source>title.tag_details</source>
-        <target>Szczegły tagu</target>
+        <target>Szczegóły tagu</target>
       </trans-unit>
       <trans-unit id="title.user_create">
         <source>title.user_create</source>
@@ -256,7 +256,7 @@
       </trans-unit>
       <trans-unit id="label.email">
         <source>label.email</source>
-        <target>Email</target>
+        <target>Adres Email</target>
       </trans-unit>
       <trans-unit id="label.roles">
         <source>label.roles</source>
@@ -264,7 +264,7 @@
       </trans-unit>
       <trans-unit id="title.user_details">
         <source>title.user_details</source>
-        <target>Szczegły użytkownika</target>
+        <target>Szczegóły użytkownika</target>
       </trans-unit>
       <trans-unit id="action.delete_avatar">
           <source>action.delete_avatar</source>
@@ -318,7 +318,7 @@
 
       <trans-unit id="label.category_details">
           <source>label.category_details</source>
-          <target>Szczegóy kategorii</target>
+          <target>Szczegóły kategorii</target>
       </trans-unit>
 
       <trans-unit id="label.recipe_title">
@@ -426,7 +426,7 @@
         </trans-unit>
         <trans-unit id="label.users">
             <source>label.users</source>
-            <target>Uźytkownicy</target>
+            <target>Użytkownicy</target>
         </trans-unit>
         <trans-unit id="action.recipe_rate">
             <source>action.recipe_rate</source>

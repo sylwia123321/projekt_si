@@ -26,16 +26,18 @@ class AvatarController extends AbstractController
     private EntityManagerInterface $entityManager;
 
     /**
-     * Constructor.
-     *
-     * @param AvatarServiceInterface $avatarService Avatar service
-     * @param TranslatorInterface    $translator    Translator
+     * @param EntityManagerInterface $entityManager
+     * @param AvatarServiceInterface $avatarService
+     * @param TranslatorInterface $translator
      */
     public function __construct(EntityManagerInterface $entityManager, private readonly AvatarServiceInterface $avatarService, private readonly TranslatorInterface $translator)
     {
         $this->entityManager = $entityManager;
     }
 
+    /**
+     * @return Response
+     */
     #[Route(name: 'avatar_index', methods: 'GET')]
     public function index(): Response
     {
@@ -52,11 +54,8 @@ class AvatarController extends AbstractController
     }
 
     /**
-     * Create action.
-     *
-     * @param Request $request HTTP request
-     *
-     * @return Response HTTP response
+     * @param Request $request
+     * @return Response
      */
     #[Route(
         '/create',
@@ -109,12 +108,9 @@ class AvatarController extends AbstractController
     }
 
     /**
-     * Edit action.
-     *
-     * @param Request $request HTTP request
-     * @param Avatar  $avatar  Avatar entity
-     *
-     * @return Response HTTP response
+     * @param Request $request
+     * @param Avatar $avatar
+     * @return Response
      */
     #[Route(
         '/{id}/edit',

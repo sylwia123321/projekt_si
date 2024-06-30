@@ -1,4 +1,7 @@
 <?php
+/**
+ * Security controller.
+ */
 
 namespace App\Controller;
 
@@ -21,9 +24,11 @@ class SecurityController extends AbstractController
 {
     private TranslatorInterface $translator;
 
-    public function __construct(
-        TranslatorInterface $translator,
-    ) {
+    /**
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(TranslatorInterface $translator)
+    {
         $this->translator = $translator;
     }
 
@@ -51,6 +56,12 @@ class SecurityController extends AbstractController
     {
     }
 
+    /**
+     * @param Request $request
+     * @param UserPasswordHasherInterface $passwordHasher
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route(path: '/change-password', name: 'app_change_password')]
     public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
     {
@@ -76,9 +87,9 @@ class SecurityController extends AbstractController
                 $this->addFlash('success', $this->translator->trans('message.edited_successfully'));
 
                 return $this->redirectToRoute('recipe_index');
-            } else {
-                $form->get('currentPassword')->addError(new FormError($this->translator->trans('message.incorrect_password')));
             }
+
+            $form->get('currentPassword')->addError(new FormError($this->translator->trans('message.incorrect_password')));
         }
 
         return $this->render('security/change_password.html.twig', [

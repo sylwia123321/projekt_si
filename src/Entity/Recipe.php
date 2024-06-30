@@ -1,4 +1,7 @@
 <?php
+/**
+ * Recipe entity.
+ */
 
 namespace App\Entity;
 
@@ -53,7 +56,7 @@ class Recipe
     private ?string $slug = null;
 
     /**
-     * Category.
+     * @var Category|null
      */
     #[ORM\ManyToOne(targetEntity: Category::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
@@ -61,9 +64,7 @@ class Recipe
     private ?Category $category = null;
 
     /**
-     * Tags.
-     *
-     * @var ArrayCollection<int, Tag>
+     * @var ArrayCollection
      */
     #[Assert\Valid]
     #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
@@ -71,7 +72,7 @@ class Recipe
     private $tags;
 
     /**
-     * Author.
+     * @var User|null
      */
     #[ORM\ManyToOne(targetEntity: User::class, fetch: 'EXTRA_LAZY')]
     #[ORM\JoinColumn(nullable: false)]
@@ -80,7 +81,7 @@ class Recipe
     private ?User $author = null;
 
     /**
-     * Comment.
+     * @var string|null
      */
     #[ORM\Column(type: 'text', nullable: true)]
     private ?string $comment = null;
@@ -94,7 +95,7 @@ class Recipe
     }
 
     /**
-     * Getter for Id.
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -102,7 +103,7 @@ class Recipe
     }
 
     /**
-     * Getter for title.
+     * @return string|null
      */
     public function getTitle(): ?string
     {
@@ -110,7 +111,8 @@ class Recipe
     }
 
     /**
-     * Setter for title.
+     * @param string|null $title
+     * @return void
      */
     public function setTitle(?string $title): void
     {
@@ -118,7 +120,7 @@ class Recipe
     }
 
     /**
-     * Getter for description.
+     * @return string|null
      */
     public function getDescription(): ?string
     {
@@ -126,7 +128,8 @@ class Recipe
     }
 
     /**
-     * Setter for description.
+     * @param string|null $description
+     * @return void
      */
     public function setDescription(?string $description): void
     {
@@ -134,7 +137,7 @@ class Recipe
     }
 
     /**
-     * Getter for ingredients.
+     * @return string|null
      */
     public function getIngredients(): ?string
     {
@@ -142,7 +145,8 @@ class Recipe
     }
 
     /**
-     * Setter for ingredients.
+     * @param string|null $ingredients
+     * @return void
      */
     public function setIngredients(?string $ingredients): void
     {
@@ -150,7 +154,7 @@ class Recipe
     }
 
     /**
-     * Getter for instructions.
+     * @return string|null
      */
     public function getInstructions(): ?string
     {
@@ -158,7 +162,8 @@ class Recipe
     }
 
     /**
-     * Setter for instructions.
+     * @param string|null $instructions
+     * @return void
      */
     public function setInstructions(?string $instructions): void
     {
@@ -166,7 +171,7 @@ class Recipe
     }
 
     /**
-     * Getter for created at.
+     * @return \DateTimeImmutable|null
      */
     public function getCreatedAt(): ?\DateTimeImmutable
     {
@@ -174,7 +179,8 @@ class Recipe
     }
 
     /**
-     * Setter for created at.
+     * @param \DateTimeImmutable $createdAt
+     * @return void
      */
     public function setCreatedAt(\DateTimeImmutable $createdAt): void
     {
@@ -182,7 +188,7 @@ class Recipe
     }
 
     /**
-     * Getter for updated at.
+     * @return \DateTimeImmutable|null
      */
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
@@ -190,7 +196,8 @@ class Recipe
     }
 
     /**
-     * Setter for updated at.
+     * @param \DateTimeImmutable|null $updatedAt
+     * @return void
      */
     public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
     {
@@ -198,7 +205,7 @@ class Recipe
     }
 
     /**
-     * Getter for slug.
+     * @return string|null
      */
     public function getSlug(): ?string
     {
@@ -206,7 +213,7 @@ class Recipe
     }
 
     /**
-     * Getter for category.
+     * @return Category|null
      */
     public function getCategory(): ?Category
     {
@@ -214,7 +221,8 @@ class Recipe
     }
 
     /**
-     * Setter for category.
+     * @param Category|null $category
+     * @return $this
      */
     public function setCategory(?Category $category): self
     {
@@ -224,9 +232,7 @@ class Recipe
     }
 
     /**
-     * Getter for tags.
-     *
-     * @return Collection<int, Tag> Tags collection
+     * @return Collection
      */
     public function getTags(): Collection
     {
@@ -234,9 +240,8 @@ class Recipe
     }
 
     /**
-     * Add tag.
-     *
-     * @param Tag $tag Tag entity
+     * @param Tag $tag
+     * @return void
      */
     public function addTag(Tag $tag): void
     {
@@ -246,9 +251,8 @@ class Recipe
     }
 
     /**
-     * Remove tag.
-     *
-     * @param Tag $tag Tag entity
+     * @param Tag $tag
+     * @return void
      */
     public function removeTag(Tag $tag): void
     {
@@ -256,7 +260,7 @@ class Recipe
     }
 
     /**
-     * Getter for author.
+     * @return User|null
      */
     public function getAuthor(): ?User
     {
@@ -264,7 +268,8 @@ class Recipe
     }
 
     /**
-     * Setter for author.
+     * @param User|null $author
+     * @return $this
      */
     public function setAuthor(?User $author): self
     {
@@ -274,7 +279,7 @@ class Recipe
     }
 
     /**
-     * Getter for comment.
+     * @return string|null
      */
     public function getComment(): ?string
     {
@@ -282,7 +287,8 @@ class Recipe
     }
 
     /**
-     * Setter for comment.
+     * @param string|null $comment
+     * @return $this
      */
     public function setComment(?string $comment): self
     {

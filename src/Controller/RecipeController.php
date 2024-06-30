@@ -1,4 +1,7 @@
 <?php
+/**
+ * Recipe controller.
+ */
 
 namespace App\Controller;
 
@@ -26,11 +29,13 @@ class RecipeController extends AbstractController
     private RecipeServiceInterface $recipeService;
     private TranslatorInterface $translator;
 
-    public function __construct(
-        CategoryServiceInterface $categoryService,
-        TagServiceInterface $tagService,
-        RecipeServiceInterface $recipeService,
-        TranslatorInterface $translator,
+    /**
+     * @param CategoryServiceInterface $categoryService
+     * @param TagServiceInterface $tagService
+     * @param RecipeServiceInterface $recipeService
+     * @param TranslatorInterface $translator
+     */
+    public function __construct(CategoryServiceInterface $categoryService, TagServiceInterface $tagService, RecipeServiceInterface $recipeService, TranslatorInterface $translator
     ) {
         $this->categoryService = $categoryService;
         $this->tagService = $tagService;
@@ -38,6 +43,10 @@ class RecipeController extends AbstractController
         $this->translator = $translator;
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     #[Route(name: 'recipe_index', methods: 'GET')]
     public function index(Request $request): Response
     {
@@ -53,7 +62,7 @@ class RecipeController extends AbstractController
         $categories = $this->categoryService->findAll();
         $tags = $this->tagService->findAll();
 
-        if ($this->isGranted('ROLE_ADMIN') || null == $this->getUser()) {
+        if ($this->isGranted('ROLE_ADMIN') || null === $this->getUser()) {
             $pagination = $this->recipeService->getAllPaginatedList(1, $categoryId, $tagId);
         } else {
             $pagination = $this->recipeService->getPaginatedList(1, $user, $categoryId, $tagId);
@@ -66,6 +75,10 @@ class RecipeController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Recipe $recipe
+     * @return Response
+     */
     #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Recipe $recipe): Response
@@ -73,6 +86,10 @@ class RecipeController extends AbstractController
         return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
     }
 
+    /**
+     * @param Request $request
+     * @return Response
+     */
     #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
@@ -103,6 +120,11 @@ class RecipeController extends AbstractController
         return $this->render('recipe/create.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * @param Request $request
+     * @param Recipe $recipe
+     * @return Response
+     */
     #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('IS_AUTHENTICATED_FULLY', subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe): Response
@@ -137,6 +159,11 @@ class RecipeController extends AbstractController
         );
     }
 
+    /**
+     * @param Request $request
+     * @param Recipe $recipe
+     * @return Response
+     */
     #[Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function delete(Request $request, Recipe $recipe): Response

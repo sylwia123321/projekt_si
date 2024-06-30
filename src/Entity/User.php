@@ -54,14 +54,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Avatar $avatar = null;
 
-    public function __construct()
-    {
-    }
-
     /**
-     * Getter for id.
-     *
-     * @return int|null Id
+     * @return int|null
      */
     public function getId(): ?int
     {
@@ -69,9 +63,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Getter for email.
-     *
-     * @return string|null Email
+     * @return string|null
      */
     public function getEmail(): ?string
     {
@@ -79,9 +71,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Setter for email.
-     *
-     * @param string $email Email
+     * @param string $email
+     * @return void
      */
     public function setEmail(string $email): void
     {
@@ -89,11 +80,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * A visual identifier that represents this user.
-     *
-     * @return string User identifier
-     *
-     * @see UserInterface
+     * @return string
      */
     public function getUserIdentifier(): string
     {
@@ -101,9 +88,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @deprecated since Symfony 5.3, use getUserIdentifier instead
-     *
-     * @return string Username
+     * @return string
      */
     public function getUsername(): string
     {
@@ -111,11 +96,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Getter for roles.
-     *
-     * @return array<int, string> Roles
-     *
-     * @see UserInterface
+     * @return array|string[]
      */
     public function getRoles(): array
     {
@@ -126,9 +107,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Setter for roles.
-     *
-     * @param array<int, string> $roles Roles
+     * @param array $roles
+     * @return void
      */
     public function setRoles(array $roles): void
     {
@@ -136,11 +116,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Getter for password.
-     *
-     * @return string|null Password
-     *
-     * @see PasswordAuthenticatedUserInterface
+     * @return string|null
      */
     public function getPassword(): ?string
     {
@@ -148,9 +124,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Setter for password.
-     *
-     * @param string $password User password
+     * @param string $password
+     * @return void
      */
     public function setPassword(string $password): void
     {
@@ -158,10 +133,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Returning a salt is only needed, if you are not using a modern
-     * hashing algorithm (e.g. bcrypt or sodium) in your security.yaml.
-     *
-     * @see UserInterface
+     * @return string|null
      */
     public function getSalt(): ?string
     {
@@ -169,20 +141,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * Removes sensitive information from the token.
-     *
-     * @see UserInterface
+     * @return void
      */
     public function eraseCredentials(): void
     {
     }
 
+    /**
+     * @return Avatar|null
+     */
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
     }
 
     /**
+     * @param Avatar $avatar
      * @return $this
      */
     public function setAvatar(Avatar $avatar): static

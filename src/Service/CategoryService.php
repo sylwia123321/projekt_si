@@ -1,4 +1,7 @@
 <?php
+/**
+ * Category service.
+ */
 
 namespace App\Service;
 
@@ -23,18 +26,24 @@ class CategoryService implements CategoryServiceInterface
     private CategoryRepository $categoryRepository;
     private RecipeRepository $recipeRepository;
 
-    public function __construct(
-        EntityManagerInterface $entityManager,
-        PaginatorInterface $paginator,
-        CategoryRepository $categoryRepository,
-        RecipeRepository $recipeRepository
-    ) {
+    /**
+     * @param EntityManagerInterface $entityManager
+     * @param PaginatorInterface $paginator
+     * @param CategoryRepository $categoryRepository
+     * @param RecipeRepository $recipeRepository
+     */
+    public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, CategoryRepository $categoryRepository, RecipeRepository $recipeRepository)
+    {
         $this->entityManager = $entityManager;
         $this->paginator = $paginator;
         $this->categoryRepository = $categoryRepository;
         $this->recipeRepository = $recipeRepository;
     }
 
+    /**
+     * @param int $page
+     * @return PaginationInterface
+     */
     public function getPaginatedList(int $page): PaginationInterface
     {
         $query = $this->categoryRepository->queryAll();
@@ -46,15 +55,18 @@ class CategoryService implements CategoryServiceInterface
         );
     }
 
+    /**
+     * @param int $id
+     * @return Category|null
+     */
     public function getCategoryById(int $id): ?Category
     {
         return $this->categoryRepository->find($id);
     }
 
     /**
-     * Save entity.
-     *
-     * @param Category $category Category entity
+     * @param Category $category
+     * @return void
      */
     public function save(Category $category): void
     {
@@ -62,7 +74,9 @@ class CategoryService implements CategoryServiceInterface
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
+     * @param Category $category
+     * @return void
+     * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
     public function delete(Category $category): void
@@ -102,6 +116,9 @@ class CategoryService implements CategoryServiceInterface
         return $this->categoryRepository->findOneById($id);
     }
 
+    /**
+     * @return array
+     */
     public function findAll(): array
     {
         return $this->categoryRepository->findAll();

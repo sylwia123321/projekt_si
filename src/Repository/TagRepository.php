@@ -35,6 +35,8 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param Tag $tag
+     * @return void
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -46,6 +48,8 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
+     * @param Tag $tag
+     * @return void
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
