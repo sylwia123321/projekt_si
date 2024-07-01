@@ -37,9 +37,9 @@
                     <td>{{ category.updatedAt|format_date('long') }}</td>
                     <td>
                         {% if is_granted('ROLE_ADMIN') %}
-                            <a href="{{ path('category_show', {'id': category.id}) }}">{{ 'action.show'|trans }}</a>
-                            <a href="{{ path('category_edit', {'id': category.id}) }}">{{ 'action.edit'|trans }}</a>
-                            <a href="{{ path('category_delete', {'id': category.id}) }}">{{ 'action.delete'|trans }}</a>
+                            <a class="btn btn-outline-primary" href="{{ path('category_show', {'id': category.id}) }}">{{ 'action.show'|trans }}</a>
+                            <a class="btn btn-outline-success" href="{{ path('category_edit', {'id': category.id}) }}">{{ 'action.edit'|trans }}</a>
+                            <a class="btn btn-outline-danger" href="{{ path('category_delete', {'id': category.id}) }}">{{ 'action.delete'|trans }}</a>
                         {% endif %}
                     </td>
                 </tr>

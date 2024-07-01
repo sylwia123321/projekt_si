@@ -19,17 +19,3 @@ label {
     margin-left: 5px;
 }
 
-.navigation text-center, .create_category {
-    margin-top: 20px;
-    margin-bottom: 20px;
-}
-
-table {
-    table-layout: fixed;
-    width: 100%;
-}
-
-th, td {
-    word-wrap: break-word;
-}
-

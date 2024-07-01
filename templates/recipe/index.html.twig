@@ -72,8 +72,8 @@
                 {% for recipe in pagination.items %}
                     <tr>
                         <td>{{ recipe.id }}</td>
-                        <td>{{ recipe.createdAt|date('Y-m-d H:i') }}</td>
-                        <td>{{ recipe.updatedAt|date('Y-m-d H:i') }}</td>
+                        <td>{{ recipe.createdAt|format_date('long') }}</td>
+                        <td>{{ recipe.updatedAt|format_date('long') }}</td>
                         <td>{{ recipe.title }}</td>
                         <td>{{ recipe.author.username }}</td>
                         <td>
