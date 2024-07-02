@@ -27,7 +27,7 @@ class UserController extends AbstractController
 
     /**
      * @param UserServiceInterface $userService
-     * @param TranslatorInterface $translator
+     * @param TranslatorInterface  $translator
      */
     public function __construct(UserServiceInterface $userService, TranslatorInterface $translator)
     {
