@@ -41,12 +41,12 @@ class RecipeRepository extends ServiceEntityRepository
             ->leftJoin('recipe.tags', 't')
             ->addSelect('t');
 
-        if (null !== $category) {
+        if ($category) {
             $qb->andWhere('recipe.category = :category')
                 ->setParameter('category', $category);
         }
 
-        if (null !== $tag) {
+        if ($tag) {
             $qb->andWhere(':tag MEMBER OF recipe.tags')
                 ->setParameter('tag', $tag);
         }

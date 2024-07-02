@@ -54,6 +54,7 @@ class RecipeController extends AbstractController
     #[Route(name: 'recipe_index', methods: 'GET')]
     public function index(Request $request): Response
     {
+        $page = $request->query->getInt('page', 1);
         /** @var User|null $user */
         $user = $this->getUser();
 
@@ -67,9 +68,9 @@ class RecipeController extends AbstractController
         $tags = $this->tagService->findAll();
 
         if ($this->isGranted('ROLE_ADMIN') || null === $this->getUser()) {
-            $pagination = $this->recipeService->getAllPaginatedList(1, $categoryId, $tagId);
+            $pagination = $this->recipeService->getAllPaginatedList($page, $categoryId, $tagId);
         } else {
-            $pagination = $this->recipeService->getPaginatedList(1, $user, $categoryId, $tagId);
+            $pagination = $this->recipeService->getPaginatedList($page, $user, $categoryId, $tagId);
         }
 
         return $this->render('recipe/index.html.twig', [

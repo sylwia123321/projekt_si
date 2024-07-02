@@ -32,13 +32,14 @@ class CategoryController extends AbstractController
     }
 
     /**
-     * @param int $page
+     * @param Request $request
      *
      * @return Response
      */
     #[Route(name: 'category_index', methods: 'GET')]
-    public function index(#[MapQueryParameter] int $page = 1): Response
+    public function index(Request $request): Response
     {
+        $page = $request->query->getInt('page', 1);
         $pagination = $this->categoryService->getPaginatedList($page);
 
         return $this->render('category/index.html.twig', ['pagination' => $pagination]);

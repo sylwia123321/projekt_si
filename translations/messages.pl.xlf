@@ -260,7 +260,7 @@
       </trans-unit>
       <trans-unit id="label.roles">
         <source>label.roles</source>
-        <target>Role</target>
+        <target>Rola</target>
       </trans-unit>
       <trans-unit id="title.user_details">
         <source>title.user_details</source>
