@@ -504,6 +504,14 @@
             <source>message.incorrect_password</source>
             <target>Incorrect password</target>
         </trans-unit>
+        <trans-unit id="label.avatar">
+            <source>label.avatar</source>
+            <target>Avatar</target>
+        </trans-unit>
+        <trans-unit id="Awatar">
+            <source>Awatar</source>
+            <target>Avatar</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

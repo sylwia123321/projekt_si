@@ -160,11 +160,11 @@
       </trans-unit>
       <trans-unit id="title.avatar_create">
         <source>title.avatar_create</source>
-        <target>Utwórz avatar</target>
+        <target>Utwórz awatara</target>
       </trans-unit>
       <trans-unit id="title.avatar_list">
         <source>title.avatar_list</source>
-        <target>Lista avatarów</target>
+        <target>Lista awatarów</target>
       </trans-unit>
       <trans-unit id="label.user">
         <source>label.user</source>
@@ -176,7 +176,7 @@
       </trans-unit>
       <trans-unit id="title.avatar_details">
         <source>title.avatar_details</source>
-        <target>Szczegóły avatara</target>
+        <target>Szczegóły awatara</target>
       </trans-unit>
       <trans-unit id="action_logout">
         <source>action_logout</source>
@@ -268,12 +268,12 @@
       </trans-unit>
       <trans-unit id="action.delete_avatar">
           <source>action.delete_avatar</source>
-          <target>Usuń avatar</target>
+          <target>Usuń awatara</target>
       </trans-unit>
 
       <trans-unit id="action.edit_avatar">
           <source>action.edit_avatar</source>
-          <target>Edytuj avatar</target>
+          <target>Edytuj awatara</target>
       </trans-unit>
 
       <trans-unit id="label.recipes">
@@ -293,7 +293,7 @@
 
       <trans-unit id="action.add_avatar">
           <source>action.add_avatar</source>
-          <target>Dodaj avatar</target>
+          <target>Dodaj awatara</target>
       </trans-unit>
 
       <trans-unit id="action.logout">
@@ -475,11 +475,19 @@
         </trans-unit>
         <trans-unit id="label.update_avatar">
             <source>label.update_avatar</source>
-            <target>Zmodyfikuj avatar</target>
+            <target>Zmodyfikuj awatara</target>
         </trans-unit>
         <trans-unit id="message.incorrect_password">
             <source>message.incorrect_password</source>
             <target>Nieprawidłowe hasło</target>
+        </trans-unit>
+        <trans-unit id="label.avatar">
+            <source>label.avatar</source>
+            <target>Awatar</target>
+        </trans-unit>
+        <trans-unit id="Awatar">
+            <source>Awatar</source>
+            <target>Awatar</target>
         </trans-unit>
     </body>
   </file>

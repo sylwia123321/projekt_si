@@ -14,19 +14,23 @@ use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class RecipeType.
  */
 class RecipeType extends AbstractType
 {
+    private TranslatorInterface $translator;
+
     /**
      * Constructor.
      *
      * @param TagsDataTransformer $tagsDataTransformer Tags data transformer
      */
-    public function __construct(private readonly TagsDataTransformer $tagsDataTransformer)
+    public function __construct(TranslatorInterface $translator, private readonly TagsDataTransformer $tagsDataTransformer)
     {
+        $this->translator = $translator;
     }
 
     /**
@@ -46,7 +50,7 @@ class RecipeType extends AbstractType
             'title',
             TextType::class,
             [
-                'label' => 'label.title',
+                'label' => $this->translator->trans('label.title'),
                 'required' => true,
                 'attr' => ['max_length' => 255],
             ]
@@ -55,7 +59,7 @@ class RecipeType extends AbstractType
             'description',
             TextareaType::class,
             [
-                'label' => 'label.description',
+                'label' => $this->translator->trans('label.description'),
                 'required' => true,
                 'attr' => ['rows' => 5],
             ]
@@ -64,7 +68,7 @@ class RecipeType extends AbstractType
             'ingredients',
             TextareaType::class,
             [
-                'label' => 'label.ingredients',
+                'label' => $this->translator->trans('label.ingredients'),
                 'required' => true,
                 'attr' => ['rows' => 5],
             ]
@@ -73,7 +77,7 @@ class RecipeType extends AbstractType
             'instructions',
             TextareaType::class,
             [
-                'label' => 'label.instructions',
+                'label' => $this->translator->trans('label.instructions'),
                 'required' => true,
                 'attr' => ['rows' => 5],
             ]
@@ -82,7 +86,7 @@ class RecipeType extends AbstractType
             'comment',
             TextareaType::class,
             [
-                'label' => 'label.comment',
+                'label' => $this->translator->trans('label.comment'),
                 'required' => false,
                 'attr' => ['rows' => 5],
             ]
@@ -95,8 +99,8 @@ class RecipeType extends AbstractType
                 'choice_label' => function ($category): string {
                     return $category->getTitle();
                 },
-                'label' => 'label.category',
-                'placeholder' => 'label.none',
+                'label' => $this->translator->trans('label.category'),
+                'placeholder' => $this->translator->trans('label.none'),
                 'required' => true,
             ]
         );
@@ -104,7 +108,7 @@ class RecipeType extends AbstractType
             'tags',
             TextType::class,
             [
-                'label' => 'label.tags',
+                'label' => $this->translator->trans('label.tags'),
                 'required' => false,
                 'attr' => ['max_length' => 128],
             ]

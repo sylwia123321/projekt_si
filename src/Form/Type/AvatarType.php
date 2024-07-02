@@ -11,12 +11,20 @@ use Symfony\Component\Form\Extension\Core\Type\FileType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Validator\Constraints\Image;
+use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class AvatarType.
  */
 class AvatarType extends AbstractType
 {
+    private TranslatorInterface $translator;
+
+    public function __construct(TranslatorInterface $translator)
+    {
+        $this->translator = $translator;
+    }
+
     /**
      * Builds the form.
      *
@@ -35,7 +43,7 @@ class AvatarType extends AbstractType
             FileType::class,
             [
                 'mapped' => false,
-                'label' => 'label.avatar',
+                'label' => $this->translator->trans('label.avatar'),
                 'required' => true,
                 'constraints' => new Image(
                     [
