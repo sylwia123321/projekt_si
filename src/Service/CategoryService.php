@@ -26,12 +26,6 @@ class CategoryService implements CategoryServiceInterface
     private CategoryRepository $categoryRepository;
     private RecipeRepository $recipeRepository;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param PaginatorInterface     $paginator
-     * @param CategoryRepository     $categoryRepository
-     * @param RecipeRepository       $recipeRepository
-     */
     public function __construct(EntityManagerInterface $entityManager, PaginatorInterface $paginator, CategoryRepository $categoryRepository, RecipeRepository $recipeRepository)
     {
         $this->entityManager = $entityManager;
@@ -40,11 +34,6 @@ class CategoryService implements CategoryServiceInterface
         $this->recipeRepository = $recipeRepository;
     }
 
-    /**
-     * @param int $page
-     *
-     * @return PaginationInterface
-     */
     public function getPaginatedList(int $page): PaginationInterface
     {
         $query = $this->categoryRepository->queryAll();
@@ -56,31 +45,17 @@ class CategoryService implements CategoryServiceInterface
         );
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Category|null
-     */
     public function getCategoryById(int $id): ?Category
     {
         return $this->categoryRepository->find($id);
     }
 
-    /**
-     * @param Category $category
-     *
-     * @return void
-     */
     public function save(Category $category): void
     {
         $this->categoryRepository->save($category);
     }
 
     /**
-     * @param Category $category
-     *
-     * @return void
-     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -89,11 +64,6 @@ class CategoryService implements CategoryServiceInterface
         $this->categoryRepository->delete($category);
     }
 
-    /**
-     * @param Category $category
-     *
-     * @return bool
-     */
     public function canBeDeleted(Category $category): bool
     {
         try {
@@ -105,19 +75,11 @@ class CategoryService implements CategoryServiceInterface
         }
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Category|null
-     */
     public function findOneById(int $id): ?Category
     {
         return $this->categoryRepository->findOneById($id);
     }
 
-    /**
-     * @return array
-     */
     public function findAll(): array
     {
         return $this->categoryRepository->findAll();

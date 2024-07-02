@@ -6,8 +6,8 @@
 namespace App\Service;
 
 use App\Entity\Avatar;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use App\Entity\User;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
  * Class Avatar service.

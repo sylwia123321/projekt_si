@@ -31,11 +31,6 @@ class CategoryController extends AbstractController
     {
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     #[Route(name: 'category_index', methods: 'GET')]
     public function index(Request $request): Response
     {
@@ -45,11 +40,6 @@ class CategoryController extends AbstractController
         return $this->render('category/index.html.twig', ['pagination' => $pagination]);
     }
 
-    /**
-     * @param Category $category
-     *
-     * @return Response
-     */
     #[Route(
         '/{id}',
         name: 'category_show',

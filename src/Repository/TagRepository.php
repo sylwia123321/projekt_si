@@ -7,26 +7,20 @@ namespace App\Repository;
 
 use App\Entity\Tag;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<Tag>
  */
 class TagRepository extends ServiceEntityRepository
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Tag::class);
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function queryAll(): QueryBuilder
     {
         return $this->getOrCreateQueryBuilder()
@@ -34,10 +28,6 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Tag $tag
-     *
-     * @return void
-     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -49,10 +39,6 @@ class TagRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Tag $tag
-     *
-     * @return void
-     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -63,11 +49,6 @@ class TagRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
-    /**
-     * @param QueryBuilder|null $queryBuilder
-     *
-     * @return QueryBuilder
-     */
     private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('tag');

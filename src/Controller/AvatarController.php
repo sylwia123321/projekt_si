@@ -9,13 +9,13 @@ use App\Entity\Avatar;
 use App\Entity\User;
 use App\Form\Type\AvatarType;
 use App\Service\AvatarServiceInterface;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use Doctrine\ORM\EntityManagerInterface;
 
 /**
  * Class AvatarController.
@@ -25,19 +25,11 @@ class AvatarController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
 
-    /**
-     * @param EntityManagerInterface $entityManager
-     * @param AvatarServiceInterface $avatarService
-     * @param TranslatorInterface    $translator
-     */
     public function __construct(EntityManagerInterface $entityManager, private readonly AvatarServiceInterface $avatarService, private readonly TranslatorInterface $translator)
     {
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return Response
-     */
     #[Route(name: 'avatar_index', methods: 'GET')]
     public function index(): Response
     {
@@ -53,11 +45,6 @@ class AvatarController extends AbstractController
         return $this->redirectToRoute('avatar_create');
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     #[Route(
         '/create',
         name: 'avatar_create',
@@ -108,12 +95,6 @@ class AvatarController extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     * @param Avatar  $avatar
-     *
-     * @return Response
-     */
     #[Route(
         '/{id}/edit',
         name: 'avatar_edit',

@@ -7,9 +7,9 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\Persistence\ManagerRegistry;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\QueryBuilder;
+use Doctrine\Persistence\ManagerRegistry;
 
 /**
  * @extends ServiceEntityRepository<User>
@@ -18,21 +18,12 @@ class UserRepository extends ServiceEntityRepository
 {
     private EntityManagerInterface $entityManager;
 
-    /**
-     * @param ManagerRegistry        $registry
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, User::class);
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @param User $user
-     *
-     * @return void
-     */
     public function save(User $user): void
     {
         $this->entityManager->persist($user);
@@ -40,10 +31,6 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param User $user
-     *
-     * @return void
-     *
      * @throws \Exception
      */
     public function deleteUserWithRelatedEntities(User $user): void
@@ -62,19 +49,11 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function queryAll(): QueryBuilder
     {
         return $this->createQueryBuilder('user');
     }
 
-    /**
-     * @param User $user
-     *
-     * @return void
-     */
     public function delete(User $user): void
     {
         $entityManager = $this->getEntityManager();
@@ -82,11 +61,6 @@ class UserRepository extends ServiceEntityRepository
         $entityManager->flush();
     }
 
-    /**
-     * @param User $user
-     *
-     * @return void
-     */
     private function deleteRelatedEntities(User $user): void
     {
         $recipes = $user->getRecipes();

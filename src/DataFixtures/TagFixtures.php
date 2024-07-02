@@ -25,11 +25,6 @@ class TagFixtures extends Fixture
         $this->faker = Factory::create();
     }
 
-    /**
-     * @param ObjectManager $manager
-     *
-     * @return void
-     */
     public function load(ObjectManager $manager): void
     {
         for ($i = 0; $i < 100; ++$i) {

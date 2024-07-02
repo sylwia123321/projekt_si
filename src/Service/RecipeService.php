@@ -6,11 +6,11 @@
 namespace App\Service;
 
 use App\Entity\Recipe;
+use App\Entity\Tag;
 use App\Entity\User;
 use App\Repository\RecipeRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
-use App\Entity\Tag;
 
 /**
  * Class RecipeService.
@@ -24,24 +24,11 @@ class RecipeService implements RecipeServiceInterface
      */
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
-    /**
-     * @param CategoryServiceInterface $categoryService
-     * @param PaginatorInterface       $paginator
-     * @param TagServiceInterface      $tagService
-     * @param RecipeRepository         $recipeRepository
-     */
     public function __construct(private readonly CategoryServiceInterface $categoryService, private readonly PaginatorInterface $paginator, private readonly TagServiceInterface $tagService, private readonly RecipeRepository $recipeRepository)
     {
     }
 
     /**
-     * @param int       $page
-     * @param User|null $author
-     * @param int|null  $categoryId
-     * @param int|null  $tagId
-     *
-     * @return PaginationInterface
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getPaginatedList(int $page, ?User $author, ?int $categoryId, ?int $tagId): PaginationInterface
@@ -57,10 +44,6 @@ class RecipeService implements RecipeServiceInterface
     }
 
     /**
-     * @param Recipe $recipe
-     *
-     * @return void
-     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -70,10 +53,6 @@ class RecipeService implements RecipeServiceInterface
     }
 
     /**
-     * @param Recipe $recipe
-     *
-     * @return void
-     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -83,12 +62,6 @@ class RecipeService implements RecipeServiceInterface
     }
 
     /**
-     * @param int      $page
-     * @param int|null $categoryId
-     * @param int|null $tagId
-     *
-     * @return PaginationInterface
-     *
      * @throws \Doctrine\ORM\NonUniqueResultException
      */
     public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface
@@ -103,11 +76,6 @@ class RecipeService implements RecipeServiceInterface
         );
     }
 
-    /**
-     * @param string $title
-     *
-     * @return Tag|null
-     */
     public function findOneByTitle(string $title): ?Tag
     {
         return $this->tagRepository->findOneByTitle($title);

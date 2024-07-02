@@ -10,31 +10,22 @@ use App\Entity\Recipe;
 use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\ORMException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\ORMException;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Class RecipeRepository.
  */
 class RecipeRepository extends ServiceEntityRepository
 {
-    /**
-     * @param ManagerRegistry $registry
-     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Recipe::class);
     }
 
-    /**
-     * @param Category|null $category
-     * @param Tag|null      $tag
-     *
-     * @return QueryBuilder
-     */
     public function queryByFilters(?Category $category, ?Tag $tag): QueryBuilder
     {
         $qb = $this->createQueryBuilder('recipe')
@@ -54,13 +45,6 @@ class RecipeRepository extends ServiceEntityRepository
         return $qb;
     }
 
-    /**
-     * @param User|null     $author
-     * @param Category|null $category
-     * @param Tag|null      $tag
-     *
-     * @return QueryBuilder
-     */
     public function queryByAuthorAndFilters(?User $author, ?Category $category, ?Tag $tag): QueryBuilder
     {
         $qb = $this->createQueryBuilder('recipe')

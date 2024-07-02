@@ -54,43 +54,26 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Avatar $avatar = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     *
-     * @return void
-     */
     public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
-    /**
-     * @return string
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @return string
-     */
     public function getUsername(): string
     {
         return (string) $this->email;
@@ -107,60 +90,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
-    /**
-     * @param array $roles
-     *
-     * @return void
-     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
-    /**
-     * @return string|null
-     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     *
-     * @return void
-     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSalt(): ?string
     {
         return null;
     }
 
-    /**
-     * @return void
-     */
     public function eraseCredentials(): void
     {
     }
 
-    /**
-     * @return Avatar|null
-     */
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
     }
 
     /**
-     * @param Avatar $avatar
-     *
      * @return $this
      */
     public function setAvatar(Avatar $avatar): static

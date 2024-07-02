@@ -29,21 +29,12 @@ class TagService implements TagServiceInterface
      */
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
-    /**
-     * @param PaginatorInterface $paginator
-     * @param TagRepository      $tagRepository
-     */
     public function __construct(PaginatorInterface $paginator, TagRepository $tagRepository)
     {
         $this->paginator = $paginator;
         $this->tagRepository = $tagRepository;
     }
 
-    /**
-     * @param int $page
-     *
-     * @return PaginationInterface
-     */
     public function getPaginatedList(int $page): PaginationInterface
     {
         $query = $this->tagRepository->queryAll();
@@ -56,10 +47,6 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * @param Tag $tag
-     *
-     * @return void
-     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -69,10 +56,6 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * @param Tag $tag
-     *
-     * @return void
-     *
      * @throws \Doctrine\ORM\Exception\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -81,39 +64,21 @@ class TagService implements TagServiceInterface
         $this->tagRepository->delete($tag);
     }
 
-    /**
-     * @param string $title
-     *
-     * @return Tag|null
-     */
     public function findOneByTitle(string $title): ?Tag
     {
         return $this->tagRepository->findOneByTitle($title);
     }
 
-    /**
-     * @param int $id
-     *
-     * @return Tag|null
-     */
     public function findOneById(int $id): ?Tag
     {
         return $this->tagRepository->findOneById($id);
     }
 
-    /**
-     * @return array
-     */
     public function findAll(): array
     {
         return $this->tagRepository->findAll();
     }
 
-    /**
-     * @param array $titles
-     *
-     * @return array
-     */
     public function findByTitles(array $titles): array
     {
         $tags = $this->tagRepository->createQueryBuilder('t')

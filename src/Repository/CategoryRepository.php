@@ -7,11 +7,11 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
-use Doctrine\ORM\OptimisticLockException;
-use Doctrine\ORM\EntityManager;
 
 /**
  * Class CategoryRepository.
@@ -28,30 +28,18 @@ class CategoryRepository extends ServiceEntityRepository
      */
     private EntityManagerInterface $entityManager;
 
-    /**
-     * @param ManagerRegistry        $registry
-     * @param EntityManagerInterface $entityManager
-     */
     public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
     {
         parent::__construct($registry, Category::class);
         $this->entityManager = $entityManager;
     }
 
-    /**
-     * @return QueryBuilder
-     */
     public function queryAll(): QueryBuilder
     {
         return $this->createQueryBuilder('category')
             ->orderBy('category.updatedAt', 'DESC');
     }
 
-    /**
-     * @param Category $category
-     *
-     * @return void
-     */
     public function save(Category $category): void
     {
         $this->entityManager->persist($category);
@@ -59,10 +47,6 @@ class CategoryRepository extends ServiceEntityRepository
     }
 
     /**
-     * @param Category $category
-     *
-     * @return void
-     *
      * @throws OptimisticLockException
      * @throws \Doctrine\ORM\Exception\ORMException
      */

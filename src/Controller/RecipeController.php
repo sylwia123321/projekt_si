@@ -8,7 +8,9 @@ namespace App\Controller;
 use App\Entity\Recipe;
 use App\Entity\User;
 use App\Form\Type\RecipeType;
+use App\Service\CategoryServiceInterface;
 use App\Service\RecipeServiceInterface;
+use App\Service\TagServiceInterface;
 use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
@@ -16,8 +18,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
-use App\Service\CategoryServiceInterface;
-use App\Service\TagServiceInterface;
 
 /**
  * Class RecipeController.
@@ -30,13 +30,6 @@ class RecipeController extends AbstractController
     private RecipeServiceInterface $recipeService;
     private TranslatorInterface $translator;
 
-    /**
-     * @param CategoryServiceInterface $categoryService
-     * @param TagServiceInterface      $tagService
-     * @param RecipeServiceInterface   $recipeService
-     * @param TranslatorInterface      $translator
-     * @param UserServiceInterface     $userService
-     */
     public function __construct(CategoryServiceInterface $categoryService, TagServiceInterface $tagService, RecipeServiceInterface $recipeService, TranslatorInterface $translator, UserServiceInterface $userService)
     {
         $this->categoryService = $categoryService;
@@ -46,11 +39,6 @@ class RecipeController extends AbstractController
         $this->userService = $userService;
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     #[Route(name: 'recipe_index', methods: 'GET')]
     public function index(Request $request): Response
     {
@@ -80,11 +68,6 @@ class RecipeController extends AbstractController
         ]);
     }
 
-    /**
-     * @param Recipe $recipe
-     *
-     * @return Response
-     */
     #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Recipe $recipe): Response
@@ -92,11 +75,6 @@ class RecipeController extends AbstractController
         return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
     }
 
-    /**
-     * @param Request $request
-     *
-     * @return Response
-     */
     #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
@@ -130,12 +108,6 @@ class RecipeController extends AbstractController
         return $this->render('recipe/create.html.twig', ['form' => $form->createView()]);
     }
 
-    /**
-     * @param Request $request
-     * @param Recipe  $recipe
-     *
-     * @return Response
-     */
     #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('IS_AUTHENTICATED_FULLY', subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe): Response
@@ -170,12 +142,6 @@ class RecipeController extends AbstractController
         );
     }
 
-    /**
-     * @param Request $request
-     * @param Recipe  $recipe
-     *
-     * @return Response
-     */
     #[Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function delete(Request $request, Recipe $recipe): Response

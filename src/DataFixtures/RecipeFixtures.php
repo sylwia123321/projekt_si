@@ -6,8 +6,8 @@
 namespace App\DataFixtures;
 
 use App\Entity\Category;
-use App\Entity\Tag;
 use App\Entity\Recipe;
+use App\Entity\Tag;
 use App\Entity\User;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 use Doctrine\Persistence\ObjectManager;
