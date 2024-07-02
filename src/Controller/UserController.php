@@ -48,8 +48,7 @@ class UserController extends AbstractController
             $pagination = $this->userService->getPaginatedList($page);
 
             $result = $this->render('user/index.html.twig', [
-                'pagination' => $pagination,
-            ]);
+                'pagination' => $pagination]);
         }
         else {
             $this->addFlash(
@@ -58,6 +57,7 @@ class UserController extends AbstractController
             );
             $result = $this->redirectToRoute('recipe_index');
         }
+
         return $result;
     }
 
@@ -86,8 +86,7 @@ class UserController extends AbstractController
             }
 
             return $this->render('user/create.html.twig', [
-                'form' => $form->createView(),
-            ]);
+                'form' => $form->createView()]);
         }
         else {
             $this->addFlash(
@@ -96,6 +95,7 @@ class UserController extends AbstractController
             );
             $result = $this->redirectToRoute('recipe_index');
         }
+
         return $result;
     }
 
@@ -145,8 +145,7 @@ class UserController extends AbstractController
     {
         if ($this->isGranted('ROLE_ADMIN')) {
             $result = $this->render('user/show.html.twig', [
-                'user' => $user,
-            ]);
+                'user' => $user]);
         }
         else {
             $this->addFlash(
@@ -155,6 +154,7 @@ class UserController extends AbstractController
             );
             $result = $this->redirectToRoute('recipe_index');
         }
+
         return $result;
     }
 
