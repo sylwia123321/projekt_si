@@ -53,8 +53,9 @@ class CategoryRepository extends ServiceEntityRepository
      */
     public function save(Category $category): void
     {
-        $this->entityManager->persist($category);
-        $this->entityManager->flush();
+        assert($this->_em instanceof EntityManager);
+        $this->_em->persist($category);
+        $this->_em->flush();
     }
 
     /**
