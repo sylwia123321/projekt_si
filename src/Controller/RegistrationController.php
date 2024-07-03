@@ -13,6 +13,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Service\UserServiceInterface;
 
 /**
  * Class RegistrationController.
@@ -22,9 +23,10 @@ class RegistrationController extends AbstractController
     /**
      * Constructor.
      *
-     * @param TranslatorInterface $translator Translator
+     * @param UserServiceInterface $userService User service
+     * @param TranslatorInterface  $translator  Translator
      */
-    public function __construct(private readonly TranslatorInterface $translator)
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator)
     {
     }
 
@@ -50,6 +52,8 @@ class RegistrationController extends AbstractController
             );
 
             $user->setRoles(['ROLE_USER']);
+
+            $this->userService->save($user);
 
             $this->addFlash(
                 'success',
