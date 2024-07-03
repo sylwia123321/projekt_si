@@ -45,12 +45,12 @@ class RecipeRepository extends ServiceEntityRepository
             ->leftJoin('recipe.tags', 't')
             ->addSelect('t');
 
-        if ($category) {
+        if ($category instanceof Category) {
             $qb->andWhere('recipe.category = :category')
                 ->setParameter('category', $category);
         }
 
-        if ($tag) {
+        if ($tag instanceof Tag) {
             $qb->andWhere(':tag MEMBER OF recipe.tags')
                 ->setParameter('tag', $tag);
         }
@@ -75,12 +75,12 @@ class RecipeRepository extends ServiceEntityRepository
             ->where('recipe.author = :author')
             ->setParameter('author', $author);
 
-        if ($category) {
+        if ($category instanceof Category) {
             $qb->andWhere('recipe.category = :category')
                 ->setParameter('category', $category);
         }
 
-        if ($tag) {
+        if ($tag instanceof Tag) {
             $qb->andWhere(':tag MEMBER OF recipe.tags')
                 ->setParameter('tag', $tag);
         }

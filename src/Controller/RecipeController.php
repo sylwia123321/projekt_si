@@ -12,7 +12,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Repository\CategoryRepository;
 use App\Repository\TagRepository;
@@ -22,15 +21,9 @@ use App\Repository\RecipeRepository;
 /**
  * Class RecipeController.
  */
-#[Route('/recipe')]
+#[\Symfony\Component\Routing\Attribute\Route('/recipe')]
 class RecipeController extends AbstractController
 {
-    private CategoryRepository $categoryRepository;
-    private TagRepository $tagRepository;
-    private RecipeServiceInterface $recipeService;
-    private TranslatorInterface $translator;
-    private RecipeRepository $recipeRepository;
-
     /**
      * Constructor.
      *
@@ -40,13 +33,8 @@ class RecipeController extends AbstractController
      * @param TranslatorInterface    $translator         Translator
      * @param RecipeRepository       $recipeRepository   Recipe repository
      */
-    public function __construct(CategoryRepository $categoryRepository, TagRepository $tagRepository, RecipeServiceInterface $recipeService, TranslatorInterface $translator, RecipeRepository $recipeRepository)
+    public function __construct(private readonly CategoryRepository $categoryRepository, private readonly TagRepository $tagRepository, private readonly RecipeServiceInterface $recipeService, private readonly TranslatorInterface $translator, private readonly RecipeRepository $recipeRepository)
     {
-        $this->categoryRepository = $categoryRepository;
-        $this->tagRepository = $tagRepository;
-        $this->recipeService = $recipeService;
-        $this->translator = $translator;
-        $this->recipeRepository = $recipeRepository;
     }
 
     /**
@@ -56,7 +44,7 @@ class RecipeController extends AbstractController
      *
      * @return Response response
      */
-    #[Route(name: 'recipe_index', methods: 'GET')]
+    #[\Symfony\Component\Routing\Attribute\Route(name: 'recipe_index', methods: 'GET')]
     public function index(Request $request): Response
     {
         $page = $request->query->getInt('page', 1);
@@ -71,7 +59,7 @@ class RecipeController extends AbstractController
         $categories = $this->categoryRepository->findAll();
         $tags = $this->tagRepository->findAll();
 
-        if ($this->isGranted('ROLE_ADMIN') || null === $this->getUser()) {
+        if ($this->isGranted('ROLE_ADMIN') || !$this->getUser() instanceof \Symfony\Component\Security\Core\User\UserInterface) {
             $pagination = $this->recipeService->getAllPaginatedList($page, $categoryId, $tagId);
         } else {
             $pagination = $this->recipeService->getPaginatedList($page, $user, $categoryId, $tagId);
@@ -87,7 +75,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Recipe $recipe): Response
     {
@@ -101,7 +89,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
+    #[\Symfony\Component\Routing\Attribute\Route('/create', name: 'recipe_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
         if (!$this->isGranted('ROLE_USER')) {
@@ -139,7 +127,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('IS_AUTHENTICATED_FULLY', subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe): Response
     {
@@ -168,7 +156,7 @@ class RecipeController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function delete(Request $request, Recipe $recipe): Response
     {
@@ -198,7 +186,7 @@ class RecipeController extends AbstractController
      *
      * @return Response response
      */
-    #[Route('/{id}/rate', name: 'recipe_rate', requirements: ['id' => '[1-9]\d*'], methods: 'GET|POST')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/rate', name: 'recipe_rate', requirements: ['id' => '[1-9]\d*'], methods: 'GET|POST')]
     public function rate(Request $request, Recipe $recipe, RecipeRepository $recipeRepository): Response
     {
         $form = $this->createForm(RatingType::class);
@@ -227,7 +215,7 @@ class RecipeController extends AbstractController
      *
      * @return Response response
      */
-    #[Route('/top-rated', name: 'recipe_top-rated')]
+    #[\Symfony\Component\Routing\Attribute\Route('/top-rated', name: 'recipe_top-rated')]
     public function topRated()
     {
         $recipes = $this->recipeRepository->findTopRated();

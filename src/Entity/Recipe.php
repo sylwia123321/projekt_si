@@ -78,10 +78,10 @@ class Recipe
     private ?string $comment = null;
 
     #[ORM\Column(type: 'float', nullable: true)]
-    private ?float $rating;
+    private ?float $rating = null;
 
     #[ORM\Column(type: 'integer', nullable: true)]
-    private ?int $ratingCount;
+    private ?int $ratingCount = null;
 
     /**
      * Constructor.

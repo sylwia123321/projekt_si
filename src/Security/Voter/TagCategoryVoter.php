@@ -46,10 +46,6 @@ class TagCategoryVoter extends Voter
             return false;
         }
 
-        if ('ROLE_ADMIN') {
-            return true;
-        }
-
-        return false;
+        return (bool) 'ROLE_ADMIN';
     }
 }

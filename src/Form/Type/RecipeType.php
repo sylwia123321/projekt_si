@@ -21,8 +21,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class RecipeType extends AbstractType
 {
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
@@ -31,9 +29,8 @@ class RecipeType extends AbstractType
      * @param TranslatorInterface $translator          The translator service for translating form labels
      * @param TagsDataTransformer $tagsDataTransformer Tags data transformer
      */
-    public function __construct(TranslatorInterface $translator, private readonly TagsDataTransformer $tagsDataTransformer)
+    public function __construct(private readonly TranslatorInterface $translator, private readonly TagsDataTransformer $tagsDataTransformer)
     {
-        $this->translator = $translator;
     }
 
     /**
@@ -55,9 +52,7 @@ class RecipeType extends AbstractType
         $builder->add('instructions', TextareaType::class, ['label' => $this->translator->trans('label.instructions'), 'required' => true, 'attr' => ['rows' => 5]]);
         $builder->add('comment', TextareaType::class, ['label' => $this->translator->trans('label.comment'), 'required' => false, 'attr' => ['rows' => 5]]);
 
-        $choiceLabelFunction = function ($category): string {
-            return $category->getTitle();
-        };
+        $choiceLabelFunction = fn ($category): string => $category->getTitle();
 
         $builder->add('category', EntityType::class, ['class' => Category::class, 'choice_label' => $choiceLabelFunction, 'label' => $this->translator->trans('label.category'), 'placeholder' => $this->translator->trans('label.none'), 'required' => true]);
 

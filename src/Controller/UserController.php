@@ -11,7 +11,6 @@ use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
@@ -19,22 +18,17 @@ use Doctrine\DBAL\Exception\ForeignKeyConstraintViolationException;
 /**
  * Class UserController.
  */
-#[Route('/user')]
+#[\Symfony\Component\Routing\Attribute\Route('/user')]
 class UserController extends AbstractController
 {
-    private UserServiceInterface $userService;
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
      * @param UserServiceInterface $userService User service
      * @param TranslatorInterface  $translator  Translator
      */
-    public function __construct(UserServiceInterface $userService, TranslatorInterface $translator)
+    public function __construct(private readonly UserServiceInterface $userService, private readonly TranslatorInterface $translator)
     {
-        $this->userService = $userService;
-        $this->translator = $translator;
     }
 
     /**
@@ -47,7 +41,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/', name: 'user_index', methods: ['GET'])]
+    #[\Symfony\Component\Routing\Attribute\Route('/', name: 'user_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
         if ($this->isGranted('ROLE_ADMIN')) {
@@ -69,7 +63,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/create', name: 'user_create', methods: ['GET|POST'])]
+    #[\Symfony\Component\Routing\Attribute\Route('/create', name: 'user_create', methods: ['GET|POST'])]
     public function create(Request $request): Response
     {
         if ($this->isGranted('ROLE_ADMIN')) {
@@ -101,7 +95,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '\d+'], methods: ['GET|PUT'])]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '\d+'], methods: ['GET|PUT'])]
     public function edit(Request $request, User $user): Response
     {
         $form = $this->createForm(UserType::class, $user, ['method' => 'PUT', 'action' => $this->generateUrl('user_edit', ['id' => $user->getId()])]);
@@ -128,7 +122,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}', name: 'user_show', requirements: ['id' => '\d+'], methods: ['GET'])]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}', name: 'user_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(User $user): Response
     {
         if ($this->isGranted('ROLE_ADMIN')) {
@@ -149,7 +143,7 @@ class UserController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '\d+'], methods: ['DELETE|GET'])]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '\d+'], methods: ['DELETE|GET'])]
     public function delete(Request $request, User $user): Response
     {
         if ($this->isGranted('ROLE_USER') && $this->getUser() === $user) {
@@ -169,7 +163,7 @@ class UserController extends AbstractController
                     'success',
                     $this->translator->trans('message.deleted_successfully')
                 );
-            } catch (ForeignKeyConstraintViolationException $e) {
+            } catch (ForeignKeyConstraintViolationException) {
                 $this->addFlash(
                     'error',
                     ''

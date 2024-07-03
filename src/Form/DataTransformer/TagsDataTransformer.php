@@ -55,9 +55,9 @@ class TagsDataTransformer implements DataTransformerInterface
      *
      * @return array<int, Tag> Result
      */
-    public function reverseTransform($value): array
+    public function reverseTransform($value): object|string
     {
-        $tagTitles = array_map('trim', explode(',', $value));
+        $tagTitles = array_map(trim(...), explode(',', $value));
         $existingTags = $this->tagRepository->findByTitles($tagTitles);
 
         $tags = [];

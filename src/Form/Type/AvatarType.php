@@ -18,8 +18,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class AvatarType extends AbstractType
 {
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
@@ -27,9 +25,8 @@ class AvatarType extends AbstractType
      *
      * @param TranslatorInterface $translator The translator service for translating form labels
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     /**

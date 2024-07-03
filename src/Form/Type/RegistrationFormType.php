@@ -20,8 +20,6 @@ use Symfony\Contracts\Translation\TranslatorInterface;
  */
 class RegistrationFormType extends AbstractType
 {
-    private TranslatorInterface $translator;
-
     /**
      * Constructor.
      *
@@ -29,9 +27,8 @@ class RegistrationFormType extends AbstractType
      *
      * @param TranslatorInterface $translator The translator service for translating form labels
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private readonly TranslatorInterface $translator)
     {
-        $this->translator = $translator;
     }
 
     /**

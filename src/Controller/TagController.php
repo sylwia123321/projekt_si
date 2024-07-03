@@ -13,13 +13,12 @@ use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapQueryParameter;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 
 /**
  * Class TagController.
  */
-#[Route('/tag')]
+#[\Symfony\Component\Routing\Attribute\Route('/tag')]
 class TagController extends AbstractController
 {
     /**
@@ -39,7 +38,7 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route(name: 'tag_index', methods: 'GET')]
+    #[\Symfony\Component\Routing\Attribute\Route(name: 'tag_index', methods: 'GET')]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
@@ -60,7 +59,7 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}', name: 'tag_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}', name: 'tag_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Tag $tag): Response
     {
@@ -74,7 +73,7 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/create', name: 'tag_create', methods: 'GET|POST')]
+    #[\Symfony\Component\Routing\Attribute\Route('/create', name: 'tag_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
@@ -105,7 +104,7 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/edit', name: 'tag_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/edit', name: 'tag_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('EDIT', subject: 'recipe')]
     public function edit(Request $request, Tag $tag): Response
     {
@@ -131,7 +130,7 @@ class TagController extends AbstractController
      *
      * @return Response HTTP response
      */
-    #[Route('/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
+    #[\Symfony\Component\Routing\Attribute\Route('/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('DELETE', subject: 'tag', message: 'Denied')]
     public function delete(Request $request, Tag $tag): Response
     {

@@ -88,13 +88,13 @@ class TagRepository extends ServiceEntityRepository
     {
         $tags = $this->createQueryBuilder('t')
             ->where('LOWER(t.title) IN (:titles)')
-            ->setParameter('titles', array_map('strtolower', $titles))
+            ->setParameter('titles', array_map(strtolower(...), $titles))
             ->getQuery()
             ->getResult();
 
         $tagMap = [];
         foreach ($tags as $tag) {
-            $tagMap[strtolower($tag->getTitle())] = $tag;
+            $tagMap[strtolower((string) $tag->getTitle())] = $tag;
         }
 
         return $tagMap;

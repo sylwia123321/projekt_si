@@ -151,7 +151,7 @@ class Tag
     public function updateTimestamps(): void
     {
         $this->updatedAt = new \DateTimeImmutable();
-        if (null === $this->createdAt) {
+        if (!$this->createdAt instanceof \DateTimeImmutable) {
             $this->createdAt = new \DateTimeImmutable();
         }
     }

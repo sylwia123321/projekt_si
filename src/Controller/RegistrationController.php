@@ -11,7 +11,6 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
 use App\Service\UserServiceInterface;
 
@@ -36,7 +35,7 @@ class RegistrationController extends AbstractController
      *
      * @return Response response
      */
-    #[Route('/register', name: 'app_register')]
+    #[\Symfony\Component\Routing\Attribute\Route('/register', name: 'app_register')]
     public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
