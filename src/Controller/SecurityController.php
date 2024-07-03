@@ -15,6 +15,7 @@ use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Service\UserServiceInterface;
 
 /**
  * Class SecurityController.
@@ -26,9 +27,10 @@ class SecurityController extends AbstractController
     /**
      * Constructor.
      *
-     * @param TranslatorInterface $translator Translator
+     * @param UserServiceInterface $userService User service
+     * @param TranslatorInterface  $translator  Translator
      */
-    public function __construct(TranslatorInterface $translator)
+    public function __construct(private readonly UserServiceInterface $userService, TranslatorInterface $translator)
     {
         $this->translator = $translator;
     }
@@ -82,6 +84,8 @@ class SecurityController extends AbstractController
             if ($passwordHasher->isPasswordValid($user, $currentPassword)) {
                 $encodedPassword = $passwordHasher->hashPassword($user, $newPassword);
                 $user->setPassword($encodedPassword);
+
+                $this->userService->save($user);
 
                 $this->addFlash('success', $this->translator->trans('message.edited_successfully'));
 
