@@ -23,10 +23,6 @@ class RecipeType extends AbstractType
 {
     private TranslatorInterface $translator;
 
-    /**
-     * @param TranslatorInterface $translator
-     * @param TagsDataTransformer $tagsDataTransformer
-     */
     public function __construct(TranslatorInterface $translator, private readonly TagsDataTransformer $tagsDataTransformer)
     {
         $this->translator = $translator;
