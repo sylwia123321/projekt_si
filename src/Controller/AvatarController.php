@@ -6,12 +6,9 @@
 namespace App\Controller;
 
 use App\Entity\Avatar;
-use App\Entity\User;
 use App\Form\Type\AvatarType;
 use App\Service\AvatarServiceInterface;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -23,17 +20,13 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/avatar')]
 class AvatarController extends AbstractController
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(EntityManagerInterface $entityManager, private readonly AvatarServiceInterface $avatarService, private readonly TranslatorInterface $translator)
+    public function __construct(private readonly AvatarServiceInterface $avatarService, private readonly TranslatorInterface $translator)
     {
-        $this->entityManager = $entityManager;
     }
 
     #[Route(name: 'avatar_index', methods: 'GET')]
     public function index(): Response
     {
-        /** @var User $user */
         $user = $this->getUser();
         if ($user->getAvatar()) {
             return $this->redirectToRoute(
@@ -52,7 +45,6 @@ class AvatarController extends AbstractController
     )]
     public function create(Request $request): Response
     {
-        /** @var User $user */
         $user = $this->getUser();
         if ($user->getAvatar()) {
             return $this->redirectToRoute(
@@ -70,16 +62,12 @@ class AvatarController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $file */
             $file = $form->get('file')->getData();
             $this->avatarService->create(
                 $file,
                 $avatar,
                 $user
             );
-
-            $this->entityManager->persist($avatar);
-            $this->entityManager->flush();
 
             $this->addFlash(
                 'success',
@@ -103,24 +91,15 @@ class AvatarController extends AbstractController
     )]
     public function edit(Request $request, Avatar $avatar): Response
     {
-        /** @var User $user */
         $user = $this->getUser();
         if (!$user->getAvatar()) {
             return $this->redirectToRoute('avatar_create');
         }
 
-        $form = $this->createForm(
-            AvatarType::class,
-            $avatar,
-            [
-                'method' => 'PUT',
-                'action' => $this->generateUrl('avatar_edit', ['id' => $avatar->getId()]),
-            ]
-        );
+        $form = $this->createForm(AvatarType::class, $avatar, ['method' => 'PUT', 'action' => $this->generateUrl('avatar_edit', ['id' => $avatar->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            /** @var UploadedFile $file */
             $file = $form->get('file')->getData();
             $this->avatarService->update(
                 $file,
@@ -136,12 +115,6 @@ class AvatarController extends AbstractController
             return $this->redirectToRoute('recipe_index');
         }
 
-        return $this->render(
-            'avatar/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'avatar' => $avatar,
-            ]
-        );
+        return $this->render('avatar/edit.html.twig', ['form' => $form->createView(), 'avatar' => $avatar]);
     }
 }

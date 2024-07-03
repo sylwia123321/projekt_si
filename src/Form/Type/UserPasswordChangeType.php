@@ -29,36 +29,7 @@ class UserPasswordChangeType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('currentPassword', PasswordType::class, [
-                'label' => $this->translator->trans('label.current_password'),
-                'required' => true,
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => $this->translator->trans('validators.current_password'),
-                    ]),
-                ],
-            ])
-            ->add('newPassword', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => ['label' => $this->translator->trans('label.new_password')],
-                'second_options' => ['label' => $this->translator->trans('label.repeat_new_password')],
-                'invalid_message' => $this->translator->trans('validators.password_mismatch'),
-                'required' => true,
-                'mapped' => false,
-                'constraints' => [
-                    new NotBlank([
-                        'message' => $this->translator->trans('validators.new_password'),
-                    ]),
-                    new Length([
-                        'min' => 6,
-                        'minMessage' => $this->translator->trans('validators.password_length', ['{{ limit }}' => 6]),
-                        'max' => 4096,
-                    ]),
-                    new NotCompromisedPassword(),
-                ],
-            ]);
+        $builder->add('currentPassword', PasswordType::class, ['label' => $this->translator->trans('label.current_password'), 'required' => true, 'mapped' => false, 'constraints' => [new NotBlank(['message' => $this->translator->trans('validators.current_password')])]])->add('newPassword', RepeatedType::class, ['type' => PasswordType::class, 'first_options' => ['label' => $this->translator->trans('label.new_password')], 'second_options' => ['label' => $this->translator->trans('label.repeat_new_password')], 'invalid_message' => $this->translator->trans('validators.password_mismatch'), 'required' => true, 'mapped' => false, 'constraints' => [new NotBlank(['message' => $this->translator->trans('validators.new_password')]), new Length(['min' => 6, 'minMessage' => $this->translator->trans('validators.password_length', ['{{ limit }}' => 6]), 'max' => 4096]), new NotCompromisedPassword()]]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

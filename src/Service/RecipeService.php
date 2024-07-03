@@ -6,11 +6,12 @@
 namespace App\Service;
 
 use App\Entity\Recipe;
-use App\Entity\Tag;
 use App\Entity\User;
 use App\Repository\RecipeRepository;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
+use App\Entity\Tag;
+use App\Repository\CategoryRepository;
 
 /**
  * Class RecipeService.
@@ -24,7 +25,7 @@ class RecipeService implements RecipeServiceInterface
      */
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
-    public function __construct(private readonly CategoryServiceInterface $categoryService, private readonly PaginatorInterface $paginator, private readonly TagServiceInterface $tagService, private readonly RecipeRepository $recipeRepository)
+    public function __construct(private readonly CategoryRepository $categoryRepository, private readonly PaginatorInterface $paginator, private readonly TagServiceInterface $tagService, private readonly RecipeRepository $recipeRepository)
     {
     }
 
@@ -33,7 +34,7 @@ class RecipeService implements RecipeServiceInterface
      */
     public function getPaginatedList(int $page, ?User $author, ?int $categoryId, ?int $tagId): PaginationInterface
     {
-        $category = null !== $categoryId ? $this->categoryService->findOneById($categoryId) : null;
+        $category = null !== $categoryId ? $this->categoryRepository->findOneById($categoryId) : null;
         $tag = null !== $tagId ? $this->tagService->findOneById($tagId) : null;
 
         return $this->paginator->paginate(
@@ -66,7 +67,7 @@ class RecipeService implements RecipeServiceInterface
      */
     public function getAllPaginatedList(int $page, ?int $categoryId, ?int $tagId): PaginationInterface
     {
-        $category = null !== $categoryId ? $this->categoryService->findOneById($categoryId) : null;
+        $category = null !== $categoryId ? $this->categoryRepository->findOneById($categoryId) : null;
         $tag = null !== $tagId ? $this->tagService->findOneById($tagId) : null;
 
         return $this->paginator->paginate(

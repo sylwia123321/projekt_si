@@ -7,18 +7,18 @@ namespace App\Repository;
 
 use App\Entity\Category;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\EntityManager;
 
 /**
  * Class CategoryRepository.
  *
  * @method Category|null find($id, $lockMode = null, $lockVersion = null)
  * @method Category|null findOneBy(array $criteria, array $orderBy = null)
- * @method Category[]    findAll()
+ * @method Task[]        findAll()
  * @method Category[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
  */
 class CategoryRepository extends ServiceEntityRepository
@@ -55,5 +55,10 @@ class CategoryRepository extends ServiceEntityRepository
         assert($this->_em instanceof EntityManager);
         $this->_em->remove($category);
         $this->_em->flush();
+    }
+
+    public function findOneById(int $id): ?Category
+    {
+        return parent::findOneById($id);
     }
 }

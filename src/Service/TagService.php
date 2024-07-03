@@ -73,25 +73,4 @@ class TagService implements TagServiceInterface
     {
         return $this->tagRepository->findOneById($id);
     }
-
-    public function findAll(): array
-    {
-        return $this->tagRepository->findAll();
-    }
-
-    public function findByTitles(array $titles): array
-    {
-        $tags = $this->tagRepository->createQueryBuilder('t')
-            ->where('LOWER(t.title) IN (:titles)')
-            ->setParameter('titles', array_map('strtolower', $titles))
-            ->getQuery()
-            ->getResult();
-
-        $tagMap = [];
-        foreach ($tags as $tag) {
-            $tagMap[strtolower($tag->getTitle())] = $tag;
-        }
-
-        return $tagMap;
-    }
 }

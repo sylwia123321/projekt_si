@@ -49,6 +49,27 @@ class TagRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    public function findAll(): array
+    {
+        return parent::findAll();
+    }
+
+    public function findByTitles(array $titles): array
+    {
+        $tags = $this->createQueryBuilder('t')
+            ->where('LOWER(t.title) IN (:titles)')
+            ->setParameter('titles', array_map('strtolower', $titles))
+            ->getQuery()
+            ->getResult();
+
+        $tagMap = [];
+        foreach ($tags as $tag) {
+            $tagMap[strtolower($tag->getTitle())] = $tag;
+        }
+
+        return $tagMap;
+    }
+
     private function getOrCreateQueryBuilder(?QueryBuilder $queryBuilder = null): QueryBuilder
     {
         return $queryBuilder ?? $this->createQueryBuilder('tag');

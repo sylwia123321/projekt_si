@@ -86,13 +86,7 @@ class LoginFormAuthenticator extends AbstractLoginFormAuthenticator
 
         $request->getSession()->set(SecurityRequestAttributes::LAST_USERNAME, $email);
 
-        return new Passport(
-            new UserBadge($email),
-            new PasswordCredentials((string) $request->request->get('password', '')),
-            [
-                new CsrfTokenBadge('authenticate', (string) $request->request->get('_csrf_token')),
-            ]
-        );
+        return new Passport(new UserBadge($email), new PasswordCredentials((string) $request->request->get('password', '')), [new CsrfTokenBadge('authenticate', (string) $request->request->get('_csrf_token'))]);
     }
 
     /**

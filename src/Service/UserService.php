@@ -7,7 +7,6 @@ namespace App\Service;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\Pagination\PaginationInterface;
 use Knp\Component\Pager\PaginatorInterface;
 
@@ -27,17 +26,10 @@ class UserService implements UserServiceInterface
      */
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
-    public function __construct(private readonly UserRepository $userRepository, private readonly PaginatorInterface $paginator, private readonly EntityManagerInterface $entityManager)
+    public function __construct(private readonly UserRepository $userRepository, private readonly PaginatorInterface $paginator)
     {
     }
 
-    /**
-     * Get paginated list.
-     *
-     * @param int $page Page number
-     *
-     * @return PaginationInterface<string, mixed> Paginated list
-     */
     public function getPaginatedList(int $page): PaginationInterface
     {
         return $this->paginator->paginate(
@@ -47,21 +39,11 @@ class UserService implements UserServiceInterface
         );
     }
 
-    /**
-     * Save entity.
-     *
-     * @param User $user User entity
-     */
     public function save(User $user): void
     {
         $this->userRepository->save($user);
     }
 
-    /**
-     * Delete entity.
-     *
-     * @param User $user User entity
-     */
     public function delete(User $user): void
     {
         $this->userRepository->delete($user);
@@ -69,7 +51,6 @@ class UserService implements UserServiceInterface
 
     public function deleteUserWithRelatedEntities(User $user): void
     {
-        $this->entityManager->remove($user);
-        $this->entityManager->flush();
+        $this->userRepository->deleteUserWithRelatedEntities($user);
     }
 }

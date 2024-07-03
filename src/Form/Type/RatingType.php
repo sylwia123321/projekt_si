@@ -28,11 +28,7 @@ class RatingType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('rating', IntegerType::class, [
-                'label' => $this->translator->trans('label.rating'),
-                'attr' => ['min' => 1, 'max' => 5],
-            ]);
+        $builder->add('rating', IntegerType::class, ['label' => $this->translator->trans('label.rating'), 'attr' => ['min' => 1, 'max' => 5]]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void

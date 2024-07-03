@@ -74,14 +74,4 @@ class CategoryService implements CategoryServiceInterface
             return false;
         }
     }
-
-    public function findOneById(int $id): ?Category
-    {
-        return $this->categoryRepository->findOneById($id);
-    }
-
-    public function findAll(): array
-    {
-        return $this->categoryRepository->findAll();
-    }
 }

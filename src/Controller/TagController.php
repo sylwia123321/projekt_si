@@ -42,6 +42,12 @@ class TagController extends AbstractController
     #[Route(name: 'tag_index', methods: 'GET')]
     public function index(#[MapQueryParameter] int $page = 1): Response
     {
+        if (!$this->isGranted('ROLE_ADMIN')) {
+            $this->addFlash('danger', 'message.access_denied');
+
+            return $this->redirectToRoute('recipe_index');
+        }
+
         $pagination = $this->tagService->getPaginatedList($page);
 
         return $this->render('tag/index.html.twig', ['pagination' => $pagination]);
@@ -72,25 +78,18 @@ class TagController extends AbstractController
     public function create(Request $request): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash('error', 'message.access_denied');
+            $this->addFlash('danger', 'message.access_denied');
 
-            return $this->redirectToRoute('tag_index');
+            return $this->redirectToRoute('recipe_index');
         }
         $tag = new Tag();
-        $form = $this->createForm(
-            TagType::class,
-            $tag,
-            ['action' => $this->generateUrl('tag_create')]
-        );
+        $form = $this->createForm(TagType::class, $tag, ['action' => $this->generateUrl('tag_create')]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->tagService->save($tag);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.created_successfully')
-            );
+            $this->addFlash('success', $this->translator->trans('message.created_successfully'));
 
             return $this->redirectToRoute('tag_index');
         }
@@ -110,63 +109,35 @@ class TagController extends AbstractController
     #[IsGranted('EDIT', subject: 'recipe')]
     public function edit(Request $request, Tag $tag): Response
     {
-        $form = $this->createForm(
-            TagType::class,
-            $tag,
-            [
-                'method' => 'PUT',
-                'action' => $this->generateUrl('tag_edit', ['id' => $tag->getId()]),
-            ]
-        );
+        $form = $this->createForm(TagType::class, $tag, ['method' => 'PUT', 'action' => $this->generateUrl('tag_edit', ['id' => $tag->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->tagService->save($tag);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.created_successfully')
-            );
+            $this->addFlash('success', $this->translator->trans('message.created_successfully'));
 
             return $this->redirectToRoute('tag_index');
         }
 
-        return $this->render(
-            'tag/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'tag' => $tag,
-            ]
-        );
+        return $this->render('tag/edit.html.twig', ['form' => $form->createView(), 'tag' => $tag]);
     }
 
     #[Route('/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('DELETE', subject: 'tag', message: 'Denied')]
     public function delete(Request $request, Tag $tag): Response
     {
-        $form = $this->createForm(FormType::class, $tag, [
-            'method' => 'DELETE',
-            'action' => $this->generateUrl('tag_delete', ['id' => $tag->getId()]),
-        ]);
+        $form = $this->createForm(FormType::class, $tag, ['method' => 'DELETE', 'action' => $this->generateUrl('tag_delete', ['id' => $tag->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->tagService->delete($tag);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.deleted_successfully')
-            );
+            $this->addFlash('success', $this->translator->trans('message.deleted_successfully'));
 
             return $this->redirectToRoute('tag_index');
         }
 
-        return $this->render(
-            'tag/delete.html.twig',
-            [
-                'form' => $form->createView(),
-                'tag' => $tag,
-            ]
-        );
+        return $this->render('tag/delete.html.twig', ['form' => $form->createView(), 'tag' => $tag]);
     }
 }

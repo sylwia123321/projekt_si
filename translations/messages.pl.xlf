@@ -505,6 +505,10 @@
             <source>label.no_comment</source>
             <target>Brak komentarza</target>
         </trans-unit>
+        <trans-unit id="message.cannot_delete_user">
+            <source>message.cannot_delete_user</source>
+            <target>Nie można usunąć użytkownika</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

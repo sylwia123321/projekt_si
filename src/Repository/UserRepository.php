@@ -7,27 +7,29 @@ namespace App\Repository;
 
 use App\Entity\User;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\QueryBuilder;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\QueryBuilder;
 
 /**
  * @extends ServiceEntityRepository<User>
  */
 class UserRepository extends ServiceEntityRepository
 {
-    private EntityManagerInterface $entityManager;
-
-    public function __construct(ManagerRegistry $registry, EntityManagerInterface $entityManager)
+    /**
+     * Constructor.
+     *
+     * @param ManagerRegistry $registry Manager registry
+     */
+    public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
-        $this->entityManager = $entityManager;
     }
 
     public function save(User $user): void
     {
-        $this->entityManager->persist($user);
-        $this->entityManager->flush();
+        assert($this->_em instanceof EntityManager);
+        $this->_em->persist($user);
+        $this->_em->flush();
     }
 
     /**
@@ -35,16 +37,24 @@ class UserRepository extends ServiceEntityRepository
      */
     public function deleteUserWithRelatedEntities(User $user): void
     {
-        $this->entityManager->beginTransaction();
+        assert($this->_em instanceof EntityManager);
+        $recipes = $this->_em
+            ->getRepository(\App\Entity\Recipe::class)
+            ->findBy(['author' => $user]);
+
+        $this->_em->beginTransaction();
 
         try {
-            $this->deleteRelatedEntities($user);
-            $this->entityManager->remove($user);
-            $this->entityManager->flush();
+            foreach ($recipes as $recipe) {
+                $this->_em->remove($recipe);
+            }
 
-            $this->entityManager->commit();
+            $this->_em->remove($user);
+
+            $this->_em->flush();
+            $this->_em->commit();
         } catch (\Exception $e) {
-            $this->entityManager->rollback();
+            $this->_em->rollback();
             throw $e;
         }
     }
@@ -56,19 +66,19 @@ class UserRepository extends ServiceEntityRepository
 
     public function delete(User $user): void
     {
-        $entityManager = $this->getEntityManager();
-        $entityManager->remove($user);
-        $entityManager->flush();
+        assert($this->_em instanceof EntityManager);
+        $this->_em->remove($user);
+        $this->_em->flush();
     }
 
     private function deleteRelatedEntities(User $user): void
     {
-        $recipes = $user->getRecipes();
+        assert($this->_em instanceof EntityManager);
+        $recipes = $this->recipes->getAuthor();
 
         foreach ($recipes as $recipe) {
-            $this->entityManager->remove($recipe);
+            $this->_em->remove($recipe);
         }
-
-        $this->entityManager->flush();
+        $this->_em->flush();
     }
 }

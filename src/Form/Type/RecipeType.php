@@ -41,77 +41,17 @@ class RecipeType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'title',
-            TextType::class,
-            [
-                'label' => $this->translator->trans('label.title'),
-                'required' => true,
-                'attr' => ['max_length' => 255],
-            ]
-        );
-        $builder->add(
-            'description',
-            TextareaType::class,
-            [
-                'label' => $this->translator->trans('label.description'),
-                'required' => true,
-                'attr' => ['rows' => 5],
-            ]
-        );
-        $builder->add(
-            'ingredients',
-            TextareaType::class,
-            [
-                'label' => $this->translator->trans('label.ingredients'),
-                'required' => true,
-                'attr' => ['rows' => 5],
-            ]
-        );
-        $builder->add(
-            'instructions',
-            TextareaType::class,
-            [
-                'label' => $this->translator->trans('label.instructions'),
-                'required' => true,
-                'attr' => ['rows' => 5],
-            ]
-        );
-        $builder->add(
-            'comment',
-            TextareaType::class,
-            [
-                'label' => $this->translator->trans('label.comment'),
-                'required' => false,
-                'attr' => ['rows' => 5],
-            ]
-        );
-        $builder->add(
-            'category',
-            EntityType::class,
-            [
-                'class' => Category::class,
-                'choice_label' => function ($category): string {
-                    return $category->getTitle();
-                },
-                'label' => $this->translator->trans('label.category'),
-                'placeholder' => $this->translator->trans('label.none'),
-                'required' => true,
-            ]
-        );
-        $builder->add(
-            'tags',
-            TextType::class,
-            [
-                'label' => $this->translator->trans('label.tags'),
-                'required' => false,
-                'attr' => ['max_length' => 128],
-            ]
-        );
+        $builder->add('title', TextType::class, ['label' => $this->translator->trans('label.title'), 'required' => true, 'attr' => ['max_length' => 255]]);
+        $builder->add('description', TextareaType::class, ['label' => $this->translator->trans('label.description'), 'required' => true, 'attr' => ['rows' => 5]]);
+        $builder->add('ingredients', TextareaType::class, ['label' => $this->translator->trans('label.ingredients'), 'required' => true, 'attr' => ['rows' => 5]]);
+        $builder->add('instructions', TextareaType::class, ['label' => $this->translator->trans('label.instructions'), 'required' => true, 'attr' => ['rows' => 5]]);
+        $builder->add('comment', TextareaType::class, ['label' => $this->translator->trans('label.comment'), 'required' => false, 'attr' => ['rows' => 5]]);
+        $builder->add('category', EntityType::class, ['class' => Category::class, 'choice_label' => function ($category): string {
+            return $category->getTitle();
+        }, 'label' => $this->translator->trans('label.category'), 'placeholder' => $this->translator->trans('label.none'), 'required' => true, ]);
+        $builder->add('tags', TextType::class, ['label' => $this->translator->trans('label.tags'), 'required' => false, 'attr' => ['max_length' => 128]]);
 
-        $builder->get('tags')->addModelTransformer(
-            $this->tagsDataTransformer
-        );
+        $builder->get('tags')->addModelTransformer($this->tagsDataTransformer);
     }
 
     /**

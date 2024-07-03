@@ -83,8 +83,6 @@ class SecurityController extends AbstractController
             $form->get('currentPassword')->addError(new FormError($this->translator->trans('message.incorrect_password')));
         }
 
-        return $this->render('security/change_password.html.twig', [
-            'changePasswordForm' => $form->createView(),
-        ]);
+        return $this->render('security/change_password.html.twig', ['changePasswordForm' => $form->createView()]);
     }
 }

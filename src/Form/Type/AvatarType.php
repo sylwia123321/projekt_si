@@ -38,27 +38,7 @@ class AvatarType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder->add(
-            'file',
-            FileType::class,
-            [
-                'mapped' => false,
-                'label' => $this->translator->trans('label.avatar'),
-                'required' => true,
-                'constraints' => new Image(
-                    [
-                        'maxSize' => '1024k',
-                        'mimeTypes' => [
-                            'image/png',
-                            'image/jpeg',
-                            'image/pjpeg',
-                            'image/jpeg',
-                            'image/pjpeg',
-                        ],
-                    ]
-                ),
-            ]
-        );
+        $builder->add('file', FileType::class, ['mapped' => false, 'label' => $this->translator->trans('label.avatar'), 'required' => true, 'constraints' => new Image(['maxSize' => '1024k', 'mimeTypes' => ['image/png', 'image/jpeg', 'image/pjpeg', 'image/jpeg', 'image/pjpeg']])]);
     }
 
     /**

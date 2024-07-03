@@ -22,8 +22,4 @@ interface CategoryServiceInterface
     public function delete(Category $category): void;
 
     public function canBeDeleted(Category $category): bool;
-
-    public function findOneById(int $id): ?Category;
-
-    public function findAll(): array;
 }

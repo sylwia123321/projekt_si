@@ -6,20 +6,18 @@
 namespace App\Controller;
 
 use App\Entity\Recipe;
-use App\Entity\User;
-use App\Form\Type\RatingType;
 use App\Form\Type\RecipeType;
-use App\Repository\RecipeRepository;
-use App\Service\CategoryServiceInterface;
 use App\Service\RecipeServiceInterface;
-use App\Service\TagServiceInterface;
-use App\Service\UserServiceInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\Extension\Core\Type\FormType;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use App\Repository\CategoryRepository;
+use App\Repository\TagRepository;
+use App\Form\Type\RatingType;
+use App\Repository\RecipeRepository;
 
 /**
  * Class RecipeController.
@@ -27,19 +25,18 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/recipe')]
 class RecipeController extends AbstractController
 {
-    private CategoryServiceInterface $categoryService;
-    private TagServiceInterface $tagService;
+    private CategoryRepository $categoryRepository;
+    private TagRepository $tagRepository;
     private RecipeServiceInterface $recipeService;
     private TranslatorInterface $translator;
     private RecipeRepository $recipeRepository;
 
-    public function __construct(CategoryServiceInterface $categoryService, TagServiceInterface $tagService, RecipeServiceInterface $recipeService, TranslatorInterface $translator, UserServiceInterface $userService, RecipeRepository $recipeRepository)
+    public function __construct(CategoryRepository $categoryRepository, TagRepository $tagRepository, RecipeServiceInterface $recipeService, TranslatorInterface $translator, RecipeRepository $recipeRepository)
     {
-        $this->categoryService = $categoryService;
-        $this->tagService = $tagService;
+        $this->categoryRepository = $categoryRepository;
+        $this->tagRepository = $tagRepository;
         $this->recipeService = $recipeService;
         $this->translator = $translator;
-        $this->userService = $userService;
         $this->recipeRepository = $recipeRepository;
     }
 
@@ -47,7 +44,6 @@ class RecipeController extends AbstractController
     public function index(Request $request): Response
     {
         $page = $request->query->getInt('page', 1);
-        /** @var User|null $user */
         $user = $this->getUser();
 
         $categoryId = $request->query->get('categoryId');
@@ -56,8 +52,8 @@ class RecipeController extends AbstractController
         $categoryId = ctype_digit($categoryId) ? (int) $categoryId : null;
         $tagId = ctype_digit($tagId) ? (int) $tagId : null;
 
-        $categories = $this->categoryService->findAll();
-        $tags = $this->tagService->findAll();
+        $categories = $this->categoryRepository->findAll();
+        $tags = $this->tagRepository->findAll();
 
         if ($this->isGranted('ROLE_ADMIN') || null === $this->getUser()) {
             $pagination = $this->recipeService->getAllPaginatedList($page, $categoryId, $tagId);
@@ -177,10 +173,14 @@ class RecipeController extends AbstractController
     }
 
     /**
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse|Response
+     * @param Request          $request
+     * @param Recipe           $recipe
+     * @param RecipeRepository $recipeRepository
+     *
+     * @return Response
      */
     #[Route('/{id}/rate', name: 'recipe_rate', requirements: ['id' => '[1-9]\d*'], methods: 'GET|POST')]
-    public function rate(Request $request, Recipe $recipe, RecipeRepository $recipeRepository)
+    public function rate(Request $request, Recipe $recipe, RecipeRepository $recipeRepository): Response
     {
         $form = $this->createForm(RatingType::class);
         $form->handleRequest($request);

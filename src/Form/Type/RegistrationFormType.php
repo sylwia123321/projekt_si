@@ -29,24 +29,11 @@ class RegistrationFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        $builder
-            ->add('email', EmailType::class, [
-                'label' => $this->translator->trans('label.email'),
-            ])
-            ->add('password', RepeatedType::class, [
-                'type' => PasswordType::class,
-                'first_options' => ['label' => $this->translator->trans('label.password')],
-                'second_options' => ['label' => $this->translator->trans('label.repeat_password')],
-            ])
-            ->add('submit', SubmitType::class, [
-                'label' => $this->translator->trans('label.register'),
-            ]);
+        $builder->add('email', EmailType::class, ['label' => $this->translator->trans('label.email')])->add('password', RepeatedType::class, ['type' => PasswordType::class, 'first_options' => ['label' => $this->translator->trans('label.password')], 'second_options' => ['label' => $this->translator->trans('label.repeat_password')]])->add('submit', SubmitType::class, ['label' => $this->translator->trans('label.register')]);
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([
-            'data_class' => User::class,
-        ]);
+        $resolver->setDefaults(['data_class' => User::class]);
     }
 }

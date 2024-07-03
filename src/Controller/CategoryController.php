@@ -49,10 +49,7 @@ class CategoryController extends AbstractController
     public function show(Category $category): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash(
-                'danger',
-                $this->translator->trans('message.access_denied')
-            );
+            $this->addFlash('danger', $this->translator->trans('message.access_denied'));
 
             return $this->redirectToRoute('category_index');
         }
@@ -75,10 +72,7 @@ class CategoryController extends AbstractController
     public function create(Request $request): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash(
-                'danger',
-                $this->translator->trans('message.access_denied')
-            );
+            $this->addFlash('danger', $this->translator->trans('message.access_denied'));
 
             return $this->redirectToRoute('category_index');
         }
@@ -90,18 +84,12 @@ class CategoryController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryService->save($category);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.created_successfully')
-            );
+            $this->addFlash('success', $this->translator->trans('message.created_successfully'));
 
             return $this->redirectToRoute('category_index');
         }
 
-        return $this->render(
-            'category/create.html.twig',
-            ['form' => $form->createView()]
-        );
+        return $this->render('category/create.html.twig', ['form' => $form->createView()]);
     }
 
     /**
@@ -116,42 +104,23 @@ class CategoryController extends AbstractController
     public function edit(Request $request, Category $category): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash(
-                'danger',
-                $this->translator->trans('message.access_denied')
-            );
+            $this->addFlash('danger', $this->translator->trans('message.access_denied'));
 
             return $this->redirectToRoute('category_index');
         }
 
-        $form = $this->createForm(
-            CategoryType::class,
-            $category,
-            [
-                'method' => 'PUT',
-                'action' => $this->generateUrl('category_edit', ['id' => $category->getId()]),
-            ]
-        );
+        $form = $this->createForm(CategoryType::class, $category, ['method' => 'PUT', 'action' => $this->generateUrl('category_edit', ['id' => $category->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryService->save($category);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.edited_successfully')
-            );
+            $this->addFlash('success', $this->translator->trans('message.edited_successfully'));
 
             return $this->redirectToRoute('category_index');
         }
 
-        return $this->render(
-            'category/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'category' => $category,
-            ]
-        );
+        return $this->render('category/edit.html.twig', ['form' => $form->createView(), 'category' => $category]);
     }
 
     /**
@@ -166,50 +135,28 @@ class CategoryController extends AbstractController
     public function delete(Request $request, Category $category): Response
     {
         if (!$this->isGranted('ROLE_ADMIN')) {
-            $this->addFlash(
-                'danger',
-                $this->translator->trans('message.access_denied')
-            );
+            $this->addFlash('danger', $this->translator->trans('message.access_denied'));
 
             return $this->redirectToRoute('category_index');
         }
 
         if (!$this->categoryService->canBeDeleted($category)) {
-            $this->addFlash(
-                'warning',
-                $this->translator->trans('message.category_contains_tasks')
-            );
+            $this->addFlash('warning', $this->translator->trans('message.category_contains_tasks'));
 
             return $this->redirectToRoute('category_index');
         }
 
-        $form = $this->createForm(
-            FormType::class,
-            $category,
-            [
-                'method' => 'DELETE',
-                'action' => $this->generateUrl('category_delete', ['id' => $category->getId()]),
-            ]
-        );
+        $form = $this->createForm(FormType::class, $category, ['method' => 'DELETE', 'action' => $this->generateUrl('category_delete', ['id' => $category->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->categoryService->delete($category);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.deleted_successfully')
-            );
+            $this->addFlash('success', $this->translator->trans('message.deleted_successfully'));
 
             return $this->redirectToRoute('category_index');
         }
 
-        return $this->render(
-            'category/delete.html.twig',
-            [
-                'form' => $form->createView(),
-                'category' => $category,
-            ]
-        );
+        return $this->render('category/delete.html.twig', ['form' => $form->createView(), 'category' => $category]);
     }
 }

@@ -6,9 +6,9 @@
 namespace App\Service;
 
 use App\Entity\Recipe;
-use App\Entity\Tag;
 use App\Entity\User;
 use Knp\Component\Pager\Pagination\PaginationInterface;
+use App\Entity\Tag;
 
 /**
  * Interface RecipeServiceInterface.

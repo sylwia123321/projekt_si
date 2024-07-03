@@ -56,8 +56,4 @@ interface TagServiceInterface
      * @throws NonUniqueResultException
      */
     public function findOneById(int $id): ?Tag;
-
-    public function findAll(): array;
-
-    public function findByTitles(array $titles): array;
 }

@@ -6,7 +6,7 @@
 namespace App\Form\DataTransformer;
 
 use App\Entity\Tag;
-use App\Service\TagServiceInterface;
+use App\Repository\TagRepository;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -20,9 +20,9 @@ class TagsDataTransformer implements DataTransformerInterface
     /**
      * Constructor.
      *
-     * @param TagServiceInterface $tagService Tag service
+     * @param TagRepository Tag repository
      */
-    public function __construct(private readonly TagServiceInterface $tagService)
+    public function __construct(private readonly TagRepository $tagRepository)
     {
     }
 
@@ -58,7 +58,7 @@ class TagsDataTransformer implements DataTransformerInterface
     public function reverseTransform($value): array
     {
         $tagTitles = array_map('trim', explode(',', $value));
-        $existingTags = $this->tagService->findByTitles($tagTitles);
+        $existingTags = $this->tagRepository->findByTitles($tagTitles);
 
         $tags = [];
         foreach ($tagTitles as $tagTitle) {
@@ -66,7 +66,7 @@ class TagsDataTransformer implements DataTransformerInterface
             if (!$tag) {
                 $tag = new Tag();
                 $tag->setTitle($tagTitle);
-                $this->tagService->save($tag);
+                $this->tagRepository->save($tag);
             }
             $tags[] = $tag;
         }
