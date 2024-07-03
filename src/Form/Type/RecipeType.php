@@ -23,6 +23,14 @@ class RecipeType extends AbstractType
 {
     private TranslatorInterface $translator;
 
+    /**
+     * Constructor.
+     *
+     * Initializes the form type with necessary dependencies.
+     *
+     * @param TranslatorInterface $translator          The translator service for translating form labels
+     * @param TagsDataTransformer $tagsDataTransformer Tags data transformer
+     */
     public function __construct(TranslatorInterface $translator, private readonly TagsDataTransformer $tagsDataTransformer)
     {
         $this->translator = $translator;
@@ -46,9 +54,13 @@ class RecipeType extends AbstractType
         $builder->add('ingredients', TextareaType::class, ['label' => $this->translator->trans('label.ingredients'), 'required' => true, 'attr' => ['rows' => 5]]);
         $builder->add('instructions', TextareaType::class, ['label' => $this->translator->trans('label.instructions'), 'required' => true, 'attr' => ['rows' => 5]]);
         $builder->add('comment', TextareaType::class, ['label' => $this->translator->trans('label.comment'), 'required' => false, 'attr' => ['rows' => 5]]);
-        $builder->add('category', EntityType::class, ['class' => Category::class, 'choice_label' => function ($category): string {
+
+        $choiceLabelFunction = function ($category): string {
             return $category->getTitle();
-        }, 'label' => $this->translator->trans('label.category'), 'placeholder' => $this->translator->trans('label.none'), 'required' => true, ]);
+        };
+
+        $builder->add('category', EntityType::class, ['class' => Category::class, 'choice_label' => $choiceLabelFunction, 'label' => $this->translator->trans('label.category'), 'placeholder' => $this->translator->trans('label.none'), 'required' => true]);
+
         $builder->add('tags', TextType::class, ['label' => $this->translator->trans('label.tags'), 'required' => false, 'attr' => ['max_length' => 128]]);
 
         $builder->get('tags')->addModelTransformer($this->tagsDataTransformer);

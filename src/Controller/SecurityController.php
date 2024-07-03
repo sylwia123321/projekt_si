@@ -6,7 +6,6 @@
 namespace App\Controller;
 
 use App\Form\Type\UserPasswordChangeType;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Form\FormError;
 use Symfony\Component\HttpFoundation\Request;
@@ -24,6 +23,11 @@ class SecurityController extends AbstractController
 {
     private TranslatorInterface $translator;
 
+    /**
+     * Constructor.
+     *
+     * @param TranslatorInterface $translator Translator
+     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;
@@ -53,8 +57,14 @@ class SecurityController extends AbstractController
     {
     }
 
+    /**
+     * @param Request                     $request        Request
+     * @param UserPasswordHasherInterface $passwordHasher Password hasher
+     *
+     * @return Response response
+     */
     #[Route(path: '/change-password', name: 'app_change_password')]
-    public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher, EntityManagerInterface $entityManager): Response
+    public function changePassword(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = $this->getUser();
 
@@ -72,8 +82,6 @@ class SecurityController extends AbstractController
             if ($passwordHasher->isPasswordValid($user, $currentPassword)) {
                 $encodedPassword = $passwordHasher->hashPassword($user, $newPassword);
                 $user->setPassword($encodedPassword);
-
-                $entityManager->flush();
 
                 $this->addFlash('success', $this->translator->trans('message.edited_successfully'));
 

@@ -20,7 +20,7 @@ class TagsDataTransformer implements DataTransformerInterface
     /**
      * Constructor.
      *
-     * @param TagRepository Tag repository
+     * @param TagRepository $tagRepository Tag repository
      */
     public function __construct(private readonly TagRepository $tagRepository)
     {

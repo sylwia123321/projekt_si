@@ -16,11 +16,25 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  */
 class AvatarService implements AvatarServiceInterface
 {
+    /**
+     * Constructor.
+     *
+     * @param string                     $targetDirectory   Target directory
+     * @param AvatarRepository           $avatarRepository  Avatar repository
+     * @param FileUploadServiceInterface $fileUploadService File upload service
+     * @param Filesystem                 $filesystem        File system
+     */
     public function __construct(private readonly string $targetDirectory, private readonly AvatarRepository $avatarRepository, private readonly FileUploadServiceInterface $fileUploadService, private readonly Filesystem $filesystem)
     {
     }
 
     /**
+     * Update avatar with a new file.
+     *
+     * @param UploadedFile $uploadedFile The new uploaded file
+     * @param Avatar       $avatar       The avatar entity to update
+     * @param User         $user         The user entity
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -38,6 +52,10 @@ class AvatarService implements AvatarServiceInterface
     }
 
     /**
+     * @param UploadedFile $uploadedFile Uploaded file
+     * @param Avatar       $avatar       Avatar
+     * @param User         $user         User
+     *
      * @throws \Doctrine\ORM\ORMException
      * @throws \Doctrine\ORM\OptimisticLockException
      */
@@ -51,8 +69,9 @@ class AvatarService implements AvatarServiceInterface
     }
 
     /**
-     * @throws \Doctrine\ORM\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * Delete entity.
+     *
+     * @param Avatar $avatar Avatar entity
      */
     public function delete(Avatar $avatar): void
     {

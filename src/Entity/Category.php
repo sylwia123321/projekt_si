@@ -129,13 +129,18 @@ class Category
         $this->title = $title;
     }
 
+    /**
+     * @return string|null string
+     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
     /**
-     * @return $this
+     * @param string $slug Slug
+     *
+     * @return $this this
      */
     public function setSlug(string $slug): static
     {

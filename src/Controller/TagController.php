@@ -123,6 +123,14 @@ class TagController extends AbstractController
         return $this->render('tag/edit.html.twig', ['form' => $form->createView(), 'tag' => $tag]);
     }
 
+    /**
+     * Delete action.
+     *
+     * @param Request $request HTTP request
+     * @param Tag     $tag     Tag entity
+     *
+     * @return Response HTTP response
+     */
     #[Route('/{id}/delete', name: 'tag_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('DELETE', subject: 'tag', message: 'Denied')]
     public function delete(Request $request, Tag $tag): Response

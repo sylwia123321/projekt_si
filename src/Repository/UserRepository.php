@@ -25,6 +25,14 @@ class UserRepository extends ServiceEntityRepository
         parent::__construct($registry, User::class);
     }
 
+    /**
+     * Save entity.
+     *
+     * @param User $user User entity
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function save(User $user): void
     {
         assert($this->_em instanceof EntityManager);
@@ -33,7 +41,11 @@ class UserRepository extends ServiceEntityRepository
     }
 
     /**
-     * @throws \Exception
+     * Deletes a User entity and related Recipe entities from the database.
+     *
+     * @param User $user The User entity to delete
+     *
+     * @throws \Exception If an error occurs during transaction rollback
      */
     public function deleteUserWithRelatedEntities(User $user): void
     {
@@ -59,11 +71,24 @@ class UserRepository extends ServiceEntityRepository
         }
     }
 
+    /**
+     * Query all records.
+     *
+     * @return QueryBuilder Query builder
+     */
     public function queryAll(): QueryBuilder
     {
         return $this->createQueryBuilder('user');
     }
 
+    /**
+     * Delete entity.
+     *
+     * @param User $user User entity
+     *
+     * @throws ORMException
+     * @throws OptimisticLockException
+     */
     public function delete(User $user): void
     {
         assert($this->_em instanceof EntityManager);
@@ -71,6 +96,13 @@ class UserRepository extends ServiceEntityRepository
         $this->_em->flush();
     }
 
+    /**
+     * Deletes related Recipe entities associated with a User.
+     *
+     * @param User $user The User entity whose related Recipe entities should be deleted
+     *
+     * @throws ORMException
+     */
     private function deleteRelatedEntities(User $user): void
     {
         assert($this->_em instanceof EntityManager);

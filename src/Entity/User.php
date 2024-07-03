@@ -51,36 +51,68 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[Assert\NotBlank]
     private ?string $password;
 
+    /**
+     * Avatar.
+     *
+     * @var Avatar|null Avatar
+     */
     #[ORM\OneToOne(mappedBy: 'user', cascade: ['persist', 'remove'])]
     private ?Avatar $avatar = null;
 
+    /**
+     * Get the primary key ID.
+     *
+     * @return int|null int
+     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
+    /**
+     * Get the user's email address.
+     *
+     * @return string|null string
+     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
+    /**
+     * Set the user's email address.
+     *
+     * @param string $email Email
+     */
     public function setEmail(string $email): void
     {
         $this->email = $email;
     }
 
+    /**
+     * Get the user identifier (email address).
+     *
+     * @return string string
+     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
+    /**
+     * Get the username (email address).
+     *
+     * @return string string
+     */
     public function getUsername(): string
     {
         return (string) $this->email;
     }
 
     /**
-     * @return array|string[]
+     * Get the user roles.
+     *
+     * @return array|string[] Array
      */
     public function getRoles(): array
     {
@@ -90,36 +122,68 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return array_unique($roles);
     }
 
+    /**
+     * Set the user roles.
+     *
+     * @param array $roles Roles
+     */
     public function setRoles(array $roles): void
     {
         $this->roles = $roles;
     }
 
+    /**
+     * Get the user password hash.
+     *
+     * @return string|null string
+     */
     public function getPassword(): ?string
     {
         return $this->password;
     }
 
+    /**
+     * Set the user password hash.
+     *
+     * @param string $password Password
+     */
     public function setPassword(string $password): void
     {
         $this->password = $password;
     }
 
+    /**
+     * Get the salt used for hashing the password (not used in plaintext password).
+     *
+     * @return string|null string
+     */
     public function getSalt(): ?string
     {
         return null;
     }
 
+    /**
+     * Erase sensitive data from the user.
+     */
     public function eraseCredentials(): void
     {
     }
 
+    /**
+     * Get the user's avatar.
+     *
+     * @return Avatar|null Avatar
+     */
     public function getAvatar(): ?Avatar
     {
         return $this->avatar;
     }
 
     /**
+     * Set the user's avatar.
+     *
+     * @param Avatar $avatar Avatar
+     *
      * @return $this
      */
     public function setAvatar(Avatar $avatar): static

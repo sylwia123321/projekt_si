@@ -15,9 +15,6 @@ use Knp\Component\Pager\PaginatorInterface;
  */
 class TagService implements TagServiceInterface
 {
-    private PaginatorInterface $paginator;
-    private TagRepository $tagRepository;
-
     /**
      * Items per page.
      *
@@ -29,12 +26,23 @@ class TagService implements TagServiceInterface
      */
     private const PAGINATOR_ITEMS_PER_PAGE = 10;
 
-    public function __construct(PaginatorInterface $paginator, TagRepository $tagRepository)
+    /**
+     * Constructor.
+     *
+     * @param PaginatorInterface $paginator     Paginator
+     * @param TagRepository      $tagRepository Tag repository
+     */
+    public function __construct(private readonly PaginatorInterface $paginator, private readonly TagRepository $tagRepository)
     {
-        $this->paginator = $paginator;
-        $this->tagRepository = $tagRepository;
     }
 
+    /**
+     * Get paginated list.
+     *
+     * @param int $page Page number
+     *
+     * @return PaginationInterface<string, mixed> Paginated list
+     */
     public function getPaginatedList(int $page): PaginationInterface
     {
         $query = $this->tagRepository->queryAll();
@@ -47,8 +55,9 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * @throws \Doctrine\ORM\Exception\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * Save entity.
+     *
+     * @param Tag $tag Tag entity
      */
     public function save(Tag $tag): void
     {
@@ -56,21 +65,12 @@ class TagService implements TagServiceInterface
     }
 
     /**
-     * @throws \Doctrine\ORM\Exception\ORMException
-     * @throws \Doctrine\ORM\OptimisticLockException
+     * Delete entity.
+     *
+     * @param Tag $tag Tag entity
      */
     public function delete(Tag $tag): void
     {
         $this->tagRepository->delete($tag);
-    }
-
-    public function findOneByTitle(string $title): ?Tag
-    {
-        return $this->tagRepository->findOneByTitle($title);
-    }
-
-    public function findOneById(int $id): ?Tag
-    {
-        return $this->tagRepository->findOneById($id);
     }
 }

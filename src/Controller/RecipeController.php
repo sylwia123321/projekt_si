@@ -31,6 +31,15 @@ class RecipeController extends AbstractController
     private TranslatorInterface $translator;
     private RecipeRepository $recipeRepository;
 
+    /**
+     * Constructor.
+     *
+     * @param CategoryRepository     $categoryRepository Category repository
+     * @param TagRepository          $tagRepository      Tag repository
+     * @param RecipeServiceInterface $recipeService      Recipe service
+     * @param TranslatorInterface    $translator         Translator
+     * @param RecipeRepository       $recipeRepository   Recipe repository
+     */
     public function __construct(CategoryRepository $categoryRepository, TagRepository $tagRepository, RecipeServiceInterface $recipeService, TranslatorInterface $translator, RecipeRepository $recipeRepository)
     {
         $this->categoryRepository = $categoryRepository;
@@ -40,6 +49,13 @@ class RecipeController extends AbstractController
         $this->recipeRepository = $recipeRepository;
     }
 
+    /**
+     * Index action.
+     *
+     * @param Request $request Request
+     *
+     * @return Response response
+     */
     #[Route(name: 'recipe_index', methods: 'GET')]
     public function index(Request $request): Response
     {
@@ -61,13 +77,16 @@ class RecipeController extends AbstractController
             $pagination = $this->recipeService->getPaginatedList($page, $user, $categoryId, $tagId);
         }
 
-        return $this->render('recipe/index.html.twig', [
-            'pagination' => $pagination,
-            'categories' => $categories,
-            'tags' => $tags,
-        ]);
+        return $this->render('recipe/index.html.twig', ['pagination' => $pagination, 'categories' => $categories, 'tags' => $tags]);
     }
 
+    /**
+     * Show action.
+     *
+     * @param Recipe $recipe Recipe entity
+     *
+     * @return Response HTTP response
+     */
     #[Route('/{id}', name: 'recipe_show', requirements: ['id' => '[1-9]\d*'], methods: 'GET')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function show(Recipe $recipe): Response
@@ -75,6 +94,13 @@ class RecipeController extends AbstractController
         return $this->render('recipe/show.html.twig', ['recipe' => $recipe]);
     }
 
+    /**
+     * Create action.
+     *
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
+     */
     #[Route('/create', name: 'recipe_create', methods: 'GET|POST')]
     public function create(Request $request): Response
     {
@@ -97,10 +123,7 @@ class RecipeController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $this->recipeService->save($recipe);
 
-            $this->addFlash(
-                'success',
-                $this->translator->trans('message.created_successfully')
-            );
+            $this->addFlash('success', $this->translator->trans('message.created_successfully'));
 
             return $this->redirectToRoute('recipe_index');
         }
@@ -108,18 +131,19 @@ class RecipeController extends AbstractController
         return $this->render('recipe/create.html.twig', ['form' => $form->createView()]);
     }
 
+    /**
+     * Edit action.
+     *
+     * @param Request $request HTTP request
+     * @param Recipe  $recipe  Recipe entity
+     *
+     * @return Response HTTP response
+     */
     #[Route('/{id}/edit', name: 'recipe_edit', requirements: ['id' => '[1-9]\d*'], methods: 'GET|PUT')]
     #[IsGranted('IS_AUTHENTICATED_FULLY', subject: 'recipe')]
     public function edit(Request $request, Recipe $recipe): Response
     {
-        $form = $this->createForm(
-            RecipeType::class,
-            $recipe,
-            [
-                'method' => 'PUT',
-                'action' => $this->generateUrl('recipe_edit', ['id' => $recipe->getId()]),
-            ]
-        );
+        $form = $this->createForm(RecipeType::class, $recipe, ['method' => 'PUT', 'action' => $this->generateUrl('recipe_edit', ['id' => $recipe->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -133,23 +157,22 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('recipe_index');
         }
 
-        return $this->render(
-            'recipe/edit.html.twig',
-            [
-                'form' => $form->createView(),
-                'recipe' => $recipe,
-            ]
-        );
+        return $this->render('recipe/edit.html.twig', ['form' => $form->createView(), 'recipe' => $recipe]);
     }
 
+    /**
+     * Delete action.
+     *
+     * @param Request $request HTTP request
+     * @param Recipe  $recipe  Recipe entity
+     *
+     * @return Response HTTP response
+     */
     #[Route('/{id}/delete', name: 'recipe_delete', requirements: ['id' => '[1-9]\d*'], methods: 'GET|DELETE')]
     #[IsGranted('VIEW', subject: 'recipe')]
     public function delete(Request $request, Recipe $recipe): Response
     {
-        $form = $this->createForm(FormType::class, $recipe, [
-            'method' => 'DELETE',
-            'action' => $this->generateUrl('recipe_delete', ['id' => $recipe->getId()]),
-        ]);
+        $form = $this->createForm(FormType::class, $recipe, ['method' => 'DELETE', 'action' => $this->generateUrl('recipe_delete', ['id' => $recipe->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -163,21 +186,17 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('recipe_index');
         }
 
-        return $this->render(
-            'recipe/delete.html.twig',
-            [
-                'form' => $form->createView(),
-                'recipe' => $recipe,
-            ]
-        );
+        return $this->render('recipe/delete.html.twig', ['form' => $form->createView(), 'recipe' => $recipe]);
     }
 
     /**
-     * @param Request          $request
-     * @param Recipe           $recipe
-     * @param RecipeRepository $recipeRepository
+     * Rate action.
      *
-     * @return Response
+     * @param Request          $request          Request
+     * @param Recipe           $recipe           Recipe
+     * @param RecipeRepository $recipeRepository Recipe repository
+     *
+     * @return Response response
      */
     #[Route('/{id}/rate', name: 'recipe_rate', requirements: ['id' => '[1-9]\d*'], methods: 'GET|POST')]
     public function rate(Request $request, Recipe $recipe, RecipeRepository $recipeRepository): Response
@@ -200,20 +219,19 @@ class RecipeController extends AbstractController
             return $this->redirectToRoute('recipe_show', ['id' => $recipe->getId()]);
         }
 
-        return $this->render('recipe/rate.html.twig', [
-            'recipe' => $recipe,
-            'form' => $form->createView()]);
+        return $this->render('recipe/rate.html.twig', ['recipe' => $recipe, 'form' => $form->createView()]);
     }
 
     /**
-     * @return Response
+     * Top-rated.
+     *
+     * @return Response response
      */
     #[Route('/top-rated', name: 'recipe_top-rated')]
     public function topRated()
     {
         $recipes = $this->recipeRepository->findTopRated();
 
-        return $this->render('recipe/top_rated.html.twig', [
-            'recipes' => $recipes]);
+        return $this->render('recipe/top_rated.html.twig', ['recipes' => $recipes]);
     }
 }

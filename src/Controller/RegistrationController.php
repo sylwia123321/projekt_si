@@ -7,7 +7,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\Type\RegistrationFormType;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -29,8 +28,14 @@ class RegistrationController extends AbstractController
     {
     }
 
+    /**
+     * @param Request                     $request        Request
+     * @param UserPasswordHasherInterface $passwordHasher Password Hasher
+     *
+     * @return Response response
+     */
     #[Route('/register', name: 'app_register')]
-    public function register(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    public function register(Request $request, UserPasswordHasherInterface $passwordHasher): Response
     {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
@@ -45,9 +50,6 @@ class RegistrationController extends AbstractController
             );
 
             $user->setRoles(['ROLE_USER']);
-
-            $entityManager->persist($user);
-            $entityManager->flush();
 
             $this->addFlash(
                 'success',

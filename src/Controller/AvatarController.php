@@ -20,10 +20,21 @@ use Symfony\Contracts\Translation\TranslatorInterface;
 #[Route('/avatar')]
 class AvatarController extends AbstractController
 {
+    /**
+     * Constructor.
+     *
+     * @param AvatarServiceInterface $avatarService Avatar service
+     * @param TranslatorInterface    $translator    Translator
+     */
     public function __construct(private readonly AvatarServiceInterface $avatarService, private readonly TranslatorInterface $translator)
     {
     }
 
+    /**
+     * Index action.
+     *
+     * @return Response response
+     */
     #[Route(name: 'avatar_index', methods: 'GET')]
     public function index(): Response
     {
@@ -38,6 +49,13 @@ class AvatarController extends AbstractController
         return $this->redirectToRoute('avatar_create');
     }
 
+    /**
+     * Create action.
+     *
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
+     */
     #[Route(
         '/create',
         name: 'avatar_create',
@@ -83,6 +101,14 @@ class AvatarController extends AbstractController
         );
     }
 
+    /**
+     * Edit action.
+     *
+     * @param Request $request HTTP request
+     * @param Avatar  $avatar  Avatar entity
+     *
+     * @return Response HTTP response
+     */
     #[Route(
         '/{id}/edit',
         name: 'avatar_edit',

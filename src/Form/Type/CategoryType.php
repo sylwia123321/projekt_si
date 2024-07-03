@@ -19,6 +19,13 @@ class CategoryType extends AbstractType
 {
     private TranslatorInterface $translator;
 
+    /**
+     * Constructor.
+     *
+     * Initializes the form type with necessary dependencies.
+     *
+     * @param TranslatorInterface $translator The translator service for translating form labels
+     */
     public function __construct(TranslatorInterface $translator)
     {
         $this->translator = $translator;

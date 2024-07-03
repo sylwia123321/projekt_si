@@ -21,11 +21,24 @@ use Doctrine\ORM\EntityManager;
  */
 class RecipeRepository extends ServiceEntityRepository
 {
+    /**
+     * Constructor.
+     *
+     * @param ManagerRegistry $registry Manager registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Recipe::class);
     }
 
+    /**
+     * Retrieves a QueryBuilder instance to query Recipe entities filtered by category and/or tag.
+     *
+     * @param Category|null $category Optional category filter
+     * @param Tag|null      $tag      Optional tag filter
+     *
+     * @return QueryBuilder The QueryBuilder instance
+     */
     public function queryByFilters(?Category $category, ?Tag $tag): QueryBuilder
     {
         $qb = $this->createQueryBuilder('recipe')
@@ -45,6 +58,15 @@ class RecipeRepository extends ServiceEntityRepository
         return $qb;
     }
 
+    /**
+     * Retrieves a QueryBuilder instance to query Recipe entities filtered by author, category, and/or tag.
+     *
+     * @param User|null     $author   Optional author filter
+     * @param Category|null $category Optional category filter
+     * @param Tag|null      $tag      Optional tag filter
+     *
+     * @return QueryBuilder The QueryBuilder instance
+     */
     public function queryByAuthorAndFilters(?User $author, ?Category $category, ?Tag $tag): QueryBuilder
     {
         $qb = $this->createQueryBuilder('recipe')
@@ -110,6 +132,11 @@ class RecipeRepository extends ServiceEntityRepository
             ->orderBy('recipe.updatedAt', 'DESC');
     }
 
+    /**
+     * Retrieves an array of Recipe entities ordered by rating in descending order.
+     *
+     * @return Recipe[] An array of Recipe entities
+     */
     public function findTopRated(): array
     {
         return $this->createQueryBuilder('recipe')
@@ -118,6 +145,12 @@ class RecipeRepository extends ServiceEntityRepository
             ->getResult();
     }
 
+    /**
+     * Adds a Recipe entity to the EntityManager.
+     *
+     * @param Recipe $recipe The Recipe entity to add
+     * @param bool   $flush  Whether to flush changes immediately
+     */
     public function add(Recipe $recipe, bool $flush = false): void
     {
         $this->_em->persist($recipe);

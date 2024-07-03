@@ -25,12 +25,28 @@ class UserController extends AbstractController
     private UserServiceInterface $userService;
     private TranslatorInterface $translator;
 
+    /**
+     * Constructor.
+     *
+     * @param UserServiceInterface $userService User service
+     * @param TranslatorInterface  $translator  Translator
+     */
     public function __construct(UserServiceInterface $userService, TranslatorInterface $translator)
     {
         $this->userService = $userService;
         $this->translator = $translator;
     }
 
+    /**
+     * Index action.
+     *
+     * Displays a list of users with pagination for admin users.
+     * If the user is not an admin, they are redirected to the recipe index page.
+     *
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
+     */
     #[Route('/', name: 'user_index', methods: ['GET'])]
     public function index(Request $request): Response
     {
@@ -46,6 +62,13 @@ class UserController extends AbstractController
         return $result;
     }
 
+    /**
+     * Create action.
+     *
+     * @param Request $request HTTP request
+     *
+     * @return Response HTTP response
+     */
     #[Route('/create', name: 'user_create', methods: ['GET|POST'])]
     public function create(Request $request): Response
     {
@@ -70,6 +93,14 @@ class UserController extends AbstractController
         return $result;
     }
 
+    /**
+     * Edit action.
+     *
+     * @param Request $request HTTP request
+     * @param User    $user    User entity
+     *
+     * @return Response HTTP response
+     */
     #[Route('/{id}/edit', name: 'user_edit', requirements: ['id' => '\d+'], methods: ['GET|PUT'])]
     public function edit(Request $request, User $user): Response
     {
@@ -90,6 +121,13 @@ class UserController extends AbstractController
         return $this->render('user/edit.html.twig', ['form' => $form->createView(), 'user' => $user]);
     }
 
+    /**
+     * Show action.
+     *
+     * @param User $user User entity
+     *
+     * @return Response HTTP response
+     */
     #[Route('/{id}', name: 'user_show', requirements: ['id' => '\d+'], methods: ['GET'])]
     public function show(User $user): Response
     {
@@ -103,6 +141,14 @@ class UserController extends AbstractController
         return $result;
     }
 
+    /**
+     * Delete action.
+     *
+     * @param Request $request HTTP request
+     * @param User    $user    User entity
+     *
+     * @return Response HTTP response
+     */
     #[Route('/{id}/delete', name: 'user_delete', requirements: ['id' => '\d+'], methods: ['DELETE|GET'])]
     public function delete(Request $request, User $user): Response
     {
@@ -112,10 +158,7 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_index');
         }
 
-        $form = $this->createForm(FormType::class, $user, [
-            'method' => 'DELETE',
-            'action' => $this->generateUrl('user_delete', ['id' => $user->getId()]),
-        ]);
+        $form = $this->createForm(FormType::class, $user, ['method' => 'DELETE', 'action' => $this->generateUrl('user_delete', ['id' => $user->getId()])]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
@@ -136,9 +179,6 @@ class UserController extends AbstractController
             return $this->redirectToRoute('user_index');
         }
 
-        return $this->render('user/delete.html.twig', [
-            'form' => $form->createView(),
-            'user' => $user,
-        ]);
+        return $this->render('user/delete.html.twig', ['form' => $form->createView(), 'user' => $user]);
     }
 }

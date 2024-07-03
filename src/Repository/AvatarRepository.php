@@ -17,6 +17,11 @@ use Doctrine\Persistence\ManagerRegistry;
  */
 class AvatarRepository extends ServiceEntityRepository
 {
+    /**
+     * Constructor.
+     *
+     * @param ManagerRegistry $registry Manager registry
+     */
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Avatar::class);
