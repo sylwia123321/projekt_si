@@ -1,12 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}{{ 'action_recipe_rate'|trans }}{{ recipe.title }}{% endblock %}
+{% block title %}{{ 'label.rating'|trans }}{% endblock %}
 
 {% block body %}
-    <h1>{{ 'action_recipe_rate'|trans }}:{{ recipe.title }}</h1>
-
+    <h1>{{ 'label.title'|trans }}: {{ recipe.title }}</h1>
     {{ form_start(form) }}
-    {{ form_widget(form.rating) }}
-    <button type="submit">{{ 'action_recipe_rate'|trans }}</button>
+    {{ form_row(form.rating) }}
+    <button type="submit">{{ 'action.submit'|trans }}</button>
     {{ form_end(form) }}
 {% endblock %}

@@ -11,6 +11,9 @@
         <div class="mb-3">
             <a href="{{ path('recipe_create') }}" class="btn btn-primary">{{ 'title.recipe_create'|trans }}</a>
         </div>
+        <div class="mb-3">
+            <a href="{{ path('recipe_top-rated') }}" class="btn btn-primary">{{ 'title.recipe_top-rated'|trans }}</a>
+        </div>
     {% endif %}
 
     <form method="get" action="{{ path('recipe_index') }}" class="form-inline mb-3">
@@ -107,6 +110,11 @@
                             {% if is_granted('DELETE', recipe) or is_granted('ROLE_ADMIN') %}
                                 <a class="btn btn-outline-danger" href="{{ path('recipe_delete', {'id': recipe.id}) }}">
                                     {{ 'action.delete'|trans }}
+                                </a>
+                            {% endif %}
+                            {% if is_granted('EDIT', recipe) %}
+                                <a class="btn btn-outline-success" href="{{ path('recipe_rate', {'id': recipe.id}) }}">
+                                    {{ 'action.rate'|trans }}
                                 </a>
                             {% endif %}
                         </td>

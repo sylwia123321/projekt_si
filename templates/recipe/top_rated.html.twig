@@ -5,9 +5,33 @@
 {% block body %}
     <h1>{{ 'label.top_recipes'|trans }}</h1>
 
-    <ul>
-        {% for recipe in recipes %}
-            <li><a href="{{ path('recipe_show', {'id': recipe.id}) }}">{{ recipe.title }}</a></li>
-        {% endfor %}
-    </ul>
+    <div class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>{{ 'label.id'|trans }}</th>
+                <th>{{ 'label.title'|trans }}</th>
+                <th>{{ 'label.rating'|trans }}</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for recipe in recipes %}
+                <tr>
+                    <td>{{ recipe.id }}</td>
+                    <td><a href="{{ path('recipe_show', {'id': recipe.id}) }}">{{ recipe.title }}</a></td>
+                    <td>
+                        {% if recipe.rating is not null %}
+                            {{ recipe.rating }}
+                        {% else %}
+                            {{ 'label.no_rating'|trans }}
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <a href="{{ path('recipe_index') }}" title="{{ 'action.back_to_list'|trans }}">
+            {{ 'action.back_to_list'|trans }}
+        </a>
+    </div>
 {% endblock %}

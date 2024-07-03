@@ -16,15 +16,23 @@
             <dd>{{ recipe.updatedAt|format_date('long') }}</dd>
             <dt>{{ 'label.title'|trans }}</dt>
             <dd>{{ recipe.title }}</dd>
+            <dt>{{ 'label.description'|trans }}</dt>
+            <dd>{{ recipe.description }}</dd>
+            <dt>{{ 'label.ingredients'|trans }}</dt>
+            <dd>{{ recipe.ingredients }}</dd>
+            <dt>{{ 'label.instructions'|trans }}</dt>
+            <dd>{{ recipe.instructions }}</dd>
             <dt>{{ 'label.author'|trans }}</dt>
             <dd>{{ recipe.author.username }}</dd>
-            <dt>{{ 'label_comment'|trans }}</dt>
+            <dt>{{ 'label.comment'|trans }}</dt>
             <dd>{{ recipe.comment|markdown_to_html }}</dd>
-            <dt>{{ 'label.actions'|trans }}</dt>
+            <dt>{{ 'label.rating'|trans }}</dt>
             <dd>
-                <a href="{{ path('recipe_index') }}" title="{{ 'action.back_to_list'|trans }}">
-                    {{ 'action.back_to_list'|trans }}
-                </a>
+                {% if recipe.rating is not null %}
+                    {{ recipe.rating }}
+                {% else %}
+                    {{ 'label.no_rating'|trans }}
+                {% endif %}
             </dd>
         </dl>
     {% else %}
@@ -32,4 +40,7 @@
             {{ 'message.record_not_found'|trans }}
         </p>
     {% endif %}
+    <a href="{{ path('recipe_index') }}" title="{{ 'action.back_to_list'|trans }}">
+        {{ 'action.back_to_list'|trans }}
+    </a>
 {% endblock %}

@@ -508,9 +508,17 @@
             <source>label.avatar</source>
             <target>Avatar</target>
         </trans-unit>
-        <trans-unit id="Awatar">
-            <source>Awatar</source>
-            <target>Avatar</target>
+        <trans-unit id="label.rating">
+            <source>label.rating</source>
+            <target>Rating</target>
+        </trans-unit>
+        <trans-unit id="label.no-rating">
+            <source>label.no_rating</source>
+            <target>No rating</target>
+        </trans-unit>
+        <trans-unit id="title.recipe_top-rated">
+            <source>title.recipe_top-rated</source>
+            <target>Top rated recipes</target>
         </trans-unit>
     </body>
   </file>
