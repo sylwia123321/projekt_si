@@ -7,7 +7,7 @@
 {% block body %}
     <h1>{{ 'title.recipe_list'|trans }}</h1>
 
-    {% if is_granted('ROLE_USER') %}
+    {% if is_granted('IS_AUTHENTICATED_FULLY') %}
         <div class="mb-3">
             <a href="{{ path('recipe_create') }}" class="btn btn-primary">{{ 'title.recipe_create'|trans }}</a>
         </div>
@@ -58,8 +58,6 @@
                     <th>{{ 'label.author'|trans }}</th>
                     <th>{{ 'label.category'|trans }}</th>
                     <th>{{ 'label.tag'|trans }}</th>
-                    <th>{{ 'label.comment'|trans }}</th>
-
                     {% set displayActions = false %}
                     {% for recipe in pagination.items %}
                         {% if is_granted('VIEW', recipe) or is_granted('ROLE_ADMIN') %}
@@ -95,7 +93,6 @@
                                 &nbsp;
                             {% endif %}
                         </td>
-                        <td>{{ recipe.comment }}</td>
                         <td>
                             {% if is_granted('VIEW', recipe) or is_granted('ROLE_ADMIN') %}
                                 <a class="btn btn-outline-primary" href="{{ path('recipe_show', {'id': recipe.id}) }}">
@@ -112,7 +109,7 @@
                                     {{ 'action.delete'|trans }}
                                 </a>
                             {% endif %}
-                            {% if is_granted('EDIT', recipe) %}
+                            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                                 <a class="btn btn-outline-success" href="{{ path('recipe_rate', {'id': recipe.id}) }}">
                                     {{ 'action.rate'|trans }}
                                 </a>

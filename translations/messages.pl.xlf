@@ -501,6 +501,10 @@
             <source>title.recipe_top-rated</source>
             <target>Najwyżej ocenione przepisy</target>
         </trans-unit>
+        <trans-unit id="label.no_comment">
+            <source>label.no_comment</source>
+            <target>Brak komentarza</target>
+        </trans-unit>
     </body>
   </file>
 </xliff>

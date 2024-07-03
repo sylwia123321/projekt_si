@@ -512,13 +512,17 @@
             <source>label.rating</source>
             <target>Rating</target>
         </trans-unit>
-        <trans-unit id="label.no-rating">
+        <trans-unit id="label.no_rating">
             <source>label.no_rating</source>
             <target>No rating</target>
         </trans-unit>
         <trans-unit id="title.recipe_top-rated">
             <source>title.recipe_top-rated</source>
             <target>Top rated recipes</target>
+        </trans-unit>
+        <trans-unit id="label.no_comment">
+            <source>label.no_comment</source>
+            <target>No comment</target>
         </trans-unit>
     </body>
   </file>

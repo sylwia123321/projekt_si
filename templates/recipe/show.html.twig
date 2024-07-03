@@ -25,7 +25,13 @@
             <dt>{{ 'label.author'|trans }}</dt>
             <dd>{{ recipe.author.username }}</dd>
             <dt>{{ 'label.comment'|trans }}</dt>
-            <dd>{{ recipe.comment|markdown_to_html }}</dd>
+            <dd>
+                {% if recipe.comment is not null %}
+                    {{ recipe.comment|markdown_to_html }}
+                {% else %}
+                    {{ 'label.no_comment'|trans }}
+                {% endif %}
+            </dd>
             <dt>{{ 'label.rating'|trans }}</dt>
             <dd>
                 {% if recipe.rating is not null %}
