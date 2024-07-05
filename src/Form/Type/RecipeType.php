@@ -56,9 +56,11 @@ class RecipeType extends AbstractType
 
         $builder->add('category', EntityType::class, ['class' => Category::class, 'choice_label' => $choiceLabelFunction, 'label' => $this->translator->trans('label.category'), 'placeholder' => $this->translator->trans('label.none'), 'required' => true]);
 
-        $builder->add('tags', TextType::class, ['label' => $this->translator->trans('label.tags'), 'required' => false, 'attr' => ['max_length' => 128]]);
+        $builder->add('tags', TextType::class, ['label' => 'label.tags', 'required' => false, 'attr' => ['max_length' => 128]]);
 
-        $builder->get('tags')->addModelTransformer($this->tagsDataTransformer);
+        $builder->get('tags')->addModelTransformer(
+            $this->tagsDataTransformer
+        );
     }
 
     /**

@@ -6,7 +6,8 @@
 namespace App\Form\DataTransformer;
 
 use App\Entity\Tag;
-use App\Repository\TagRepository;
+use App\Service\TagServiceInterface;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Symfony\Component\Form\DataTransformerInterface;
 
@@ -20,9 +21,9 @@ class TagsDataTransformer implements DataTransformerInterface
     /**
      * Constructor.
      *
-     * @param TagRepository $tagRepository Tag repository
+     * @param TagServiceInterface $tagService Tag service
      */
-    public function __construct(private readonly TagRepository $tagRepository)
+    public function __construct(private readonly TagServiceInterface $tagService)
     {
     }
 
@@ -49,26 +50,28 @@ class TagsDataTransformer implements DataTransformerInterface
     }
 
     /**
-     * Transform string of tag names into array of Tag entities.
+     * Transform string of tag names into collection of Tag entities.
      *
      * @param string $value String of tag names
      *
-     * @return array<int, Tag> Result
+     * @return Collection<int, Tag> Result
      */
-    public function reverseTransform($value): object|string
+    public function reverseTransform($value): Collection
     {
-        $tagTitles = array_map(trim(...), explode(',', $value));
-        $existingTags = $this->tagRepository->findByTitles($tagTitles);
+        $tagTitles = explode(',', $value);
+        $tags = new ArrayCollection();
 
-        $tags = [];
         foreach ($tagTitles as $tagTitle) {
-            $tag = $existingTags[strtolower($tagTitle)] ?? null;
-            if (!$tag) {
-                $tag = new Tag();
-                $tag->setTitle($tagTitle);
-                $this->tagRepository->save($tag);
+            if ('' !== trim($tagTitle)) {
+                $tag = $this->tagService->findOneByTitle(strtolower($tagTitle));
+                if (!$tag instanceof Tag) {
+                    $tag = new Tag();
+                    $tag->setTitle($tagTitle);
+
+                    $this->tagService->save($tag);
+                }
+                $tags->add($tag);
             }
-            $tags[] = $tag;
         }
 
         return $tags;

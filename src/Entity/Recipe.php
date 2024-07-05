@@ -61,7 +61,9 @@ class Recipe
     private ?Category $category = null;
 
     /**
-     * @var ArrayCollection
+     * Tags.
+     *
+     * @var ArrayCollection<int, Tag>
      */
     #[Assert\Valid]
     #[ORM\ManyToMany(targetEntity: Tag::class, fetch: 'EXTRA_LAZY', orphanRemoval: true)]
@@ -265,9 +267,9 @@ class Recipe
     }
 
     /**
-     * Get the collection of tags associated with the recipe.
+     * Getter for tags.
      *
-     * @return Collection collection
+     * @return Collection<int, Tag> Tags collection
      */
     public function getTags(): Collection
     {
@@ -275,9 +277,9 @@ class Recipe
     }
 
     /**
-     * Add a tag to the recipe.
+     * Add tag.
      *
-     * @param Tag $tag Tag
+     * @param Tag $tag Tag entity
      */
     public function addTag(Tag $tag): void
     {
@@ -287,11 +289,9 @@ class Recipe
     }
 
     /**
-     * Remove a tag from the recipe.
+     * Remove tag.
      *
-     * @param Tag $tag Tag
-     *
-     * @return void void
+     * @param Tag $tag Tag entity
      */
     public function removeTag(Tag $tag): void
     {

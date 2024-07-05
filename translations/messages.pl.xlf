@@ -120,7 +120,7 @@
       </trans-unit>
       <trans-unit id="message.form_error">
           <source>message.form_error</source>
-          <target>Występił błąd podczas przesyłania formularza. Sprawdź formularz i spróbuj ponownie.</target>
+          <target>Wystąpił błąd podczas przesyłania formularza. Sprawdź formularz i spróbuj ponownie.</target>
       </trans-unit>
       <trans-unit id="title.recipe_create">
           <source>title.recipe_create</source>
